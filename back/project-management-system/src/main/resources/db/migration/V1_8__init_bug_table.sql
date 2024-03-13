@@ -1,0 +1,18 @@
+CREATE TABLE bug
+(
+    bug_id        SERIAL                   NOT NULL,
+    serial_number VARCHAR(255) UNIQUE      NOT NULL,
+    title         VARCHAR(128)             NOT NULL,
+    description   TEXT                     NOT NULL,
+    project_id    INT                      NOT NULL,
+    user_id       INT                      NOT NULL,
+    type          INT                      NOT NULL,
+    report_date   TIMESTAMP WITH TIME ZONE NOT NULL,
+    fixed         BOOLEAN                  NOT NULL,
+    CONSTRAINT fk_bug_project
+        FOREIGN KEY (project_id)
+            REFERENCES project (project_id),
+    CONSTRAINT fk_bug_user
+        FOREIGN KEY (user_id)
+            REFERENCES user (user_id)
+);
