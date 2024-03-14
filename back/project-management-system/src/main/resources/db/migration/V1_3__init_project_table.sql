@@ -9,5 +9,5 @@ CREATE TABLE project
     end_date    TIMESTAMP WITH TIME ZONE,
     CONSTRAINT fk_project_user
         FOREIGN KEY (user_id)
-            REFERENCES user (user_id)
+            REFERENCES user_table (user_id)
 );

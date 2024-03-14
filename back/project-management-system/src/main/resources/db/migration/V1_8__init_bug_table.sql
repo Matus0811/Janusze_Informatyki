@@ -1,6 +1,6 @@
 CREATE TABLE bug
 (
-    bug_id        SERIAL                   NOT NULL,
+    bug_id        SERIAL PRIMARY KEY       NOT NULL,
     serial_number VARCHAR(255) UNIQUE      NOT NULL,
     title         VARCHAR(128)             NOT NULL,
     description   TEXT                     NOT NULL,
@@ -14,5 +14,5 @@ CREATE TABLE bug
             REFERENCES project (project_id),
     CONSTRAINT fk_bug_user
         FOREIGN KEY (user_id)
-            REFERENCES user (user_id)
+            REFERENCES user_table (user_id)
 );

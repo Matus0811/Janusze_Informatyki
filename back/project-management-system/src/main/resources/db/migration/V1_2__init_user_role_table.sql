@@ -5,7 +5,7 @@ CREATE TABLE user_role
     role_id      INT                NOT NULL,
     CONSTRAINT fk_user_role_user
         FOREIGN KEY (user_id)
-            REFERENCES user (user_id),
+            REFERENCES user_table (user_id),
     CONSTRAINT fk_user_role_role
         FOREIGN KEY (role_id)
             REFERENCES role (role_id)

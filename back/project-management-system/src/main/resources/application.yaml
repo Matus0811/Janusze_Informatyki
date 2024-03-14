@@ -1,12 +1,12 @@
 server:
   port: 8080
   servlet:
-    context-path: /project-management
+    context-path: /app
 
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/project_management
+    url: jdbc:postgresql://localhost:5432/project_schedule_management
     username: postgres
     password: postgres
   jpa:
