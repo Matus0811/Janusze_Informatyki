@@ -9,16 +9,10 @@ import lombok.With;
 @Value
 @Builder
 @EqualsAndHashCode
-public class User {
-    Long userId;
-    String username;
-    String password;
-    String name;
-    String surname;
-    String email;
-    String phone;
+public class Bug {
 
-    public enum Gender{
-        MALE,FEMALE
+
+    public enum BugType{
+        LOGICAL, SECURITY, SYNTAX, COMMUNICATION, CALCULATION, FUNCTIONAL
     }
 }

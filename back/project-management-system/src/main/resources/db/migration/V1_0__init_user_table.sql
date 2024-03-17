@@ -5,6 +5,7 @@ CREATE TABLE user_table
     password  VARCHAR(255)        NOT NULL,
     name      VARCHAR(64)         NOT NULL,
     surname   VARCHAR(64)         NOT NULL,
+    gender    VARCHAR(64),
     email     VARCHAR(64) UNIQUE  NOT NULL,
     phone     VARCHAR(64) UNIQUE  NOT NULL
 );
