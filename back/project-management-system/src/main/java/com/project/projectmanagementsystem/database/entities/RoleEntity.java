@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,4 +20,7 @@ public class RoleEntity {
 
     @Column(name="name",unique = true)
     private String name;
+
+    @OneToMany(mappedBy = "role")
+    private Set<UserProjectRoleEntity> userProjectRoleEntities;
 }

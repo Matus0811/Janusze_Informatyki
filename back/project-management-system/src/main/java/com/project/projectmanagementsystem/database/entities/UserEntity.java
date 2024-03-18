@@ -22,7 +22,7 @@ public class UserEntity {
 
     @Column(name="user_name", unique = true)
     @NotNull
-    private String userName;
+    private String username;
 
     @Column(name="password")
     @NotNull
@@ -47,7 +47,7 @@ public class UserEntity {
     @NotNull
     private String phone;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private Set<UserProjectRoleEntity> projectRoleEntities;
 
     @OneToMany(mappedBy = "user")
