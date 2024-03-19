@@ -1,14 +1,15 @@
 package com.project.projectmanagementsystem.database.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@Getter
+@Setter
 @Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@EqualsAndHashCode(of = "userTaskId")
 @Table(name = "user_task")
 public class UserTaskEntity {
     @Id

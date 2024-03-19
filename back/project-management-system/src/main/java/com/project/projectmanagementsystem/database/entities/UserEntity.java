@@ -3,16 +3,17 @@ package com.project.projectmanagementsystem.database.entities;
 import com.project.projectmanagementsystem.domain.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
+@Getter
+@Setter
 @Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@EqualsAndHashCode(of={"userId","username","email"})
 @Table(name = "user_table")
 public class UserEntity {
     @Id
@@ -47,7 +48,7 @@ public class UserEntity {
     @NotNull
     private String phone;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user")
     private Set<UserProjectRoleEntity> projectRoleEntities;
 
     @OneToMany(mappedBy = "user")

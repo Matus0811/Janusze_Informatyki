@@ -17,5 +17,4 @@ public class UserDTO {
     String gender;
     String email;
     String phone;
-
 }

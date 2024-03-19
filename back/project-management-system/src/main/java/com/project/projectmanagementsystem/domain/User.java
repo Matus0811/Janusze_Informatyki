@@ -11,10 +11,9 @@ import lombok.*;
 import java.util.Set;
 
 @With
-@Data
 @Value
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(of= {"userId","username","email"})
 public class User {
     Long userId;
     String username;

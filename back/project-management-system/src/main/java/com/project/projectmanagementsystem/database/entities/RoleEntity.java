@@ -1,16 +1,17 @@
 package com.project.projectmanagementsystem.database.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 
+@Getter
+@Setter
 @Builder
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
+@EqualsAndHashCode(of="roleId")
 @Table(name = "role")
 public class RoleEntity {
     @Id
