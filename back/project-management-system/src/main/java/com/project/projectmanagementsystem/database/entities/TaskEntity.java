@@ -37,6 +37,10 @@ public class TaskEntity {
     @Enumerated(EnumType.STRING)
     private Task.TaskStatus status;
 
+    @Column(name="priority")
+    @Enumerated(EnumType.STRING)
+    private Task.Priority priority;
+
     @Column(name="start_date")
     private OffsetDateTime startDate;
 

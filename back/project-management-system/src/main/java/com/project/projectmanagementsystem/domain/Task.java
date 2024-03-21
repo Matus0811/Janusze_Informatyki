@@ -20,6 +20,7 @@ public class Task {
     String name;
     String description;
     Task.TaskStatus status;
+    Task.Priority priority;
     OffsetDateTime startDate;
     OffsetDateTime finishDate;
     ProjectEntity project;
@@ -28,5 +29,9 @@ public class Task {
 
     public enum TaskStatus{
         CONCEPT, IN_PROGRESS, FINISHED, REJECTED, BUG, TO_DO
+    }
+
+    public enum Priority{
+        LOW,MEDIUM,HIGH
     }
 }

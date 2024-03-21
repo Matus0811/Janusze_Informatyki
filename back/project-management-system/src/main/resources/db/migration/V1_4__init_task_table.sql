@@ -5,6 +5,7 @@ CREATE TABLE task
     name        VARCHAR(128)             NOT NULL,
     description TEXT                     NOT NULL,
     status      VARCHAR(32)              NOT NULL,
+    priority    VARCHAR(32)              NOT NULL,
     start_date  TIMESTAMP WITH TIME ZONE NOT NULL,
     finish_date TIMESTAMP WITH TIME ZONE,
     project_id  uuid                     NOT NULL,
