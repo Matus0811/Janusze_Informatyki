@@ -5,10 +5,8 @@ import lombok.*;
 import java.time.OffsetDateTime;
 
 @With
-@Data
 @Value
 @Builder
-@EqualsAndHashCode
 public class Bug {
 
     Long bugId;

@@ -11,10 +11,8 @@ import java.util.Set;
 import java.util.UUID;
 
 @With
-@Data
 @Value
 @Builder
-@EqualsAndHashCode
 public class Project {
 
     UUID projectId;

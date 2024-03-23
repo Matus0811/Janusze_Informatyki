@@ -3,6 +3,7 @@ package com.project.projectmanagementsystem.services;
 import com.project.projectmanagementsystem.controller.dto.CredentialsDTO;
 import com.project.projectmanagementsystem.controller.dto.UserDTO;
 import com.project.projectmanagementsystem.database.dao.UserDAO;
+import com.project.projectmanagementsystem.domain.Credentials;
 import com.project.projectmanagementsystem.domain.User;
 import com.project.projectmanagementsystem.domain.exceptions.IncorrectPasswordException;
 import com.project.projectmanagementsystem.domain.exceptions.UserExistsException;
@@ -38,9 +39,8 @@ public class UserService {
     }
 
     @Transactional
-    public User registerUser(UserDTO user) {
-        log.info("Start processing user registration. User data: [{}]",user);
-        User userToRegister = UserMapper.INSTANCE.mapToDomainUser(user);
+    public User registerUser(User userToRegister) {
+        log.info("Start processing user registration. User data: [{}]",userToRegister);
 
         if(!userExists(userToRegister.getEmail())){
             log.info("User [{}] registered successfully",userToRegister);
@@ -57,7 +57,7 @@ public class UserService {
     }
 
     @Transactional
-    public User login(CredentialsDTO credentials) {
+    public User login(Credentials credentials) {
         if(credentials.isUsernameLogin()){
             log.info("Process login by username [{}]",credentials);
             return processUsernameLogin(credentials);
@@ -71,43 +71,43 @@ public class UserService {
         throw new UserNotFoundException("User with given credentials [%s] not found".formatted(credentials));
     }
 
-    private User processEmailLogin(CredentialsDTO credentials) {
+    private User processEmailLogin(Credentials credentials) {
         log.info("Processing sign in by email, credentials: [{}]",credentials);
-        Optional<User> loggedUserByEmail = userDAO.findByEmail(credentials.email());
+        Optional<User> loggedUserByEmail = userDAO.findByEmail(credentials.getEmail());
 
         User user = loggedUserByEmail.orElseThrow(
                 () -> {
                     log.error("Error during processing user sign in using email, given credentials [{}]",credentials);
-                    return new UserNotFoundException("User with given email [%s] not found".formatted(credentials.email()));
+                    return new UserNotFoundException("User with given email [%s] not found".formatted(credentials.getEmail()));
                 }
         );
 
-        if(user.getPassword().equals(credentials.password())){
-            log.info("Comparing user password, given: [{}], found: [{}]",credentials.password(), user.getPassword());
+        if(user.getPassword().equals(credentials.getPassword())){
+            log.info("Comparing user password, given: [{}], found: [{}]",credentials.getPassword(), user.getPassword());
             return user;
         }
 
-        log.error("Gave wrong password: given: [{}], found: [{}]",credentials.password(), user.getPassword());
-        throw new IncorrectPasswordException("Wrong password for email: [%s]".formatted(credentials.email()));
+        log.error("Gave wrong password: given: [{}], found: [{}]",credentials.getPassword(), user.getPassword());
+        throw new IncorrectPasswordException("Wrong password for email: [%s]".formatted(credentials.getEmail()));
     }
 
-    private User processUsernameLogin(CredentialsDTO credentials) {
+    private User processUsernameLogin(Credentials credentials) {
         log.info("Processing sign in by username, credentials: [{}]",credentials);
-        Optional<User> loggedUserByUsername = userDAO.findByUsername(credentials.username());
+        Optional<User> loggedUserByUsername = userDAO.findByUsername(credentials.getUsername());
 
         User user = loggedUserByUsername.orElseThrow(
                 () -> {
                     log.error("Error during processing user sign in using username, given credentials [{}]",credentials);
-                    return new UserNotFoundException("User with given username [%s] not found".formatted(credentials.username()));
+                    return new UserNotFoundException("User with given username [%s] not found".formatted(credentials.getUsername()));
                 }
         );
 
-        if(user.getPassword().equals(credentials.password())){
-            log.info("Comparing user password, given: [{}], found: [{}]",credentials.password(), user.getPassword());
+        if(user.getPassword().equals(credentials.getPassword())){
+            log.info("Comparing user password, given: [{}], found: [{}]",credentials.getPassword(), user.getPassword());
             return user;
         }
 
-        log.error("Gave wrong password: given: [{}], found: [{}]",credentials.password(), user.getPassword());
-        throw new IncorrectPasswordException("Wrong password for username: [%s]".formatted(credentials.username()));
+        log.error("Gave wrong password: given: [{}], found: [{}]",credentials.getPassword(), user.getPassword());
+        throw new IncorrectPasswordException("Wrong password for username: [%s]".formatted(credentials.getUsername()));
     }
 }

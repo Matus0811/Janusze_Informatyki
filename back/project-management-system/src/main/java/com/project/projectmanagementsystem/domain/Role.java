@@ -6,10 +6,8 @@ import lombok.*;
 import java.util.Set;
 
 @With
-@Data
 @Value
 @Builder
-@EqualsAndHashCode
 public class Role {
     Long roleId;
     String name;

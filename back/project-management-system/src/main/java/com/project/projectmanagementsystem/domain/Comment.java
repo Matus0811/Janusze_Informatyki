@@ -8,10 +8,8 @@ import lombok.*;
 import java.time.OffsetDateTime;
 
 @With
-@Data
 @Value
 @Builder
-@EqualsAndHashCode
 public class Comment {
     Long commentId;
     String text;

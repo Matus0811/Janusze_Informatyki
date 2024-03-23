@@ -9,10 +9,8 @@ import java.time.OffsetDateTime;
 import java.util.Set;
 
 @With
-@Data
 @Value
 @Builder
-@EqualsAndHashCode
 public class Task {
 
     Long taskId;

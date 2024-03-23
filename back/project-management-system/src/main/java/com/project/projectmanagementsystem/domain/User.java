@@ -1,19 +1,14 @@
 package com.project.projectmanagementsystem.domain;
 
-import com.project.projectmanagementsystem.database.entities.BugEntity;
-import com.project.projectmanagementsystem.database.entities.CommentEntity;
-import com.project.projectmanagementsystem.database.entities.UserProjectRoleEntity;
-import com.project.projectmanagementsystem.database.entities.UserTaskEntity;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.OneToMany;
-import lombok.*;
+import lombok.Builder;
+import lombok.Value;
+import lombok.With;
 
 import java.util.Set;
 
 @With
 @Value
 @Builder
-@EqualsAndHashCode(of= {"userId","username","email"})
 public class User {
     Long userId;
     String username;

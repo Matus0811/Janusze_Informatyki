@@ -1,11 +1,8 @@
 package com.project.projectmanagementsystem.controller.dto;
 
-public record CredentialsDTO(String username, String password, String email){
-    public boolean isUsernameLogin(){
-        return !this.username.isBlank() && !password.isBlank() && email.isBlank();
-    }
+import com.project.projectmanagementsystem.controller.annotations.ValidEmail;
+import jakarta.validation.constraints.Size;
 
-    public boolean isEmailLogin(){
-        return this.username.isBlank() && !password.isBlank() && !email.isBlank();
-    }
+public record CredentialsDTO(String username, @Size(min = 8) String password, @ValidEmail String email){
+
 }

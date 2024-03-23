@@ -3,6 +3,7 @@ package com.project.projectmanagementsystem.controller;
 import com.project.projectmanagementsystem.controller.dto.CredentialsDTO;
 import com.project.projectmanagementsystem.controller.dto.UserDTO;
 import com.project.projectmanagementsystem.domain.User;
+import com.project.projectmanagementsystem.domain.mapper.CredentialsMapper;
 import com.project.projectmanagementsystem.domain.mapper.UserMapper;
 import com.project.projectmanagementsystem.services.UserService;
 import jakarta.validation.Valid;
@@ -28,7 +29,9 @@ public class UserController {
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserDTO user){
-        UserDTO registeredUser = UserMapper.INSTANCE.mapFromDomainUser(userService.registerUser(user));
+        UserDTO registeredUser = UserMapper.INSTANCE.mapFromDomainUser(
+                userService.registerUser(UserMapper.INSTANCE.mapToDomainUser(user))
+        );
 
 
         return new ResponseEntity<>(registeredUser,HttpStatus.CREATED);
@@ -36,7 +39,11 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<UserDTO> login(@RequestBody @Valid CredentialsDTO credentials){
-        UserDTO loggedUser = UserMapper.INSTANCE.mapFromDomainUser(userService.login(credentials));
+        UserDTO loggedUser = UserMapper.INSTANCE.mapFromDomainUser(
+                userService.login(
+                        CredentialsMapper.INSTANCE.mapFromDto(credentials)
+                )
+        );
 
         log.info("User [{}] logged in.",loggedUser);
         return new ResponseEntity<>(loggedUser,HttpStatus.OK);
