@@ -1,7 +1,7 @@
-package org.project.projectmanagementsystem.controller.dto;
+package org.project.projectmanagementsystem.api.dto;
 
-import org.project.projectmanagementsystem.controller.annotations.ValidEmail;
-import org.project.projectmanagementsystem.controller.annotations.ValidPhoneNumber;
+import org.project.projectmanagementsystem.api.annotations.ValidEmail;
+import org.project.projectmanagementsystem.api.annotations.ValidPhoneNumber;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

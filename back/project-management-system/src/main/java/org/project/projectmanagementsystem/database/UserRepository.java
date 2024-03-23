@@ -1,4 +1,4 @@
-package org.project.projectmanagementsystem.database.repository;
+package org.project.projectmanagementsystem.database;
 
 import org.project.projectmanagementsystem.database.dao.UserDAO;
 import org.project.projectmanagementsystem.database.entities.UserEntity;

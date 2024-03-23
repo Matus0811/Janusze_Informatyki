@@ -1,6 +1,6 @@
 package org.project.projectmanagementsystem.domain.mapper;
 
-import org.project.projectmanagementsystem.controller.dto.CredentialsDTO;
+import org.project.projectmanagementsystem.api.dto.CredentialsDTO;
 import org.project.projectmanagementsystem.domain.Credentials;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;

@@ -1,6 +1,6 @@
-package org.project.projectmanagementsystem.controller.validators;
+package org.project.projectmanagementsystem.api.dto.validators;
 
-import org.project.projectmanagementsystem.controller.annotations.ValidPhoneNumber;
+import org.project.projectmanagementsystem.api.annotations.ValidPhoneNumber;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

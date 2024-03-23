@@ -1,6 +1,6 @@
-package org.project.projectmanagementsystem.controller.annotations;
+package org.project.projectmanagementsystem.api.annotations;
 
-import org.project.projectmanagementsystem.controller.validators.EmailValidator;
+import org.project.projectmanagementsystem.api.dto.validators.EmailValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

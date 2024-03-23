@@ -1,7 +1,7 @@
-package org.project.projectmanagementsystem.controller;
+package org.project.projectmanagementsystem.api.controller;
 
-import org.project.projectmanagementsystem.controller.dto.CredentialsDTO;
-import org.project.projectmanagementsystem.controller.dto.UserDTO;
+import org.project.projectmanagementsystem.api.dto.CredentialsDTO;
+import org.project.projectmanagementsystem.api.dto.UserDTO;
 import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.mapper.CredentialsMapper;
 import org.project.projectmanagementsystem.domain.mapper.UserMapper;

@@ -1,6 +1,6 @@
-package org.project.projectmanagementsystem.controller.annotations;
+package org.project.projectmanagementsystem.api.annotations;
 
-import org.project.projectmanagementsystem.controller.validators.PhoneValidator;
+import org.project.projectmanagementsystem.api.dto.validators.PhoneValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
