@@ -9,25 +9,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserDTO {
-    @NotNull
-    String username;
-    @NotNull
-    @Size(min = 8)
-    String password;
-    @NotNull
-    String name;
-    @NotNull
-    String surname;
-    String gender;
-    @NotNull
-    @ValidEmail
-    String email;
-    @NotNull
-    @ValidPhoneNumber
-    String phone;
+
+public record UserDTO(
+        @NotNull
+        String username,
+        @NotNull
+        @Size(min = 8)
+        String password,
+        @NotNull
+        String name,
+        @NotNull
+        String surname,
+        String gender,
+        @NotNull
+        @ValidEmail
+        String email,
+        @NotNull
+        @ValidPhoneNumber
+        String phone
+) {
 }

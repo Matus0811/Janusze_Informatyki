@@ -17,15 +17,15 @@ public class UserProjectRoleEntity {
     @Column(name="user_project_role_id")
     private Long userProjectRoleId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="project_id")
     private ProjectEntity project;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="role_id")
     private RoleEntity role;
 }

@@ -57,7 +57,7 @@ public class UserEntity {
     @OneToMany(mappedBy = "user")
     private Set<UserTaskEntity> userTaskEntities;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<BugEntity> reportedBugs;
 }
 
