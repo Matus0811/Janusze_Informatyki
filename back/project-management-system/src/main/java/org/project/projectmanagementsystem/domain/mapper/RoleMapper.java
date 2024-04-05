@@ -9,6 +9,6 @@ import org.project.projectmanagementsystem.domain.Role;
 public interface RoleMapper {
     RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
 
-    Role mapFromEntity(RoleEntity roleEntity);
-    RoleEntity mapFromDomain(Role role);
+    Role mapFromEntityToDomain(RoleEntity roleEntity);
+    RoleEntity mapFromDomainToEntity(Role role);
 }

@@ -15,6 +15,6 @@ public class RoleRepository implements RoleDAO {
     private final RoleJpaRepository roleJpaRepository;
     @Override
     public Optional<Role> findByName(String roleName) {
-        return roleJpaRepository.findByName(roleName).map(RoleMapper.INSTANCE::mapFromEntity);
+        return roleJpaRepository.findByName(roleName).map(RoleMapper.INSTANCE::mapFromEntityToDomain);
     }
 }

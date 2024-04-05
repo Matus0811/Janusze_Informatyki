@@ -17,11 +17,11 @@ public class UserTaskEntity {
     @Column(name="user_task_id")
     private Long userTaskId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")
     private TaskEntity task;
 

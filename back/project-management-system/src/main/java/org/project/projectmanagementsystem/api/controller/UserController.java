@@ -24,13 +24,13 @@ public class UserController {
     public UserDTO getUser(@PathVariable("id") Long userId){
         User user = userService.getUser(userId);
 
-        return UserMapper.INSTANCE.mapFromDomainUser(user);
+        return UserMapper.INSTANCE.mapFromDomainToDto(user);
     }
 
     @PostMapping("/register")
     public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserDTO user){
-        UserDTO registeredUser = UserMapper.INSTANCE.mapFromDomainUser(
-                userService.registerUser(UserMapper.INSTANCE.mapToDomainUser(user))
+        UserDTO registeredUser = UserMapper.INSTANCE.mapFromDomainToDto(
+                userService.registerUser(UserMapper.INSTANCE.mapFromDtoToDomain(user))
         );
 
 
@@ -39,9 +39,9 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<UserDTO> login(@RequestBody @Valid CredentialsDTO credentials){
-        UserDTO loggedUser = UserMapper.INSTANCE.mapFromDomainUser(
+        UserDTO loggedUser = UserMapper.INSTANCE.mapFromDomainToDto(
                 userService.login(
-                        CredentialsMapper.INSTANCE.mapFromDto(credentials)
+                        CredentialsMapper.INSTANCE.mapFromDtoToDomain(credentials)
                 )
         );
 

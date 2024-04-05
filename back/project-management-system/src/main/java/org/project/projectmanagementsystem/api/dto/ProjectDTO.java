@@ -1,8 +1,14 @@
 package org.project.projectmanagementsystem.api.dto;
 
-public class ProjectDTO {
-    String name;
-    String description;
-    String startDate;
-    String finishDate;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+public record ProjectDTO(
+        UUID projectId,
+        String name,
+        String description,
+        OffsetDateTime startDate,
+        OffsetDateTime finishDate
+) {
+
 }

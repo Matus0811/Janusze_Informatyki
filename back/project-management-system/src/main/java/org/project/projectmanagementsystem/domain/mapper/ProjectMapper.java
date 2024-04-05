@@ -14,6 +14,6 @@ public interface ProjectMapper {
     Project mapFromDtoToDomain(ProjectDTO projectDTO);
     ProjectDTO mapFromDomainToDto(Project project);
 
-    ProjectEntity mapFromDomain(Project createdProject);
-    Project mapFromEntity(ProjectEntity project);
+    ProjectEntity mapFromDomainToEntity(Project createdProject);
+    Project mapFromEntityToDomain(ProjectEntity project);
 }

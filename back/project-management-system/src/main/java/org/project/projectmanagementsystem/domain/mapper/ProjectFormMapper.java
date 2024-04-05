@@ -9,5 +9,5 @@ import org.project.projectmanagementsystem.domain.ProjectForm;
 public interface ProjectFormMapper {
     ProjectFormMapper INSTANCE = Mappers.getMapper(ProjectFormMapper.class);
 
-    ProjectForm mapToDomain(ProjectFormDTO projectFormDTO);
+    ProjectForm mapFromDtoToDomain(ProjectFormDTO projectFormDTO);
 }

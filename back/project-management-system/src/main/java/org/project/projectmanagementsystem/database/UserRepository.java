@@ -17,23 +17,23 @@ public class UserRepository implements UserDAO {
     @Override
     public Optional<User> findByEmail(String email) {
         return userJpaRepository.findByEmail(email)
-                .map(UserMapper.INSTANCE::mapFromEntity);
+                .map(UserMapper.INSTANCE::mapFromEntityToDomain);
     }
 
     @Override
     public User save(User userToRegister) {
-        UserEntity savedUser = userJpaRepository.save(UserMapper.INSTANCE.mapFromDomain(userToRegister));
-        return UserMapper.INSTANCE.mapFromEntity(savedUser);
+        UserEntity savedUser = userJpaRepository.save(UserMapper.INSTANCE.mapFromDomainToEntity(userToRegister));
+        return UserMapper.INSTANCE.mapFromEntityToDomain(savedUser);
     }
 
     @Override
     public Optional<User> findById(Long id) {
-        return userJpaRepository.findById(id).map(UserMapper.INSTANCE::mapFromEntity);
+        return userJpaRepository.findById(id).map(UserMapper.INSTANCE::mapFromEntityToDomain);
     }
 
     @Override
     public Optional<User> findByUsername(String username) {
         Optional<UserEntity> byUsername = userJpaRepository.findByUsername(username);
-        return byUsername.map(UserMapper.INSTANCE::mapFromEntity);
+        return byUsername.map(UserMapper.INSTANCE::mapFromEntityToDomain);
     }
 }

@@ -50,10 +50,10 @@ public class TaskEntity {
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task",cascade = CascadeType.REMOVE)
     private Set<CommentEntity> commentEntities;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "task",cascade = CascadeType.REMOVE)
     private Set<UserTaskEntity> userTaskEntities;
 }
 

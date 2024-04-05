@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
 public interface CredentialsMapper {
     CredentialsMapper INSTANCE = Mappers.getMapper(CredentialsMapper.class);
 
-    CredentialsDTO mapFromDomain(Credentials credentials);
+    CredentialsDTO mapFromDomainToDto(Credentials credentials);
 
-    Credentials mapFromDto(CredentialsDTO credentialsDTO);
+    Credentials mapFromDtoToDomain(CredentialsDTO credentialsDTO);
 }

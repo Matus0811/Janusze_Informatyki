@@ -38,12 +38,12 @@ public class ProjectEntity {
     @Column(name="finish_date")
     private OffsetDateTime finishDate;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private Set<UserProjectRoleEntity> userProjectRoleEntities;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project",cascade = CascadeType.REMOVE)
     private Set<TaskEntity> taskEntities;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.REMOVE)
     private Set<BugEntity> bugEntities;
 }

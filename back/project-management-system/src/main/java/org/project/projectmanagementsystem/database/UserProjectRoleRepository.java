@@ -6,7 +6,6 @@ import org.project.projectmanagementsystem.database.entities.ProjectEntity;
 import org.project.projectmanagementsystem.database.entities.RoleEntity;
 import org.project.projectmanagementsystem.database.entities.UserEntity;
 import org.project.projectmanagementsystem.database.entities.UserProjectRoleEntity;
-import org.project.projectmanagementsystem.database.jpa.RoleJpaRepository;
 import org.project.projectmanagementsystem.database.jpa.UserProjectRoleJpaRepository;
 import org.project.projectmanagementsystem.domain.Project;
 import org.project.projectmanagementsystem.domain.Role;
@@ -21,13 +20,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class UserProjectRoleRepository implements UserProjectRoleDAO {
-    private final RoleRepository roleRepository;
     private final UserProjectRoleJpaRepository userProjectRoleJpaRepository;
     @Override
     public UserProjectRole addUserProjectRole(User owner, Project createdProject, Role role) {
-        RoleEntity roleEntity = RoleMapper.INSTANCE.mapFromDomain(role);
-        UserEntity ownerEntity = UserMapper.INSTANCE.mapFromDomain(owner);
-        ProjectEntity projectEntity = ProjectMapper.INSTANCE.mapFromDomain(createdProject);
+        RoleEntity roleEntity = RoleMapper.INSTANCE.mapFromDomainToEntity(role);
+        UserEntity ownerEntity = UserMapper.INSTANCE.mapFromDomainToEntity(owner);
+        ProjectEntity projectEntity = ProjectMapper.INSTANCE.mapFromDomainToEntity(createdProject);
 
         UserProjectRoleEntity userProjectRoleEntityToSave = UserProjectRoleEntity.builder()
                 .user(ownerEntity)
