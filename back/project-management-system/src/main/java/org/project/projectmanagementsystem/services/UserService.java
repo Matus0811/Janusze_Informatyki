@@ -2,7 +2,7 @@ package org.project.projectmanagementsystem.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.project.projectmanagementsystem.database.dao.UserDAO;
+import org.project.projectmanagementsystem.database.UserRepository;
 import org.project.projectmanagementsystem.domain.Credentials;
 import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.services.exceptions.user.IncorrectPasswordException;
@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserDAO userDAO;
+    private final UserRepository userRepository;
 
     public User getUser(Long id) {
         return User.builder()
@@ -39,7 +39,7 @@ public class UserService {
 
         if (!userExists(userToRegister.getEmail())) {
             log.info("User [{}] registered successfully", userToRegister);
-            return userDAO.save(userToRegister);
+            return userRepository.save(userToRegister);
         }
         log.error("Error during register user. User already exists. Data [{}]", userToRegister);
         throw new UserExistsException(
@@ -48,7 +48,7 @@ public class UserService {
     }
 
     private boolean userExists(String email) {
-        return userDAO.findByEmail(email).isPresent();
+        return userRepository.findByEmail(email).isPresent();
     }
 
     @Transactional
@@ -93,7 +93,7 @@ public class UserService {
     }
 
     public User findByEmail(String email) {
-        return userDAO.findByEmail(email).orElseThrow(
+        return userRepository.findByEmail(email).orElseThrow(
                 () -> {
                     log.error("Error finding user by email: [{}]", email);
                     return new UserNotFoundException("User with email [%s] not found".formatted(email));
@@ -101,7 +101,7 @@ public class UserService {
     }
 
     public User findByUsername(String username) {
-        return userDAO.findByUsername(username).orElseThrow(
+        return userRepository.findByUsername(username).orElseThrow(
                 () -> {
                     log.error("Error during finding user by username: [{}]", username);
                     return new UserNotFoundException("User with given username [%s] not found".formatted(username));

@@ -25,6 +25,7 @@ public class TaskEntity {
 
     @Column(name="task_code", unique = true)
     private String taskCode;
+    // JWT Token
 
     @Column(name="name")
     private String name;

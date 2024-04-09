@@ -1,7 +1,6 @@
 package org.project.projectmanagementsystem.database;
 
 import lombok.RequiredArgsConstructor;
-import org.project.projectmanagementsystem.database.dao.UserProjectRoleDAO;
 import org.project.projectmanagementsystem.database.entities.ProjectEntity;
 import org.project.projectmanagementsystem.database.entities.RoleEntity;
 import org.project.projectmanagementsystem.database.entities.UserEntity;
@@ -19,9 +18,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class UserProjectRoleRepository implements UserProjectRoleDAO {
+public class UserProjectRoleRepository {
     private final UserProjectRoleJpaRepository userProjectRoleJpaRepository;
-    @Override
+
     public UserProjectRole addUserProjectRole(User owner, Project createdProject, Role role) {
         RoleEntity roleEntity = RoleMapper.INSTANCE.mapFromDomainToEntity(role);
         UserEntity ownerEntity = UserMapper.INSTANCE.mapFromDomainToEntity(owner);

@@ -18,7 +18,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/project")
 @RequiredArgsConstructor
-public class ProjectController {
+public class
+ProjectController {
     private final ProjectService projectService;
     @PostMapping("/create")
     public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectFormDTO project){

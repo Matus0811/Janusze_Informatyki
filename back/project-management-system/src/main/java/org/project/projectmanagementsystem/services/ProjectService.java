@@ -3,7 +3,7 @@ package org.project.projectmanagementsystem.services;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.project.projectmanagementsystem.database.dao.ProjectDAO;
+import org.project.projectmanagementsystem.database.ProjectRepository;
 import org.project.projectmanagementsystem.domain.*;
 import org.project.projectmanagementsystem.services.exceptions.EmptyFormException;
 import org.project.projectmanagementsystem.services.exceptions.project.ActiveProjectLimitException;
@@ -19,7 +19,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class ProjectService {
-    private final ProjectDAO projectDAO;
+    private final ProjectRepository projectRepository;
     private final UserService userService;
     private final RoleService roleService;
     private final UserProjectRoleService userProjectRoleService;
@@ -48,15 +48,15 @@ public class ProjectService {
         Project createdProject = Project.buildProjectFromForm(projectForm);
         Role role = roleService.findRoleByName("PROJECT_OWNER");
 
-        return projectDAO.addProject(createdProject, owner, role);
+        return projectRepository.addProject(createdProject, owner, role);
     }
 
     public List<Project> findNotFinishedUserProjects(User owner) {
-        return projectDAO.findNotFinishedUserProjects(owner);
+        return projectRepository.findNotFinishedUserProjects(owner);
     }
 
     private boolean projectExists(String projectName) {
-        return projectDAO.findByName(projectName).isPresent();
+        return projectRepository.findByName(projectName).isPresent();
     }
 
     public void removeProject(UUID projectId) {
@@ -65,7 +65,7 @@ public class ProjectService {
         if (projectToDelete.getProjectStatus() == Project.ProjectStatus.FINISHED) {
             throw new ProjectDeleteException("Cannot delete project which is finished!");
         }
-        projectDAO.remove(projectToDelete);
+        projectRepository.remove(projectToDelete);
     }
 
     public List<Project> findNotFinishedUserProjects(UserData userData) {
@@ -82,7 +82,7 @@ public class ProjectService {
     }
 
     public Project findById(UUID projectId) {
-        return projectDAO.findById(projectId).orElseThrow(
+        return projectRepository.findById(projectId).orElseThrow(
                 () -> new ProjectNotFoundException("Project with id: [%s] not found".formatted(projectId))
         );
     }

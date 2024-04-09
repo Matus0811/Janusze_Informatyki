@@ -11,4 +11,8 @@ import java.util.UUID;
 public interface ProjectJpaRepository extends JpaRepository<ProjectEntity, UUID> {
 
     Optional<ProjectEntity> findByName(String projectName);
+
+
+
+
 }
