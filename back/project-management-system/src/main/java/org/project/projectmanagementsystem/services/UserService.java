@@ -11,6 +11,8 @@ import org.project.projectmanagementsystem.services.exceptions.user.UserNotFound
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -106,5 +108,9 @@ public class UserService {
                     log.error("Error during finding user by username: [{}]", username);
                     return new UserNotFoundException("User with given username [%s] not found".formatted(username));
                 });
+    }
+
+    public List<User> findUsersByEmail(List<String> userEmails) {
+        return userRepository.findUsersByEmailList(userEmails);
     }
 }

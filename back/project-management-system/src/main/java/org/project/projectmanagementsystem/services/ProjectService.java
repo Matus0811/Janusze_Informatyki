@@ -10,6 +10,8 @@ import org.project.projectmanagementsystem.services.exceptions.project.ActivePro
 import org.project.projectmanagementsystem.services.exceptions.project.ProjectAlreadyExistsException;
 import org.project.projectmanagementsystem.services.exceptions.project.ProjectDeleteException;
 import org.project.projectmanagementsystem.services.exceptions.project.ProjectNotFoundException;
+import org.project.projectmanagementsystem.services.exceptions.user.UserAssignToProjectException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +50,9 @@ public class ProjectService {
         Project createdProject = Project.buildProjectFromForm(projectForm);
         Role role = roleService.findRoleByName("PROJECT_OWNER");
 
-        return projectRepository.addProject(createdProject, owner, role);
+        Project savedProject = projectRepository.addProject(createdProject);
+        userProjectRoleService.addUserProjectRole(owner, savedProject, role);
+        return savedProject;
     }
 
     public List<Project> findNotFinishedUserProjects(User owner) {
@@ -91,5 +95,31 @@ public class ProjectService {
         Project foundProject = findById(UUID.fromString(projectId));
         log.info("Found project: [{}]", foundProject);
         return foundProject;
+    }
+
+    public void updateProjectStatus(Project project) {
+        projectRepository.updateProjectStatus(project);
+    }
+
+    @Transactional
+    public void addUsersToProject(AssignForm assignForm) {
+        List<User> usersToAssignToProject = userService.findUsersByEmail(assignForm.getUserEmails());
+
+        if (usersToAssignToProject.isEmpty()) {
+            throw new UserAssignToProjectException("Cannot assign users to project, list is empty!", HttpStatus.CONFLICT);
+        }
+
+        Project project = findProject(assignForm.getProjectId());
+        Role assignUserRole = roleService.findRoleByName("TEAM_MEMBER");
+
+        usersToAssignToProject.forEach(user -> userProjectRoleService.addUserProjectRole(user, project, assignUserRole));
+    }
+
+    public List<User> getUnassignedUsers(String projectId) {
+        Project project = findProject(projectId);
+
+        return userProjectRoleService.findUsersUnassignedToProject(project).stream()
+                .map(UserProjectRole::getUser)
+                .toList();
     }
 }

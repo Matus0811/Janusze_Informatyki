@@ -16,24 +16,23 @@ import org.project.projectmanagementsystem.domain.mapper.UserMapper;
 import org.project.projectmanagementsystem.domain.mapper.UserProjectRoleMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.UUID;
+
 @Repository
 @RequiredArgsConstructor
 public class UserProjectRoleRepository {
     private final UserProjectRoleJpaRepository userProjectRoleJpaRepository;
 
-    public UserProjectRole addUserProjectRole(User owner, Project createdProject, Role role) {
-        RoleEntity roleEntity = RoleMapper.INSTANCE.mapFromDomainToEntity(role);
-        UserEntity ownerEntity = UserMapper.INSTANCE.mapFromDomainToEntity(owner);
-        ProjectEntity projectEntity = ProjectMapper.INSTANCE.mapFromDomainToEntity(createdProject);
-
-        UserProjectRoleEntity userProjectRoleEntityToSave = UserProjectRoleEntity.builder()
-                .user(ownerEntity)
-                .project(projectEntity)
-                .role(roleEntity)
-                .build();
-
+    public UserProjectRole addUserProjectRole(UserProjectRole userProjectRoleToSave) {
         return UserProjectRoleMapper.INSTANCE.mapFromEntity(
-                userProjectRoleJpaRepository.saveAndFlush(userProjectRoleEntityToSave)
+                userProjectRoleJpaRepository.saveAndFlush(
+                        UserProjectRoleMapper.INSTANCE.mapFromDomain(userProjectRoleToSave)
+                )
         );
+    }
+
+    public List<UserProjectRole> findUsersUnassignedToProject(UUID projectId) {
+        return userProjectRoleJpaRepository.findUsersUnassignedToProject(projectId);
     }
 }

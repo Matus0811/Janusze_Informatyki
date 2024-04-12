@@ -1,6 +1,5 @@
 package org.project.projectmanagementsystem.domain;
 
-import org.project.projectmanagementsystem.database.entities.ProjectEntity;
 import lombok.*;
 
 import java.time.OffsetDateTime;
@@ -19,16 +18,17 @@ public class Task {
     Task.Priority priority;
     OffsetDateTime startDate;
     OffsetDateTime finishDate;
-    ProjectEntity project;
+    Project project;
     Set<Comment> comments;
     Set<UserTask> userTasks;
 
-    public static Task buildTaskFromTaskForm(TaskForm taskForm){
+    public static Task buildTaskFromTaskForm(TaskForm taskForm, Project project){
         Task task = Task.builder()
                 .description(taskForm.getDescription())
                 .status(TaskStatus.valueOf(taskForm.getStatus()))
                 .priority(Priority.valueOf(taskForm.getPriority()))
                 .startDate(OffsetDateTime.now())
+                .project(project)
                 .build();
 
         if(!taskForm.getFinishDate().isBlank()){

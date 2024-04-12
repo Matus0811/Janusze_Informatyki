@@ -7,6 +7,7 @@ import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.mapper.UserMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -30,5 +31,11 @@ public class UserRepository{
     public Optional<User> findByUsername(String username) {
         Optional<UserEntity> byUsername = userJpaRepository.findByUsername(username);
         return byUsername.map(UserMapper.INSTANCE::mapFromEntityToDomain);
+    }
+
+    public List<User> findUsersByEmailList(List<String> userEmails) {
+        return userJpaRepository.findAllByEmail(userEmails).stream()
+                .map(UserMapper.INSTANCE::mapFromEntityToDomain)
+                .toList();
     }
 }

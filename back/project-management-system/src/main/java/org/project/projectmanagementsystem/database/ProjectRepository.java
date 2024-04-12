@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.jpa.ProjectJpaRepository;
 import org.project.projectmanagementsystem.database.jpa.UserProjectRoleJpaRepository;
 import org.project.projectmanagementsystem.domain.Project;
-import org.project.projectmanagementsystem.domain.Role;
 import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.mapper.ProjectMapper;
 import org.springframework.stereotype.Repository;
@@ -32,13 +31,10 @@ public class ProjectRepository {
                 .toList();
     }
 
-    public Project addProject(Project createdProject, User owner, Role role) {
-        Project savedProject = ProjectMapper.INSTANCE.mapFromEntityToDomain(
+    public Project addProject(Project createdProject) {
+        return ProjectMapper.INSTANCE.mapFromEntityToDomain(
                 projectJpaRepository.save(ProjectMapper.INSTANCE.mapFromDomainToEntity(createdProject))
         );
-        userProjectRoleRepository.addUserProjectRole(owner, savedProject,role);
-
-        return savedProject;
     }
 
     public Optional<Project> findById(UUID projectId) {
@@ -47,5 +43,9 @@ public class ProjectRepository {
 
     public void remove(Project projectToRemove) {
         projectJpaRepository.delete(ProjectMapper.INSTANCE.mapFromDomainToEntity(projectToRemove));
+    }
+
+    public void updateProjectStatus(Project project) {
+        projectJpaRepository.saveAndFlush(ProjectMapper.INSTANCE.mapFromDomainToEntity(project));
     }
 }
