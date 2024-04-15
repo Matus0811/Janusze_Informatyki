@@ -29,13 +29,13 @@ public class Project {
                 .startDate(OffsetDateTime.now())
                 .build();
 
-        if (!projectForm.getFinishDate().isBlank()) {
-            project = project.withFinishDate(OffsetDateTime.parse(projectForm.getFinishDate()));
+        if (!projectForm.getFinishDate().toString().isBlank()) {
+            project = project.withFinishDate(projectForm.getFinishDate());
         }
 
         return project;
     }
     public enum ProjectStatus {
-        INITIAL, IN_PROGRESS, FINISHED
+        INITIAL, IN_PROGRESS, FINISHED, BUG_FOUND
     }
 }

@@ -7,7 +7,10 @@ import org.project.projectmanagementsystem.domain.Task;
 import org.project.projectmanagementsystem.domain.mapper.TaskMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.EnumSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,5 +23,15 @@ public class TaskRepository {
 
     public Optional<Task> findByTaskCode(String taskCode) {
         return taskJpaRepository.findByTaskCode(taskCode).map(TaskMapper.INSTANCE::mapFromEntityToDomain);
+    }
+
+    public void save(Task task) {
+        taskJpaRepository.save(TaskMapper.INSTANCE.mapFromDomainToEntity(task));
+    }
+
+    public List<Task> findProjectTasksWithStatus(UUID projectId, EnumSet<Task.TaskStatus> taskStatuses) {
+        return taskJpaRepository.findProjectTasksWithStatus(projectId,taskStatuses).stream()
+                .map(TaskMapper.INSTANCE::mapFromEntityToDomain)
+                .toList();
     }
 }

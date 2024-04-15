@@ -10,4 +10,12 @@ public class UserProjectRole {
     User user;
     Project project;
     Role role;
+
+    public static UserProjectRole buildUserProjectRole(User user, Project savedProject, Role role) {
+        return UserProjectRole.builder()
+                .user(user)
+                .project(savedProject)
+                .role(role)
+                .build();
+    }
 }

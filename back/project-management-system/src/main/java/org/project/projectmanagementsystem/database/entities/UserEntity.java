@@ -40,7 +40,7 @@ public class UserEntity {
     @Column(name="gender")
     private User.Gender gender;
 
-    @Column(name="email")
+    @Column(name="email", unique = true)
     @NotNull
     private String email;
 

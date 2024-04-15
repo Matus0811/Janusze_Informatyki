@@ -1,5 +1,6 @@
 package org.project.projectmanagementsystem.domain.mapper;
 
+import org.mapstruct.control.DeepClone;
 import org.project.projectmanagementsystem.api.dto.CredentialsDTO;
 import org.project.projectmanagementsystem.domain.Credentials;
 import org.mapstruct.Mapper;

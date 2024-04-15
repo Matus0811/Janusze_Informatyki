@@ -1,5 +1,7 @@
 package org.project.projectmanagementsystem.api.dto;
 
-public record ProjectFormDTO(String ownerEmail, String name, String description, String finishDate) {
+import java.time.OffsetDateTime;
+
+public record ProjectFormDTO(String email, String name, String description, OffsetDateTime finishDate) {
 
 }

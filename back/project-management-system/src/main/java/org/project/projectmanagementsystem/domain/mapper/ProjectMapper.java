@@ -1,6 +1,7 @@
 package org.project.projectmanagementsystem.domain.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.control.DeepClone;
 import org.mapstruct.factory.Mappers;
 import org.project.projectmanagementsystem.api.dto.ProjectDTO;
 import org.project.projectmanagementsystem.database.entities.ProjectEntity;

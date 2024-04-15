@@ -1,6 +1,7 @@
 package org.project.projectmanagementsystem.domain.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.control.DeepClone;
 import org.mapstruct.factory.Mappers;
 import org.project.projectmanagementsystem.database.entities.UserProjectRoleEntity;
 import org.project.projectmanagementsystem.domain.UserProjectRole;
@@ -9,7 +10,7 @@ import org.project.projectmanagementsystem.domain.UserProjectRole;
 public interface UserProjectRoleMapper {
     UserProjectRoleMapper INSTANCE = Mappers.getMapper(UserProjectRoleMapper.class);
 
-    UserProjectRole mapFromEntity(UserProjectRoleEntity userProjectRoleEntity);
-    UserProjectRoleEntity mapFromDomain(UserProjectRole userProjectRole);
+    UserProjectRole mapFromEntityToDomain(UserProjectRoleEntity userProjectRoleEntity);
+    UserProjectRoleEntity mapFromDomainToEntity(UserProjectRole userProjectRole);
 
 }

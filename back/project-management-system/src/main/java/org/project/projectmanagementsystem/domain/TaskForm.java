@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.With;
 
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
 @With
 @Value
 @Builder
@@ -11,7 +14,7 @@ public class TaskForm {
     String description;
     String status;
     String priority;
-    String startDate;
-    String finishDate;
-    String projectId;
+    OffsetDateTime startDate;
+    OffsetDateTime finishDate;
+    UUID projectId;
 }

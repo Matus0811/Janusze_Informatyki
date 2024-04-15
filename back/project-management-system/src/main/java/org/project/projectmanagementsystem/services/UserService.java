@@ -4,14 +4,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.projectmanagementsystem.database.UserRepository;
 import org.project.projectmanagementsystem.domain.Credentials;
+import org.project.projectmanagementsystem.domain.Task;
 import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.services.exceptions.user.IncorrectPasswordException;
 import org.project.projectmanagementsystem.services.exceptions.user.UserExistsException;
 import org.project.projectmanagementsystem.services.exceptions.user.UserNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -45,7 +48,8 @@ public class UserService {
         }
         log.error("Error during register user. User already exists. Data [{}]", userToRegister);
         throw new UserExistsException(
-                "User with given email: [%s] already exists".formatted(userToRegister.getEmail())
+                "User with given email: [%s] already exists".formatted(userToRegister.getEmail()),
+                HttpStatus.CONFLICT
         );
     }
 
@@ -65,7 +69,9 @@ public class UserService {
             return processEmailLogin(credentials);
         }
 
-        throw new UserNotFoundException("User with given credentials [%s] not found".formatted(credentials));
+        throw new UserNotFoundException(
+                "User with given credentials [%s] not found".formatted(credentials),
+                HttpStatus.NOT_FOUND);
     }
 
     private User processEmailLogin(Credentials credentials) {
@@ -78,7 +84,10 @@ public class UserService {
         }
 
         log.error("Gave wrong password: given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
-        throw new IncorrectPasswordException("Wrong password for email: [%s]".formatted(credentials.getEmail()));
+        throw new IncorrectPasswordException(
+                "Wrong password for email: [%s]".formatted(credentials.getEmail()),
+                HttpStatus.CONFLICT
+        );
     }
 
     private User processUsernameLogin(Credentials credentials) {
@@ -91,14 +100,20 @@ public class UserService {
         }
 
         log.error("Gave wrong password: given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
-        throw new IncorrectPasswordException("Wrong password for username: [%s]".formatted(credentials.getUsername()));
+        throw new IncorrectPasswordException(
+                "Wrong password for username: [%s]".formatted(credentials.getUsername()),
+                HttpStatus.NOT_FOUND
+        );
     }
 
     public User findByEmail(String email) {
         return userRepository.findByEmail(email).orElseThrow(
                 () -> {
                     log.error("Error finding user by email: [{}]", email);
-                    return new UserNotFoundException("User with email [%s] not found".formatted(email));
+                    return new UserNotFoundException(
+                            "User with email [%s] not found".formatted(email),
+                            HttpStatus.NOT_FOUND
+                    );
                 });
     }
 
@@ -106,11 +121,25 @@ public class UserService {
         return userRepository.findByUsername(username).orElseThrow(
                 () -> {
                     log.error("Error during finding user by username: [{}]", username);
-                    return new UserNotFoundException("User with given username [%s] not found".formatted(username));
+                    return new UserNotFoundException(
+                            "User with given username [%s] not found".formatted(username),
+                            HttpStatus.NOT_FOUND
+                    );
                 });
     }
 
     public List<User> findUsersByEmail(List<String> userEmails) {
         return userRepository.findUsersByEmailList(userEmails);
     }
+
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+                () -> new UserNotFoundException(
+                        "User with id: [%s] not found!".formatted(userId),
+                        HttpStatus.NOT_FOUND
+                )
+        );
+    }
+
+
 }

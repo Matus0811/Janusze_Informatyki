@@ -31,8 +31,8 @@ public class Task {
                 .project(project)
                 .build();
 
-        if(!taskForm.getFinishDate().isBlank()){
-            task = task.withFinishDate(OffsetDateTime.parse(taskForm.getFinishDate()));
+        if(!taskForm.getFinishDate().toString().isBlank()){
+            task = task.withFinishDate(taskForm.getFinishDate());
         }
 
         return task;

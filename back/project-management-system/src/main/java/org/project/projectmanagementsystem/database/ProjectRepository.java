@@ -48,4 +48,8 @@ public class ProjectRepository {
     public void updateProjectStatus(Project project) {
         projectJpaRepository.saveAndFlush(ProjectMapper.INSTANCE.mapFromDomainToEntity(project));
     }
+
+    public void save(Project projectToSave) {
+        projectJpaRepository.save(ProjectMapper.INSTANCE.mapFromDomainToEntity(projectToSave));
+    }
 }

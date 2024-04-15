@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.project.projectmanagementsystem.domain.User;
 
 
 public record UserDTO(
@@ -20,7 +21,7 @@ public record UserDTO(
         String name,
         @NotNull
         String surname,
-        String gender,
+        User.Gender gender,
         @NotNull
         @ValidEmail
         String email,
