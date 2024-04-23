@@ -3,6 +3,7 @@ package org.project.projectmanagementsystem.domain;
 import lombok.*;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @With
 @Value
@@ -17,7 +18,19 @@ public class Bug {
     User user;
     Bug.BugType bugType;
     OffsetDateTime reportDate;
-    Boolean fixed;
+    OffsetDateTime fixedDate;
+
+    public static Bug buildBug(BugForm bugForm,User reporter, Project projectWithBug) {
+        return Bug.builder()
+                .serialNumber(UUID.randomUUID().toString())
+                .title(bugForm.getTitle())
+                .description(bugForm.getDescription())
+                .project(projectWithBug)
+                .user(reporter)
+                .bugType(bugForm.getBugType())
+                .reportDate(OffsetDateTime.now())
+                .build();
+    }
 
     public enum BugType {
         LOGICAL, SECURITY, SYNTAX, COMMUNICATION, CALCULATION, FUNCTIONAL

@@ -1,0 +1,22 @@
+package org.project.projectmanagementsystem.api.dto;
+
+import lombok.Builder;
+import org.project.projectmanagementsystem.domain.Bug;
+import org.project.projectmanagementsystem.domain.Project;
+import org.project.projectmanagementsystem.domain.User;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+@Builder
+public record BugDTO(
+        String serialNumber,
+        String title,
+        String description,
+        UUID project,
+        String username,
+        Bug.BugType bugType,
+        OffsetDateTime reportDate,
+        OffsetDateTime fixedDate
+) {
+}

@@ -1,12 +1,8 @@
 package org.project.projectmanagementsystem.database;
 
 import lombok.RequiredArgsConstructor;
-import org.project.projectmanagementsystem.database.entities.TaskEntity;
 import org.project.projectmanagementsystem.database.entities.UserTaskEntity;
 import org.project.projectmanagementsystem.database.jpa.UserTaskJpaRepository;
-import org.project.projectmanagementsystem.domain.Project;
-import org.project.projectmanagementsystem.domain.Task;
-import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.UserTask;
 import org.project.projectmanagementsystem.domain.mapper.UserTaskMapper;
 import org.springframework.stereotype.Repository;
@@ -14,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -25,8 +22,8 @@ public class UserTaskRepository {
         return UserTaskMapper.INSTANCE.mapFromEntityToDomain(userTaskJpaRepository.save(userTaskEntity));
     }
 
-    public Optional<UserTask> findUserTask(Long taskId, Long userId) {
-        return userTaskJpaRepository.findByTaskIdAndUserId(taskId,userId)
+    public Optional<UserTask> findUserTask(String taskCode, String userEmail) {
+        return userTaskJpaRepository.findByTaskIdAndUserId(taskCode,userEmail)
                 .map(UserTaskMapper.INSTANCE::mapFromEntityToDomain);
     }
 
@@ -37,8 +34,8 @@ public class UserTaskRepository {
                 .toList();
     }
 
-    public List<UserTask> findAllUserTasksAssignedToUserInProject(Long userId, UUID projectId) {
-        return userTaskJpaRepository.findAllUserTasksAssignedToUserInProject(userId, projectId)
+    public List<UserTask> findAllUserTasksAssignedToUserInProject(String userEmail, UUID projectId) {
+        return userTaskJpaRepository.findAllUserTasksAssignedToUserInProject(userEmail, projectId)
                 .stream()
                 .map(UserTaskMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
@@ -46,5 +43,12 @@ public class UserTaskRepository {
 
     public void remove(UserTask userTask) {
         userTaskJpaRepository.delete(UserTaskMapper.INSTANCE.mapFromDomainToEntity(userTask));
+    }
+
+    public void saveAll(List<UserTask> taskUsers) {
+        userTaskJpaRepository.saveAll(taskUsers.stream()
+                .map(UserTaskMapper.INSTANCE::mapFromDomainToEntity)
+                .collect(Collectors.toList())
+        );
     }
 }

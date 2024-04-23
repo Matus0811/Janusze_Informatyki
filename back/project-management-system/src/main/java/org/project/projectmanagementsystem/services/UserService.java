@@ -4,12 +4,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.projectmanagementsystem.database.UserRepository;
 import org.project.projectmanagementsystem.domain.Credentials;
+import org.project.projectmanagementsystem.domain.Role;
 import org.project.projectmanagementsystem.domain.Task;
 import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.services.exceptions.user.IncorrectPasswordException;
 import org.project.projectmanagementsystem.services.exceptions.user.UserExistsException;
 import org.project.projectmanagementsystem.services.exceptions.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +26,9 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
+    private final UserProjectRoleService userProjectRoleService;
 
     public User getUser(Long id) {
         return User.builder()
@@ -38,20 +46,31 @@ public class UserService {
 //        );
     }
 
+
     @Transactional
     public User registerUser(User userToRegister) {
-        log.info("Start processing user registration. User data: [{}]", userToRegister);
+        log.info("Start processing user registration. User email: [{}]", userToRegister.getEmail());
 
-        if (!userExists(userToRegister.getEmail())) {
-            log.info("User [{}] registered successfully", userToRegister);
-            return userRepository.save(userToRegister);
+        if (userExists(userToRegister.getEmail())) {
+            log.error("Error during register user. User with email: [{}] exists", userToRegister.getEmail());
+            throw new UserExistsException(
+                    "User with given email: [%s] already exists".formatted(userToRegister.getEmail()),
+                    HttpStatus.CONFLICT
+            );
         }
-        log.error("Error during register user. User already exists. Data [{}]", userToRegister);
-        throw new UserExistsException(
-                "User with given email: [%s] already exists".formatted(userToRegister.getEmail()),
-                HttpStatus.CONFLICT
-        );
+        String encodedPassword = passwordEncoder.encode(userToRegister.getPassword());
+        Role registeredUserRole = roleService.findRoleByName("USER");
+
+        userToRegister = userToRegister
+                .withPassword(encodedPassword);
+
+        User savedUser = userRepository.save(userToRegister);
+        userProjectRoleService.addUserProjectRole(savedUser,null,registeredUserRole);
+
+        log.info("User [{}] registered successfully", savedUser);
+        return savedUser;
     }
+
 
     private boolean userExists(String email) {
         return userRepository.findByEmail(email).isPresent();
@@ -59,51 +78,45 @@ public class UserService {
 
     @Transactional
     public User login(Credentials credentials) {
-        if (credentials.isUsernameLogin()) {
+        if (!credentials.isEmailLogin()) {
             log.info("Process login by username [{}]", credentials);
             return processUsernameLogin(credentials);
         }
 
-        if (credentials.isEmailLogin()) {
-            log.info("Process login by email [{}]", credentials);
-            return processEmailLogin(credentials);
-        }
+        log.info("Process login by email [{}]", credentials);
+        return processEmailLogin(credentials);
 
-        throw new UserNotFoundException(
-                "User with given credentials [%s] not found".formatted(credentials),
-                HttpStatus.NOT_FOUND);
     }
 
     private User processEmailLogin(Credentials credentials) {
         log.info("Processing sign in by email, credentials: [{}]", credentials);
-        User loggedUser = findByEmail(credentials.getEmail());
+        User loggedUser = findByEmail(credentials.getLogin());
 
-        if (loggedUser.getPassword().equals(credentials.getPassword())) {
+        if (!passwordEncoder.matches(credentials.getPassword(),loggedUser.getPassword())) {
             log.info("Comparing user password, given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
             return loggedUser;
         }
 
         log.error("Gave wrong password: given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
         throw new IncorrectPasswordException(
-                "Wrong password for email: [%s]".formatted(credentials.getEmail()),
+                "Wrong password for email: [%s]".formatted(credentials.getLogin()),
                 HttpStatus.CONFLICT
         );
     }
 
     private User processUsernameLogin(Credentials credentials) {
         log.info("Processing sign in by username, credentials: [{}]", credentials);
-        User loggedUser = findByUsername(credentials.getUsername());
+        User loggedUser = findByUsername(credentials.getLogin());
 
-        if (loggedUser.getPassword().equals(credentials.getPassword())) {
-            log.info("Comparing user password, given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
-            return loggedUser;
+        if (!passwordEncoder.matches(credentials.getPassword(), loggedUser.getPassword())) {
+            log.error("Gave wrong password: given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
+            throw new IncorrectPasswordException(
+                    "Wrong password for username: [%s]".formatted(credentials.getLogin()),
+                    HttpStatus.NOT_FOUND
+            );
         }
+        return loggedUser;
 
-        log.error("Gave wrong password: given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
-        throw new IncorrectPasswordException(
-                "Wrong password for username: [%s]".formatted(credentials.getUsername()),
-                HttpStatus.NOT_FOUND
-        );
     }
 
     public User findByEmail(String email) {
@@ -140,6 +153,5 @@ public class UserService {
                 )
         );
     }
-
 
 }

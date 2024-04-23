@@ -10,23 +10,26 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.project.projectmanagementsystem.domain.User;
 
-
-public record UserDTO(
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class UserDTO{
         @NotNull
-        String username,
+        String username;
         @NotNull
         @Size(min = 8)
-        String password,
+        String password;
         @NotNull
-        String name,
+        String name;
         @NotNull
-        String surname,
-        User.Gender gender,
+        String surname;
+        User.Gender gender;
         @NotNull
         @ValidEmail
-        String email,
+        String email;
         @NotNull
         @ValidPhoneNumber
-        String phone
-) {
+        String phone;
+
 }

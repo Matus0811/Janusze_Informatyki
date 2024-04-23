@@ -1,11 +1,10 @@
 package org.project.projectmanagementsystem.services.exceptions.project;
 
+import org.project.projectmanagementsystem.services.exceptions.AppException;
 import org.springframework.http.HttpStatus;
 
-public class ProjectException extends RuntimeException{
-    private HttpStatus status;
+public class ProjectException extends AppException {
     public ProjectException(String message, HttpStatus status) {
-        super(message);
-        this.status = status;
+        super(message,status);
     }
 }

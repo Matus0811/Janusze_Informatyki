@@ -22,5 +22,6 @@ public interface UserMapper {
 
     UserData mapFromDtoToDomain(UserDataDTO userDataDTO);
     UserDataDTO mapFromDomainToDto(UserData userData);
+    UserDataDTO mapFromDomainToUserDataDto(User user);
 
 }

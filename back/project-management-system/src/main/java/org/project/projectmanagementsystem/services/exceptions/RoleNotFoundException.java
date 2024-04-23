@@ -1,7 +1,9 @@
 package org.project.projectmanagementsystem.services.exceptions;
 
-public class RoleNotFoundException extends RuntimeException {
-    public RoleNotFoundException(String message) {
-        super(message);
+import org.springframework.http.HttpStatus;
+
+public class RoleNotFoundException extends AppException {
+    public RoleNotFoundException(String message, HttpStatus status) {
+        super(message,status);
     }
 }

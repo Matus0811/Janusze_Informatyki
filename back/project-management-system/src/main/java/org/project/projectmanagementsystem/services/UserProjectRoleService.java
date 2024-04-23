@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,17 +28,31 @@ public class UserProjectRoleService {
         return userProjectRoleRepository.findUsersUnassignedToProject(projectId);
     }
 
-    public void removeUserProjectRole(Project assignProject, User user) {
-        UserProjectRole userProjectRoleToRemove = findUserProjectRole(assignProject, user);
+    public void removeUserProjectRole(UUID projectId, String userEmail) {
+        UserProjectRole userProjectRoleToRemove = findUserProjectRole(projectId, userEmail);
         userProjectRoleRepository.removeUserProjectRole(userProjectRoleToRemove);
     }
 
-    private UserProjectRole findUserProjectRole(Project assignProject, User user) {
-        return userProjectRoleRepository.findUserProjectRole(assignProject.getProjectId(), user.getUserId())
+    private UserProjectRole findUserProjectRole(UUID projectId, String userEmail) {
+        return userProjectRoleRepository.findUserProjectRole(projectId,userEmail)
                 .orElseThrow(() -> new UserProjectRoleNotFound("Couldn't find user role in project!", HttpStatus.CONFLICT));
     }
 
-    public List<UserProjectRole> findAllUserProjectsAsMember(User user) {
-        return userProjectRoleRepository.findAllUserProjectsAsMember(user.getEmail());
+    public List<UserProjectRole> findAllUserProjectsAsMember(String userEmail) {
+        return userProjectRoleRepository.findAllUserProjectsAsMember(userEmail);
+    }
+
+    public List<UserProjectRole> findAllUserProjectsAsOwner(String email){
+        return userProjectRoleRepository.findAllUserProjectsAsOwner(email);
+    }
+
+    public List<Role> findAllUserRoles(User loggedUser) {
+        return userProjectRoleRepository.findAllUserRoles(loggedUser.getUserId())
+                .stream().map(UserProjectRole::getRole)
+                .collect(Collectors.toList());
+    }
+
+    public void removeDefaultUserRole(Long userId) {
+        userProjectRoleRepository.removeDefaultUserRole(userId);
     }
 }

@@ -10,4 +10,12 @@ public class UserTask {
     User user;
     Task task;
     Boolean finished;
+
+    public static UserTask buildTaskUser(Task task, User userToAssign) {
+        return UserTask.builder()
+                .task(task)
+                .user(userToAssign)
+                .finished(false)
+                .build();
+    }
 }

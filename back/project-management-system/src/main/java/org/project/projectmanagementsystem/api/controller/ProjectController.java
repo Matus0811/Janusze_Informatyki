@@ -10,6 +10,7 @@ import org.project.projectmanagementsystem.domain.mapper.FormMapper;
 import org.project.projectmanagementsystem.domain.mapper.ProjectMapper;
 import org.project.projectmanagementsystem.domain.mapper.UserMapper;
 import org.project.projectmanagementsystem.services.ProjectService;
+import org.project.projectmanagementsystem.services.ProjectUserService;
 import org.project.projectmanagementsystem.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,17 +25,16 @@ import java.util.UUID;
 @Slf4j
 public class ProjectController {
     private final ProjectService projectService;
-    private final UserService userService;
+    private final ProjectUserService projectUserService;
 
     @PostMapping("/create")
     public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectFormDTO project) {
 
         ProjectDTO createdProject = ProjectMapper.INSTANCE
                 .mapFromDomainToDto(
-                        projectService.processProjectCreation(
-                                FormMapper.INSTANCE.mapFromDtoToDomain(project)
-                        )
+                        projectUserService.processProjectCreation(FormMapper.INSTANCE.mapFromDtoToDomain(project))
                 );
+
         return new ResponseEntity<>(createdProject, HttpStatus.CREATED);
     }
 
@@ -51,10 +51,8 @@ public class ProjectController {
     public ResponseEntity<List<ProjectDTO>> findAllOwnerProjects(@RequestParam String email) {
         log.info("Processing searching all projects for owner with email: [{}]", email);
 
-        User owner = userService.findByEmail(email);
-
         List<ProjectDTO> userProjects = projectService
-                .findNotFinishedOwnerProjects(owner)
+                .findNotFinishedOwnerProjects(email)
                 .stream()
                 .map(ProjectMapper.INSTANCE::mapFromDomainToDto)
                 .toList();
@@ -64,10 +62,8 @@ public class ProjectController {
 
     @GetMapping("/member-project-list")
     public ResponseEntity<List<ProjectDTO>> findAllUserProjectsAsMember(@RequestParam String email) {
-        User user = userService.findByEmail(email);
-
-        List<ProjectDTO> allUserProjectsAsMember = projectService
-                .findAllUserProjectsAsMember(user)
+        List<ProjectDTO> allUserProjectsAsMember = projectUserService
+                .findAllUserProjectsAsMember(email)
                 .stream()
                 .map(ProjectMapper.INSTANCE::mapFromDomainToDto)
                 .toList();
@@ -89,10 +85,7 @@ public class ProjectController {
             @PathVariable("projectId") UUID projectId,
             @RequestBody List<String> emails
     ) {
-
-        List<User> usersToAdd = userService.findUsersByEmail(emails);
-
-        projectService.addUsersToProject(projectId,usersToAdd);
+        projectUserService.addUsersToProject(projectId,emails);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
@@ -110,10 +103,7 @@ public class ProjectController {
     ) {
         log.info("Processing user deletion for project: [{}], user to delete id: [{}]", projectId, memberEmail);
 
-        User userToRemove = userService.findByEmail(memberEmail);
-
-        projectService.removeUserFromProject(projectId,userToRemove);
-
+        projectUserService.removeUserFromProject(projectId,memberEmail);
         return ResponseEntity.ok().build();
     }
 
@@ -122,7 +112,7 @@ public class ProjectController {
             @PathVariable(name = "projectId") UUID projectId
     ) {
         log.info("Searching unassigned users to project: [{}]", projectId);
-        List<UserDTO> users = projectService.getUnassignedUsers(projectId).stream()
+        List<UserDTO> users = projectUserService.getUnassignedUsers(projectId).stream()
                 .map(UserMapper.INSTANCE::mapFromDomainToDto)
                 .toList();
 

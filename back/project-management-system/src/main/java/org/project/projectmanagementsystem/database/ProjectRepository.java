@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.jpa.ProjectJpaRepository;
 import org.project.projectmanagementsystem.database.jpa.UserProjectRoleJpaRepository;
 import org.project.projectmanagementsystem.domain.Project;
-import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.mapper.ProjectMapper;
 import org.springframework.stereotype.Repository;
 
@@ -17,15 +16,14 @@ import java.util.UUID;
 public class ProjectRepository {
     private final ProjectJpaRepository projectJpaRepository;
     private final UserProjectRoleJpaRepository userProjectRoleJpaRepository;
-    private final UserProjectRoleRepository userProjectRoleRepository;
 
     public Optional<Project> findByName(String projectName) {
         return projectJpaRepository.findByName(projectName)
                 .map(ProjectMapper.INSTANCE::mapFromEntityToDomain);
     }
 
-    public List<Project> findNotFinishedUserProjects(User owner) {
-        return userProjectRoleJpaRepository.findNotFinishedUserProjects(owner.getUserId())
+    public List<Project> findNotFinishedUserProjects(String ownerEmail) {
+        return userProjectRoleJpaRepository.findNotFinishedUserProjects(ownerEmail)
                 .stream()
                 .map(ProjectMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
@@ -52,4 +50,6 @@ public class ProjectRepository {
     public void save(Project projectToSave) {
         projectJpaRepository.save(ProjectMapper.INSTANCE.mapFromDomainToEntity(projectToSave));
     }
+
+
 }

@@ -3,7 +3,7 @@ CREATE TABLE user_project_role
     user_project_role_id SERIAL PRIMARY KEY NOT NULL,
     user_id              INT                NOT NULL,
     role_id              INT                NOT NULL,
-    project_id           uuid               NOT NULL,
+    project_id           uuid,
     CONSTRAINT fk_user_project_role_user
         FOREIGN KEY (user_id)
             REFERENCES user_table (user_id),

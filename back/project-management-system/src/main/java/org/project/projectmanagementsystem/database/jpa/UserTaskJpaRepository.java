@@ -1,7 +1,6 @@
 package org.project.projectmanagementsystem.database.jpa;
 
 import org.project.projectmanagementsystem.database.entities.UserTaskEntity;
-import org.project.projectmanagementsystem.domain.UserTask;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,9 +15,9 @@ public interface UserTaskJpaRepository extends JpaRepository<UserTaskEntity, Lon
             SELECT ute FROM UserTaskEntity ute
             JOIN FETCH ute.user u
             JOIN FETCH ute.task t
-            WHERE t.taskId = :taskId AND u.userId = :userId
+            WHERE t.taskCode = :taskCode AND u.email = :email
             """)
-    Optional<UserTaskEntity> findByTaskIdAndUserId(@Param("taskId") Long taskId, @Param("userId") Long userId);
+    Optional<UserTaskEntity> findByTaskIdAndUserId(@Param("taskCode") String taskCode, @Param("email") String email);
 
     @Query("""
     SELECT ute FROM UserTaskEntity ute
@@ -36,10 +35,10 @@ public interface UserTaskJpaRepository extends JpaRepository<UserTaskEntity, Lon
     JOIN FETCH ute.user u
     JOIN FETCH ute.task t
     JOIN FETCH t.project p
-    WHERE u.userId = :userId
+    WHERE u.email = :email
     AND p.projectId = :projectId
     """)
     List<UserTaskEntity> findAllUserTasksAssignedToUserInProject(
-            @Param("userId") Long userId,
+            @Param("email") String userEmail,
             @Param("projectId") UUID projectId);
 }

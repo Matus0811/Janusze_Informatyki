@@ -20,11 +20,11 @@ public interface UserProjectRoleJpaRepository extends JpaRepository<UserProjectR
             JOIN upr.user u
             JOIN upr.project p
             JOIN upr.role r
-            WHERE upr.user.userId = :ownerId
+            WHERE upr.user.email = :email
             AND r.name = 'PROJECT_OWNER'
             AND p.projectStatus != 'FINISHED'
             """)
-    List<ProjectEntity> findNotFinishedUserProjects(@Param("ownerId") Long ownerId);
+    List<ProjectEntity> findNotFinishedUserProjects(@Param("email") String email);
 
     @Query("""
         SELECT DISTINCT upr FROM UserProjectRoleEntity upr
@@ -39,10 +39,10 @@ public interface UserProjectRoleJpaRepository extends JpaRepository<UserProjectR
     JOIN fetch upre.user u
     JOIN FETCH upre.role r
     WHERE p.projectId = :projectId
-    AND u.userId = :userId
+    AND u.email = :email
     AND r.name = 'TEAM_MEMBER'
     """)
-    Optional<UserProjectRoleEntity> findUserProjectRole(@Param("projectId") UUID projectId, @Param("userId") Long userId);
+    Optional<UserProjectRoleEntity> findUserProjectRole(@Param("projectId") UUID projectId, @Param("email") String userId);
 
     @Query("""
     SELECT upre FROM UserProjectRoleEntity upre
@@ -54,4 +54,33 @@ public interface UserProjectRoleJpaRepository extends JpaRepository<UserProjectR
     AND r.name = "TEAM_MEMBER"
     """)
     List<UserProjectRoleEntity> findAllUserProjectsAsMember(@Param("email") String email);
+
+    @Query("""
+    SELECT DISTINCT upre FROM UserProjectRoleEntity upre
+    JOIN FETCH upre.user u
+    JOIN FETCH upre.role r
+    WHERE u.userId = :userId
+    """)
+    List<UserProjectRoleEntity> findAllUserRoles(@Param("userId") Long userId);
+
+
+    @Query(
+    """
+    DELETE FROM UserProjectRoleEntity upre
+    WHERE upre.role.name = 'USER'
+    AND upre.user.userId = :userId
+    AND upre.project.projectId IS NULL
+    """)
+    @Modifying
+    void removeDefaultUserRole(Long userId);
+
+    @Query(
+    """
+    SELECT upre FROM UserProjectRoleEntity upre
+    JOIN FETCH upre.project p
+    JOIN FETCH upre.user u
+    JOIN FETCH upre.role r
+    WHERE u.email = :email AND r.name = 'PROJECT_OWNER'
+    """)
+    List<UserProjectRoleEntity> findAllUserProjectsAsOwner(@Param("email") String ownerEmail);
 }

@@ -3,20 +3,22 @@ package org.project.projectmanagementsystem.domain;
 import lombok.Builder;
 import lombok.Value;
 import lombok.With;
+import org.project.projectmanagementsystem.api.dto.validators.EmailValidator;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @With
 @Value
 @Builder
 public class Credentials {
-    String username;
+    String login;
     String password;
-    String email;
-
-    public boolean isUsernameLogin(){
-        return !this.username.isBlank() && !password.isBlank() && email.isBlank();
-    }
 
     public boolean isEmailLogin(){
-        return this.username.isBlank() && !password.isBlank() && !email.isBlank();
+        Pattern pattern = Pattern.compile(EmailValidator.EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(login);
+
+        return matcher.matches();
     }
 }

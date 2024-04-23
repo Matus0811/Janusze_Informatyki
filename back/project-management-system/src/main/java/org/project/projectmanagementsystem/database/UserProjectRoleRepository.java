@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -34,8 +35,8 @@ public class UserProjectRoleRepository {
         userProjectRoleJpaRepository.delete(UserProjectRoleMapper.INSTANCE.mapFromDomainToEntity(userProjectRole));
     }
 
-    public Optional<UserProjectRole> findUserProjectRole(UUID projectId, Long userId) {
-        return userProjectRoleJpaRepository.findUserProjectRole(projectId, userId)
+    public Optional<UserProjectRole> findUserProjectRole(UUID projectId, String userEmail) {
+        return userProjectRoleJpaRepository.findUserProjectRole(projectId, userEmail)
                 .map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain);
     }
 
@@ -44,5 +45,21 @@ public class UserProjectRoleRepository {
                 .stream()
                 .map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
+    }
+
+    public List<UserProjectRole> findAllUserRoles(Long userId) {
+        return userProjectRoleJpaRepository.findAllUserRoles(userId)
+                .stream().map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain)
+                .collect(Collectors.toList());
+    }
+
+    public void removeDefaultUserRole(Long userId) {
+        userProjectRoleJpaRepository.removeDefaultUserRole(userId);
+    }
+
+    public List<UserProjectRole> findAllUserProjectsAsOwner(String email) {
+        return userProjectRoleJpaRepository.findAllUserProjectsAsOwner(email)
+                .stream().map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain)
+                .collect(Collectors.toList());
     }
 }

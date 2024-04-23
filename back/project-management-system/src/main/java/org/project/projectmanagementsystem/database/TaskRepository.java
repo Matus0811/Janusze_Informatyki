@@ -34,4 +34,8 @@ public class TaskRepository {
                 .map(TaskMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
     }
+
+    public void remove(Task taskToRemove) {
+        taskJpaRepository.delete(TaskMapper.INSTANCE.mapFromDomainToEntity(taskToRemove));
+    }
 }

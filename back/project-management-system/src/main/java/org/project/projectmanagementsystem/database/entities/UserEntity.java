@@ -48,16 +48,16 @@ public class UserEntity {
     @NotNull
     private String phone;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private Set<UserProjectRoleEntity> projectRoleEntities;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private Set<CommentEntity> commentEntities;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private Set<UserTaskEntity> userTaskEntities;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private Set<BugEntity> reportedBugs;
 }
 

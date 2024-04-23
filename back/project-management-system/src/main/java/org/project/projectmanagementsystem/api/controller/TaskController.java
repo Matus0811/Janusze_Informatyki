@@ -3,12 +3,10 @@ package org.project.projectmanagementsystem.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.api.dto.TaskDTO;
 import org.project.projectmanagementsystem.api.dto.TaskFormDTO;
-import org.project.projectmanagementsystem.domain.Project;
-import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.mapper.TaskMapper;
-import org.project.projectmanagementsystem.services.ProjectService;
+import org.project.projectmanagementsystem.services.ProjectTaskService;
 import org.project.projectmanagementsystem.services.TaskService;
-import org.project.projectmanagementsystem.services.UserService;
+import org.project.projectmanagementsystem.services.TaskUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,32 +19,27 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TaskController {
     private final TaskService taskService;
-    private final ProjectService projectService;
-    private final UserService userService;
+    private final ProjectTaskService projectTaskService;
+    private final TaskUserService taskUserService;
+
 
     @PostMapping("/create")
     public ResponseEntity<TaskDTO> createTask(@RequestBody TaskFormDTO taskFormDTO) {
-        Project project = projectService.findById(taskFormDTO.projectId());
-
         TaskDTO taskDTO = TaskMapper.INSTANCE.mapFromDomainToDto(
-                taskService.processTaskCreation(
-                        TaskMapper.INSTANCE.mapFromDtoToDomain(taskFormDTO),
-                        project
+                projectTaskService.processProjectTaskCreation(
+                        TaskMapper.INSTANCE.mapFromDtoToDomain(taskFormDTO)
                 )
         );
-
-        projectService.updateProjectStatus(project, Project.ProjectStatus.IN_PROGRESS);
-
         return new ResponseEntity<>(taskDTO, HttpStatus.CREATED);
     }
 
-    @PatchMapping("/{taskCode}/add-user")
+    @PatchMapping("/{taskCode}/add-users")
     public ResponseEntity<?> addUsersToTask(
             @PathVariable("taskCode") String taskCode,
             @RequestBody List<String> userEmails) {
-        List<User> usersToAssignToTask = userService.findUsersByEmail(userEmails);
 
-        taskService.addUsersToTask(taskCode, usersToAssignToTask);
+        taskUserService.addUsersToTask(taskCode,userEmails);
+
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -55,9 +48,7 @@ public class TaskController {
             @PathVariable("taskCode") String taskCode,
             @RequestParam("email") String email
     ) {
-        User user = userService.findByEmail(email);
-        taskService.finishTaskByMember(taskCode, user);
-
+        taskUserService.finishTaskByMember(taskCode,email);
         return ResponseEntity.ok().build();
     }
 
@@ -66,10 +57,15 @@ public class TaskController {
             @PathVariable("taskCode") String taskCode,
             @RequestParam(name = "project") UUID projectId
     ) {
-        Project assignedProject = projectService.findById(projectId);
-
-        taskService.finishTask(taskCode, assignedProject);
+        taskUserService.finishTaskByOwner(taskCode,projectId);
 
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    @DeleteMapping("/{taskCode}/delete")
+    public ResponseEntity<?> deleteTask(@PathVariable("taskCode") String taskCode) {
+        taskService.deleteTask(taskCode);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

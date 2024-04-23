@@ -3,7 +3,9 @@ package org.project.projectmanagementsystem.domain;
 import lombok.*;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @With
 @Value
@@ -24,18 +26,32 @@ public class Task {
 
     public static Task buildTaskFromTaskForm(TaskForm taskForm, Project project){
         Task task = Task.builder()
+                .taskCode(UUID.randomUUID().toString())
+                .name(taskForm.getName())
                 .description(taskForm.getDescription())
-                .status(TaskStatus.valueOf(taskForm.getStatus()))
-                .priority(Priority.valueOf(taskForm.getPriority()))
+                .status(taskForm.getStatus())
+                .priority(taskForm.getPriority())
                 .startDate(OffsetDateTime.now())
                 .project(project)
                 .build();
 
-        if(!taskForm.getFinishDate().toString().isBlank()){
+        if(!Objects.isNull(taskForm.getFinishDate()) && !taskForm.getFinishDate().toString().isBlank()){
             task = task.withFinishDate(taskForm.getFinishDate());
         }
 
         return task;
+    }
+
+    public static Task buildBugTask(Bug bug) {
+        return Task.builder()
+                .taskCode(UUID.randomUUID().toString())
+                .name("BUG id: %s".formatted(bug.getSerialNumber()))
+                .description("Błąd do naprawy dla projektu: %s".formatted(bug.getProject().getName()))
+                .status(TaskStatus.BUG)
+                .priority(Priority.HIGH)
+                .startDate(OffsetDateTime.now())
+                .project(bug.getProject())
+                .build();
     }
 
     public enum TaskStatus{

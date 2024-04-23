@@ -11,10 +11,10 @@ import java.util.UUID;
 @Value
 @Builder
 public class TaskForm {
+    String name;
     String description;
-    String status;
-    String priority;
-    OffsetDateTime startDate;
+    Task.TaskStatus status;
+    Task.Priority priority;
     OffsetDateTime finishDate;
     UUID projectId;
 }
