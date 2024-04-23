@@ -26,9 +26,10 @@ public interface UserProjectRoleJpaRepository extends JpaRepository<UserProjectR
             """)
     List<ProjectEntity> findNotFinishedUserProjects(@Param("email") String email);
 
+    // TODO do poprawy
     @Query("""
-        SELECT DISTINCT upr FROM UserProjectRoleEntity upr
-        JOIN upr.user u
+        SELECT u FROM UserProjectRoleEntity upr
+        RIGHT JOIN upr.user u
         JOIN upr.project p
         WHERE p.projectId != :projectId
     """)
@@ -49,9 +50,9 @@ public interface UserProjectRoleJpaRepository extends JpaRepository<UserProjectR
     JOIN FETCH upre.project p
     JOIN FETCH upre.user u
     JOIN FETCH upre.role r
-    WHERE p.projectStatus != "FINISHED"
+    WHERE p.projectStatus != 'FINISHED'
     AND u.email = :email
-    AND r.name = "TEAM_MEMBER"
+    AND r.name = 'TEAM_MEMBER'
     """)
     List<UserProjectRoleEntity> findAllUserProjectsAsMember(@Param("email") String email);
 

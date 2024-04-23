@@ -63,6 +63,9 @@ public class TaskUserService {
             throw new TaskException("Task is finished, cannot add user", HttpStatus.CONFLICT);
         }
         //TODO aktualizacja statusu zadania
+        task = task.withStatus(Task.TaskStatus.IN_PROGRESS);
+        taskService.save(task);
+
         List<UserTask> taskUsers = buildTaskUserList(task, usersToAssign);
         userTaskRepository.saveAll(taskUsers);
     }

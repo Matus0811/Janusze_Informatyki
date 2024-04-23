@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -35,6 +36,12 @@ public class UserRepository{
 
     public List<User> findUsersByEmailList(List<String> userEmails) {
         return userJpaRepository.findAllByEmail(userEmails).stream()
+                .map(UserMapper.INSTANCE::mapFromEntityToDomain)
+                .toList();
+    }
+
+    public List<User> findUsersUnassignedToProject(UUID projectId) {
+        return userJpaRepository.findUsersUnassignedToProject(projectId).stream()
                 .map(UserMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
     }
