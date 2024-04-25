@@ -48,7 +48,7 @@ public class Task {
                 .name("BUG id: %s".formatted(bug.getSerialNumber()))
                 .description("Błąd do naprawy dla projektu: %s".formatted(bug.getProject().getName()))
                 .status(TaskStatus.BUG)
-                .priority(Priority.HIGH)
+                .priority(Priority.MEDIUM)
                 .startDate(OffsetDateTime.now())
                 .project(bug.getProject())
                 .build();

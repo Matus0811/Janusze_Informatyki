@@ -1,0 +1,79 @@
+<div class="form-block">
+  <div class="form-header">
+    <h1 class="form-title">REJESTRACJA</h1>
+    <div class="line"></div>
+  </div>
+  <div class="form-content">
+    <form [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+      <div class="input-container">
+        <label class="form-label fw-bold" for="username">Nazwa użytkownika</label>
+        <input class="input-form-element" formControlName="username" type="text" id="username"
+               placeholder="Podaj nazwę użytkownika">
+        <div class="alert alert-danger"
+             *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+          Nazwa użytkownika jest wymagana
+        </div>
+      </div>
+
+      <div class="input-container">
+        <label class="form-label fw-bold" for="name">Imię</label>
+        <input class="input-form-element" formControlName="name" type="text" id="name"
+               placeholder="Podaj imię">
+        <div class="alert alert-danger" *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+          Imie jest wymagane
+        </div>
+      </div>
+
+      <div class="input-container">
+        <label class="form-label fw-bold" for="surname">Nazwisko</label>
+        <input class="input-form-element" formControlName="surname" type="text" id="surname"
+               placeholder="Podaj nazwisko">
+        <div class="alert alert-danger"
+             *ngIf="registerForm.get('surname')?.invalid && registerForm.get('surname')?.touched">
+          Nazwisko jest wymagane
+        </div>
+      </div>
+
+      <div class="input-container">
+        <label class="form-label fw-bold" for="password">Hasło</label>
+        <input class="input-form-element" formControlName="password" type="password" id="password"
+               placeholder="Podaj hasło">
+        <div class="alert alert-danger"
+             *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          Hasło musi mieć co najmniej 8 znaków
+        </div>
+      </div>
+
+      <div class="input-container">
+        <label class="form-label fw-bold" for="gender">Płeć</label>
+        <select class="form-gender-select" formControlName="gender" id="gender">
+          <option value="MALE">Mężczyzna</option>
+          <option value="FEMALE">Kobieta</option>
+          <option value="UNDEFINED_GENDER" selected>-</option>
+        </select>
+      </div>
+
+      <div class="input-container">
+        <label class="form-label fw-bold" for="email">Email</label>
+        <input class="input-form-element" formControlName="email" type="text" id="email"
+               placeholder="Podaj email">
+        <div class="alert alert-danger"
+             *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          Podaj prawidłowy email!
+        </div>
+      </div>
+
+      <div class="input-container">
+        <label class="form-label fw-bold" for="phone">Telefon</label>
+        <input class="input-form-element" formControlName="phone" type="text" id="phone"
+               placeholder="+12 123 456 789">
+        <div class="alert alert-danger" *ngIf="registerForm.get('phone')?.invalid && registerForm.get('phone')?.touched">
+          Numer telefonu musi być wzoru: +nn nnn nnn
+        </div>
+      </div>
+      <div class="button-container">
+        <button class="login-button" type="submit">ZAREJESTRUJ SIĘ</button>
+      </div>
+    </form>
+  </div>
+</div>

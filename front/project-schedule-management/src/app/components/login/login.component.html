@@ -1,0 +1,25 @@
+<div class="form-block">
+  <div class="form-header">
+    <h1 class="form-title">LOGOWANIE</h1>
+    <div class="line"></div>
+  </div>
+  <div class="form-content">
+    <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+      <div class="input-container">
+        <label class="form-label fw-bold" for="login">Login</label>
+        <input class="input-form-element" formControlName="login" type="text" id="login"
+               placeholder="Podaj email lub nazwę użytkownika">
+      </div>
+
+      <div class="input-container">
+        <label class="form-label fw-bold" for="password">Hasło</label>
+        <input class="input-form-element" formControlName="password" type="password" id="password"
+               placeholder="Podaj hasło">
+      </div>
+      <div class="button-container">
+        <button class="login-button" type="submit">ZALOGUJ SIĘ</button>
+      </div>
+    </form>
+  </div>
+</div>
+

@@ -1,0 +1,30 @@
+<div class="form-container">
+  <div class="center-container">
+    <div class="center-content-container">
+      <div class="buttons-nav">
+        <button [ngClass]="loginPage ? 'auth-button active-auth-button' : 'auth-button'" (click)="activeLoginPage()">
+          Logowanie
+        </button>
+        <button [ngClass]="!loginPage ? 'auth-button active-auth-button' : 'auth-button'" (click)="activeRegisterPage()">
+          Rejestracja
+        </button>
+      </div>
+      <div *ngIf="loginPage" class="login-content">
+        <app-login (loginData)="handleLogin($event)"></app-login>
+      </div>
+
+      <div *ngIf="!loginPage" class="login-register">
+        <app-register (registerFormData)="handleRegister($event)"></app-register>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="loggedUser">
+    <h1>Logged user</h1>
+    <p>{{loggedUser.email}}</p>
+    <p>{{loggedUser.username}}</p>
+    <p>{{loggedUser.name}}</p>
+    <p>{{loggedUser.surname}}</p>
+    <p>{{loggedUser.phone}}</p>
+  </div>
+</div>
