@@ -1,0 +1,9 @@
+.project-card{
+  position: relative;
+  border: 1px black solid;
+  border-radius: 10px;
+  max-width: 400px;
+  height: 460px;
+  margin: 30px;
+  transition: scale 0.2s;
+}

@@ -5,6 +5,7 @@ import org.project.projectmanagementsystem.database.entities.TaskEntity;
 import org.project.projectmanagementsystem.database.jpa.TaskJpaRepository;
 import org.project.projectmanagementsystem.domain.Task;
 import org.project.projectmanagementsystem.domain.mapper.TaskMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.EnumSet;
@@ -29,8 +30,8 @@ public class TaskRepository {
         taskJpaRepository.save(TaskMapper.INSTANCE.mapFromDomainToEntity(task));
     }
 
-    public List<Task> findProjectTasksWithStatus(UUID projectId, EnumSet<Task.TaskStatus> taskStatuses) {
-        return taskJpaRepository.findProjectTasksWithStatus(projectId,taskStatuses).stream()
+    public List<Task> findProjectTasksWithStatus(UUID projectId, EnumSet<Task.TaskStatus> taskStatuses, Pageable pageable) {
+        return taskJpaRepository.findProjectTasksWithStatus(projectId,taskStatuses,pageable).stream()
                 .map(TaskMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
     }

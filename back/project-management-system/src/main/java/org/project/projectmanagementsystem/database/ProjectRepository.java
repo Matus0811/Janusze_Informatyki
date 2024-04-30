@@ -5,6 +5,10 @@ import org.project.projectmanagementsystem.database.jpa.ProjectJpaRepository;
 import org.project.projectmanagementsystem.database.jpa.UserProjectRoleJpaRepository;
 import org.project.projectmanagementsystem.domain.Project;
 import org.project.projectmanagementsystem.domain.mapper.ProjectMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,8 +26,14 @@ public class ProjectRepository {
                 .map(ProjectMapper.INSTANCE::mapFromEntityToDomain);
     }
 
+    public List<Project> findNotFinishedUserProjectsPaged(String ownerEmail, Pageable pageable) {;
+        return userProjectRoleJpaRepository.findNotFinishedUserProjects(ownerEmail,pageable)
+                .stream()
+                .map(ProjectMapper.INSTANCE::mapFromEntityToDomain)
+                .toList();
+    }
     public List<Project> findNotFinishedUserProjects(String ownerEmail) {
-        return userProjectRoleJpaRepository.findNotFinishedUserProjects(ownerEmail)
+        return userProjectRoleJpaRepository.findNotFinishedUserProjects(ownerEmail,Pageable.unpaged())
                 .stream()
                 .map(ProjectMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
@@ -40,7 +50,7 @@ public class ProjectRepository {
     }
 
     public void remove(Project projectToRemove) {
-        projectJpaRepository.delete(ProjectMapper.INSTANCE.mapFromDomainToEntity(projectToRemove));
+        projectJpaRepository.deleteById(projectToRemove.getProjectId());
     }
 
     public void updateProjectStatus(Project project) {

@@ -6,6 +6,9 @@ import org.project.projectmanagementsystem.domain.Bug;
 import org.project.projectmanagementsystem.domain.mapper.BugMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 @Repository
 @RequiredArgsConstructor
 public class BugRepository {
@@ -15,5 +18,10 @@ public class BugRepository {
         return BugMapper.INSTANCE.mapFromEntityToDomain(
                 bugJpaRepository.save(BugMapper.INSTANCE.mapFromDomainToEntity(bugToCreate))
         );
+    }
+
+    public Optional<Bug> findBugWithProjectId(UUID projectId) {
+        return bugJpaRepository.findBugWithProjectId(projectId)
+                .map(BugMapper.INSTANCE::mapFromEntityToDomain);
     }
 }

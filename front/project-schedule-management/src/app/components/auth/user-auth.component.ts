@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {User} from "../../domain/user";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-user-auth',
@@ -10,13 +11,10 @@ import {User} from "../../domain/user";
 export class UserAuthComponent {
   loginPage = true;
   loggedUser!: User | null;
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private router: Router) {
   }
   handleLogin(userCredentials: any) {
     this.userService.processUserLogin(userCredentials);
-
-    //TODO dodać ifa który sprawdza czy w local storage istnieje token, jezeli tak to przekierowanie na strone glowna
-    this.loggedUser = this.userService.getLoggedUser();
   }
 
   handleRegister(userToRegister: any){

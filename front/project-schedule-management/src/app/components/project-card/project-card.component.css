@@ -1,0 +1,30 @@
+.project-name-content{
+  padding: 20px;
+  background-color: #6C8DFF;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  color: #212121;
+}
+
+.project-details{
+  margin-top: 20px;
+  padding: 20px;
+  color: #333;
+  text-align: justify;
+}
+
+.project-button-container{
+  margin-top: 30px;
+  position: absolute;
+  padding: 20px;
+  text-align: right;
+  width: 100%;
+  bottom: 0;
+}
+
+.project-button{
+  text-decoration: none;
+}
+.project-button:hover{
+  cursor: pointer;
+}

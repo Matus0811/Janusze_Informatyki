@@ -2,15 +2,12 @@ import { Injectable } from '@angular/core';
 import axios from "axios";
 import {jwtDecode} from "jwt-decode";
 import {User} from "../domain/user";
+
 @Injectable({
   providedIn: 'root'
 })
-export class AxiosService {
-
-  constructor() {
-    axios.defaults.url="http://localhost:8080/app";
-    axios.defaults.headers.post["Content-Type"] = "application/json";
-  }
+export class TokenService {
+  authenticated = false;
 
   getAuthToken(): string | null{
     return window.localStorage.getItem('auth_token');
@@ -19,7 +16,7 @@ export class AxiosService {
   setAuthToken(token: string | null){
     if(token !== null){
       window.localStorage.setItem("auth_token",token);
-
+      this.authenticated = true;
       let decodedToken : any = jwtDecode(token);
 
       let loggedUser:User = {
@@ -36,18 +33,9 @@ export class AxiosService {
     }
   }
 
-  request(method:string,url:string,data: any): Promise<any>{
-    let headers={};
-
-    if(this.getAuthToken() !== null){
-      headers = {"Authorization":"Bearer " + this.getAuthToken()};
-    }
-
-    return axios({
-      method : method,
-      url: url,
-      data: data,
-      headers:headers
-    });
+  removeAuthToken() {
+    localStorage.clear();
+    this.authenticated = false;
+    return localStorage.length == 0;
   }
 }

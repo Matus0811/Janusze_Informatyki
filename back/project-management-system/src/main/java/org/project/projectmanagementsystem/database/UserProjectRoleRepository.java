@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.jpa.UserProjectRoleJpaRepository;
 import org.project.projectmanagementsystem.domain.UserProjectRole;
 import org.project.projectmanagementsystem.domain.mapper.UserProjectRoleMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -24,8 +25,8 @@ public class UserProjectRoleRepository {
         );
     }
 
-    public List<UserProjectRole> findUsersUnassignedToProject(UUID projectId) {
-        return userProjectRoleJpaRepository.findUsersUnassignedToProject(projectId)
+    public List<UserProjectRole> findUnassignedUsersToProjectWhereUsernameStartsWith(UUID projectId, String word) {
+        return userProjectRoleJpaRepository.findUsersUnassignedToProject(projectId,word)
                 .stream()
                 .map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
@@ -40,8 +41,8 @@ public class UserProjectRoleRepository {
                 .map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain);
     }
 
-    public List<UserProjectRole> findAllUserProjectsAsMember(String email) {
-        return userProjectRoleJpaRepository.findAllUserProjectsAsMember(email)
+    public List<UserProjectRole> findAllUserProjectsAsMember(String email, Pageable pageable) {
+        return userProjectRoleJpaRepository.findAllUserProjectsAsMember(email,pageable)
                 .stream()
                 .map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();

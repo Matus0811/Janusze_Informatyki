@@ -1,39 +1,63 @@
 import {Injectable} from '@angular/core';
-import {AxiosService} from "./axios.service";
+import {TokenService} from "./token.service";
 import {environment} from "../../environment/environment";
 import {User} from "../domain/user";
 import {jwtDecode} from "jwt-decode";
 import {response} from "express";
+import {Router} from "@angular/router";
+import instance from "../http-axios";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   userEndpoint = "/users";
+  isAuthenticated = false;
 
-  constructor(private axiosService: AxiosService) {
+  constructor(private tokenService: TokenService, private router: Router) {
   }
 
   processUserLogin(userToLogin: any) {
-    this.axiosService.request("POST", `${environment.url}/users/login`, userToLogin)
+    instance.request({
+      method: "POST",
+      url: `${this.userEndpoint}/login`,
+      data: userToLogin
+    })
       .then(r => {
-        console.log(r)
-        this.axiosService.setAuthToken(r.data.token);
+        this.tokenService.setAuthToken(r.data.token);
+        this.isAuthenticated = true;
+        instance.defaults.headers.common['Authorization'] = `Bearer ${this.tokenService.getAuthToken()}`;
+
+        this.router.navigate(["/projects"]);
       })
       .catch(e => console.log(e));
   }
 
-  getLoggedUser(): User | null {
-    let token = this.axiosService.getAuthToken();
 
-    if(token !== null){
-
-    }
-    return null;
+  processUserRegister(userToRegister: any) {
+    instance.request({
+      method: "POST",
+      url: `/users/register`,
+      data: userToRegister
+    }).then(response => console.log("USER REGISTERED SUCCESFULLY"))
+      .catch(reason => console.log(reason));
   }
 
-  processUserRegister(userToRegister: any){
-    this.axiosService.request("POST",`${environment.url}/users/register`,userToRegister)
-      .then(response => console.log(response));
+  logoutUser() {
+    if (this.tokenService.removeAuthToken()) {
+      this.router.navigate(['/auth/login'])
+      delete instance.defaults.headers.common['Authorization'];
+    }
+  }
+
+  getLoggedUserData(): User {
+    let data = localStorage.getItem("logged_user");
+    let user: User = {};
+    if (data) {
+      user = JSON.parse(data);
+    }
+    console.log(user);
+
+    return user;
   }
 }

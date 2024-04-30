@@ -1,7 +1,5 @@
 package org.project.projectmanagementsystem.domain;
 
-import org.project.projectmanagementsystem.database.entities.TaskEntity;
-import org.project.projectmanagementsystem.database.entities.UserEntity;
 import lombok.*;
 
 import java.time.OffsetDateTime;
@@ -13,6 +11,15 @@ public class Comment {
     Long commentId;
     String text;
     OffsetDateTime date;
-    UserEntity user;
-    TaskEntity task;
+    User user;
+    Task task;
+
+    public static Comment buildComment(String commentText, Task task, User user) {
+        return Comment.builder()
+                .text(commentText)
+                .date(OffsetDateTime.now())
+                .user(user)
+                .task(task)
+                .build();
+    }
 }

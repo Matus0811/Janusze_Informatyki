@@ -11,6 +11,7 @@ import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.services.exceptions.project.ActiveProjectLimitException;
 import org.project.projectmanagementsystem.services.exceptions.project.ProjectDeleteException;
 import org.project.projectmanagementsystem.services.exceptions.project.ProjectNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class ProjectService {
 
 
     public Project createProject(Project projectToCreate, User owner) {
-        List<Project> activeUserProjects = findNotFinishedOwnerProjects(owner.getEmail());
+        List<Project> activeUserProjects = findNotFinishedOwnerProjects(owner.getEmail(), Pageable.unpaged());
 
         if (activeUserProjects.size() == 10) {
             log.error("Error during creating project, reached maximum number of active projects [{}]", activeUserProjects);
@@ -44,9 +45,10 @@ public class ProjectService {
         return savedProject;
     }
 
-    public List<Project> findNotFinishedOwnerProjects(String ownerEmail) {
-        return projectRepository.findNotFinishedUserProjects(ownerEmail);
+    public List<Project> findNotFinishedOwnerProjects(String ownerEmail, Pageable pageable) {
+        return projectRepository.findNotFinishedUserProjectsPaged(ownerEmail,pageable);
     }
+
 
     public boolean projectExists(String projectName) {
         return projectRepository.findByName(projectName).isPresent();
@@ -79,9 +81,10 @@ public class ProjectService {
     public void processProjectFinishing(UUID projectId) {
         Project finishedProject = findById(projectId);
 
-        int numberOfUnfinishedTasks = taskService.findProjectTasksWithStatus(
+        int numberOfUnfinishedTasks = taskService.findPagedProjectTasksWithStatus(
                 finishedProject.getProjectId(),
-                EnumSet.of(Task.TaskStatus.BUG,Task.TaskStatus.IN_PROGRESS, Task.TaskStatus.TO_DO)
+                EnumSet.of(Task.TaskStatus.BUG,Task.TaskStatus.IN_PROGRESS, Task.TaskStatus.TO_DO),
+                Pageable.unpaged()
         ).size();
 
         if(numberOfUnfinishedTasks > 0 ){

@@ -1,5 +1,6 @@
 package org.project.projectmanagementsystem.database.entities;
 
+import org.hibernate.annotations.Fetch;
 import org.project.projectmanagementsystem.domain.Project;
 import jakarta.persistence.*;
 import lombok.*;

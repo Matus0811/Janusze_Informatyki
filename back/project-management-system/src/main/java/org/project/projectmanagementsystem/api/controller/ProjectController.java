@@ -5,13 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.project.projectmanagementsystem.api.dto.ProjectDTO;
 import org.project.projectmanagementsystem.api.dto.ProjectFormDTO;
 import org.project.projectmanagementsystem.api.dto.UserDTO;
-import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.mapper.FormMapper;
 import org.project.projectmanagementsystem.domain.mapper.ProjectMapper;
 import org.project.projectmanagementsystem.domain.mapper.UserMapper;
 import org.project.projectmanagementsystem.services.ProjectService;
 import org.project.projectmanagementsystem.services.ProjectUserService;
-import org.project.projectmanagementsystem.services.UserService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,11 +49,14 @@ public class ProjectController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProjectDTO>> findAllOwnerProjects(@RequestParam String email) {
+    public ResponseEntity<List<ProjectDTO>> findAllOwnerProjects(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "email") String email) {
         log.info("Processing searching all projects for owner with email: [{}]", email);
 
+        Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("project.startDate").descending());
         List<ProjectDTO> userProjects = projectService
-                .findNotFinishedOwnerProjects(email)
+                .findNotFinishedOwnerProjects(email,pageable)
                 .stream()
                 .map(ProjectMapper.INSTANCE::mapFromDomainToDto)
                 .toList();
@@ -61,9 +65,12 @@ public class ProjectController {
     }
 
     @GetMapping("/member-project-list")
-    public ResponseEntity<List<ProjectDTO>> findAllUserProjectsAsMember(@RequestParam String email) {
+    public ResponseEntity<List<ProjectDTO>> findPagedMemberUserProjects(
+            @RequestParam(name="page") Integer page,
+            @RequestParam(name="email") String email) {
+        Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("project.startDate").descending());
         List<ProjectDTO> allUserProjectsAsMember = projectUserService
-                .findAllUserProjectsAsMember(email)
+                .findAllUserProjectsAsMember(email,pageable)
                 .stream()
                 .map(ProjectMapper.INSTANCE::mapFromDomainToDto)
                 .toList();
@@ -109,10 +116,11 @@ public class ProjectController {
 
     @GetMapping("/{projectId}/unassigned-users")
     public ResponseEntity<List<UserDTO>> getUnassignedUsers(
-            @PathVariable(name = "projectId") UUID projectId
+            @PathVariable(name = "projectId") UUID projectId,
+            @RequestParam(name="username") String username
     ) {
         log.info("Searching unassigned users to project: [{}]", projectId);
-        List<UserDTO> users = projectUserService.getUnassignedUsers(projectId).stream()
+        List<UserDTO> users = projectUserService.getUnassignedUsers(projectId,username).stream()
                 .map(UserMapper.INSTANCE::mapFromDomainToDto)
                 .toList();
 

@@ -22,7 +22,7 @@ public class TaskUserService {
     private final UserTaskRepository userTaskRepository;
     private final TaskService taskService;
     private final UserService userService;
-
+    private final BugService bugService;
     public UserTask findUserTask(String taskCode, String userEmail) {
         return userTaskRepository.findUserTask(taskCode, userEmail)
                 .orElseThrow(() -> new UserTaskNotFoundException("Couldn't find task: [%s] for user: [%s]".formatted(
@@ -62,9 +62,11 @@ public class TaskUserService {
         if (task.getStatus() == Task.TaskStatus.FINISHED) {
             throw new TaskException("Task is finished, cannot add user", HttpStatus.CONFLICT);
         }
-        //TODO aktualizacja statusu zadania
-        task = task.withStatus(Task.TaskStatus.IN_PROGRESS);
-        taskService.save(task);
+
+        if(task.getStatus() != Task.TaskStatus.BUG){
+            task = task.withStatus(Task.TaskStatus.IN_PROGRESS);
+            taskService.save(task);
+        }
 
         List<UserTask> taskUsers = buildTaskUserList(task, usersToAssign);
         userTaskRepository.saveAll(taskUsers);
@@ -84,6 +86,10 @@ public class TaskUserService {
 
         if (numberOfUsersWorkingOnTask > 0) {
             throw new TaskException("There are still [%s] users who are working on given task".formatted(numberOfUsersWorkingOnTask), HttpStatus.CONFLICT);
+        }
+
+        if(Task.TaskStatus.BUG == task.getStatus()){
+            bugService.finishBugForProject(task.getProject());
         }
 
         task = task.withStatus(Task.TaskStatus.FINISHED).withFinishDate(OffsetDateTime.now());

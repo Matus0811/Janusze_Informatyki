@@ -1,0 +1,14 @@
+body{
+  background-color: rgb(248,249,250);
+}
+
+.project-container{
+  width: 80%;
+  margin-top: 100px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 30px;
+  -webkit-box-shadow: 0px 0px 18px -6px rgba(66, 68, 90, 1);
+  -moz-box-shadow: 0px 0px 18px -6px rgba(66, 68, 90, 1);
+  box-shadow: 0px 0px 18px -6px rgba(66, 68, 90, 1);
+}

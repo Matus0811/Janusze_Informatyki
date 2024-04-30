@@ -1,15 +1,14 @@
 package org.project.projectmanagementsystem.services;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.TaskRepository;
 import org.project.projectmanagementsystem.domain.*;
 import org.project.projectmanagementsystem.services.exceptions.task.TaskException;
 import org.project.projectmanagementsystem.services.exceptions.task.TaskNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.OffsetDateTime;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
@@ -37,17 +36,26 @@ public class TaskService {
     }
 
 
-    public List<Task> findProjectTasksWithStatus(UUID projectId, EnumSet<Task.TaskStatus> taskStatuses) {
-        return taskRepository.findProjectTasksWithStatus(projectId, taskStatuses);
+    public List<Task> findPagedProjectTasksWithStatus(
+            UUID projectId,
+            EnumSet<Task.TaskStatus> taskStatuses,
+            Pageable pageable
+    ) {
+        return taskRepository.findProjectTasksWithStatus(projectId, taskStatuses,pageable);
     }
 
     public void deleteTask(String taskCode) {
         Task taskToDelete = findByTaskCode(taskCode);
-        //TODO mozna usunąć tylko te, które są UNFINISHED
+
+        if(Task.TaskStatus.FINISHED == taskToDelete.getStatus()){
+            throw new TaskException("Cannot remove task which is already finished!",HttpStatus.NOT_ACCEPTABLE);
+        }
         taskRepository.remove(taskToDelete);
     }
 
     public void save(Task task) {
         taskRepository.save(task);
     }
+
+
 }

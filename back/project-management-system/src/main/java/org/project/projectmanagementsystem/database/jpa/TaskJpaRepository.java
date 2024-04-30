@@ -2,6 +2,7 @@ package org.project.projectmanagementsystem.database.jpa;
 
 import org.project.projectmanagementsystem.database.entities.TaskEntity;
 import org.project.projectmanagementsystem.domain.Task;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,5 +23,6 @@ public interface TaskJpaRepository extends JpaRepository<TaskEntity,Long> {
             """)
     List<TaskEntity> findProjectTasksWithStatus(
             @Param("projectId")UUID projectId,
-            @Param("statuses") EnumSet<Task.TaskStatus> taskStatuses);
+            @Param("statuses") EnumSet<Task.TaskStatus> taskStatuses, Pageable pageable);
+
 }

@@ -1,0 +1,14 @@
+<div class="project-content">
+  <div class="title-content">
+    <h1 class="title-name">Twoje projekty</h1>
+  </div>
+  <div class="button-container">
+    <button mat-raised-button class="" (click)="openModal()">
+      <mat-icon>add</mat-icon>
+      Dodaj projekt
+    </button>
+  </div>
+  <div class="projects">
+    <app-project-list class="projects-wrapper" [projects]="projects"></app-project-list>
+  </div>
+</div>

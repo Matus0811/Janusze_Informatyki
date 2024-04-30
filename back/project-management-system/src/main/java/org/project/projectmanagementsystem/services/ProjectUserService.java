@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.domain.*;
 import org.project.projectmanagementsystem.services.exceptions.project.ProjectAlreadyExistsException;
 import org.project.projectmanagementsystem.services.exceptions.user.UserAssignToProjectException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -37,10 +38,9 @@ public class ProjectUserService {
     }
 
     @Transactional
-    public List<User> getUnassignedUsers(UUID projectId) {
+    public List<User> getUnassignedUsers(UUID projectId, String username) {
         Project project = projectService.findById(projectId);
-
-        return userProjectRoleService.findUsersUnassignedToProject(project).stream()
+        return userProjectRoleService.findUnassignedUsersToProjectWhereUsernameStartsWith(project,username).stream()
                 .map(UserProjectRole::getUser)
                 .distinct()
                 .toList();
@@ -52,8 +52,8 @@ public class ProjectUserService {
         userProjectRoleService.removeUserProjectRole(projectId, email);
     }
 
-    public List<Project> findAllUserProjectsAsMember(String userEmail) {
-        return userProjectRoleService.findAllUserProjectsAsMember(userEmail)
+    public List<Project> findAllUserProjectsAsMember(String userEmail, Pageable pageable) {
+        return userProjectRoleService.findAllUserProjectsAsMember(userEmail,pageable)
                 .stream()
                 .map(UserProjectRole::getProject)
                 .toList();

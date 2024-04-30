@@ -8,15 +8,12 @@ import org.project.projectmanagementsystem.domain.mapper.BugMapper;
 import org.project.projectmanagementsystem.services.BugService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/bugs")
 @RequiredArgsConstructor
-public class BugReportController {
+public class BugController {
     private final BugService bugService;
 
     @PostMapping("/report")
@@ -27,6 +24,7 @@ public class BugReportController {
         return new ResponseEntity<>(bugDTO, HttpStatus.CREATED);
     }
 
+    //TODO add getMapping
     private BugDTO createBugDto(Bug createdBug) {
         return BugDTO.builder()
                 .serialNumber(createdBug.getSerialNumber())

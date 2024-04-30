@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.UserProjectRoleRepository;
 import org.project.projectmanagementsystem.domain.*;
 import org.project.projectmanagementsystem.services.exceptions.user.UserProjectRoleNotFound;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +23,10 @@ public class UserProjectRoleService {
         return userProjectRoleRepository.addUserProjectRole(userProjectRoleEntityToSave);
     }
 
-    public List<UserProjectRole> findUsersUnassignedToProject(Project project) {
+    public List<UserProjectRole> findUnassignedUsersToProjectWhereUsernameStartsWith(Project project, String word) {
         UUID projectId = project.getProjectId();
 
-        return userProjectRoleRepository.findUsersUnassignedToProject(projectId);
+        return userProjectRoleRepository.findUnassignedUsersToProjectWhereUsernameStartsWith(projectId,word);
     }
 
     public void removeUserProjectRole(UUID projectId, String userEmail) {
@@ -38,8 +39,8 @@ public class UserProjectRoleService {
                 .orElseThrow(() -> new UserProjectRoleNotFound("Couldn't find user role in project!", HttpStatus.CONFLICT));
     }
 
-    public List<UserProjectRole> findAllUserProjectsAsMember(String userEmail) {
-        return userProjectRoleRepository.findAllUserProjectsAsMember(userEmail);
+    public List<UserProjectRole> findAllUserProjectsAsMember(String userEmail, Pageable pageable) {
+        return userProjectRoleRepository.findAllUserProjectsAsMember(userEmail,pageable);
     }
 
     public List<UserProjectRole> findAllUserProjectsAsOwner(String email){

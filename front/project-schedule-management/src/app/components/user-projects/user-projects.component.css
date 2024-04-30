@@ -1,0 +1,40 @@
+/*.project-content{*/
+/*  width: 80%;*/
+/*  margin-top: 100px;*/
+/*  margin-left: auto;*/
+/*  margin-right: auto;*/
+/*  padding: 30px;*/
+/*}*/
+
+.button-container{
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  height: 80px;
+  margin-top: 30px;
+}
+
+.projects-wrapper{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.title-content{
+  position: relative;
+}
+
+.title-content::before{
+  content: '';
+  width: 20%;
+  height: 6px;
+  background-color:#6C8DFF;
+  position: absolute;
+  left: -10px;
+  top:-10px;
+  z-index: -1;
+}
+
+.title-name{
+  text-transform: uppercase;
+  letter-spacing: -1px;
+}

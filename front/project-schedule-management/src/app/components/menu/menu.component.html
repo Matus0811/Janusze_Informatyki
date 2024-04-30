@@ -1,1 +1,23 @@
-<p>menu works!</p>
+<div class="menu-container">
+  <div class="logo-container">
+    <a routerLink="/projects">JANUSH CALENDAR</a>
+  </div>
+  <div class="nav-container">
+    <nav class="nav-links">
+      <ul class="nav-links-container">
+        <li><a routerLink="/projects/my-projects">Moje projekty</a></li>
+        <li><a routerLink="/projects/team-projects">Projekty zespołowe</a></li>
+      </ul>
+    </nav>
+  </div>
+<!--  <div class="logout-button-container">-->
+    <button mat-button [matMenuTriggerFor]="menu">
+      <i class="material-icons">settings</i>
+    </button>
+  <mat-menu #menu="matMenu">
+    <a mat-menu-item href="#">Profil</a>
+    <a mat-menu-item href="#">Ustawienia</a>
+    <a mat-menu-item (click)="logout()">Wyloguj się</a>
+  </mat-menu>
+<!--  </div>-->
+</div>

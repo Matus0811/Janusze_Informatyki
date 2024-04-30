@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 *{
-  font-family: "Roboto Light", sans-serif;
+  font-family: "Roboto Light", sans-serif ;
 }
+
+html, body { height: 100%; }
+body { margin: 0; }
+

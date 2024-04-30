@@ -2,7 +2,8 @@ package org.project.projectmanagementsystem.database.jpa;
 
 import org.project.projectmanagementsystem.database.entities.ProjectEntity;
 import org.project.projectmanagementsystem.database.entities.UserProjectRoleEntity;
-import org.project.projectmanagementsystem.domain.UserProjectRole;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,16 +25,17 @@ public interface UserProjectRoleJpaRepository extends JpaRepository<UserProjectR
             AND r.name = 'PROJECT_OWNER'
             AND p.projectStatus != 'FINISHED'
             """)
-    List<ProjectEntity> findNotFinishedUserProjects(@Param("email") String email);
+    Page<ProjectEntity> findNotFinishedUserProjects(@Param("email") String email, Pageable pageable);
 
-    // TODO do poprawy
-    @Query("""
-        SELECT u FROM UserProjectRoleEntity upr
-        RIGHT JOIN upr.user u
-        JOIN upr.project p
-        WHERE p.projectId != :projectId
-    """)
-    List<UserProjectRoleEntity> findUsersUnassignedToProject(@Param("projectId") UUID projectId);
+    @Query(value = """
+                SELECT upr FROM UserProjectRoleEntity upr
+                WHERE upr.user.userId NOT IN (
+                    SELECT upr2.user.userId FROM UserProjectRoleEntity upr2
+                        WHERE upr2.project.projectId = :projectId
+                )
+                AND LOWER(upr.user.username) LIKE LOWER(CONCAT(:word,'%'))
+            """)
+    List<UserProjectRoleEntity> findUsersUnassignedToProject(@Param("projectId") UUID projectId,@Param("word") String word);
     @Query("""
     SELECT upre FROM UserProjectRoleEntity upre
     JOIN FETCH upre.project p
@@ -54,7 +56,7 @@ public interface UserProjectRoleJpaRepository extends JpaRepository<UserProjectR
     AND u.email = :email
     AND r.name = 'TEAM_MEMBER'
     """)
-    List<UserProjectRoleEntity> findAllUserProjectsAsMember(@Param("email") String email);
+    Page<UserProjectRoleEntity> findAllUserProjectsAsMember(@Param("email") String email, Pageable pageable);
 
     @Query("""
     SELECT DISTINCT upre FROM UserProjectRoleEntity upre

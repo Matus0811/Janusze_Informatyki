@@ -44,6 +44,6 @@ public class BugEntity {
     @Column(name = "report_date")
     private OffsetDateTime reportDate;
 
-    @Column(name = "fixed")
-    private Boolean fixed;
+    @Column(name = "fixed_date")
+    private OffsetDateTime fixedDate;
 }

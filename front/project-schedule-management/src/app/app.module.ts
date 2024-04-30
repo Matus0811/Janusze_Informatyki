@@ -11,6 +11,17 @@ import {ProjectContentComponent} from './components/project-content/project-cont
 import {MenuComponent} from './components/menu/menu.component';
 import {UserAuthComponent} from "./components/auth/user-auth.component";
 import { RegisterComponent } from './components/register/register.component';
+import { ProjectListComponent } from './components/project-list/project-list.component';
+import { UserProjectsComponent } from './components/user-projects/user-projects.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import { AddProjectFormComponent } from './components/add-project-form/add-project-form.component';
+import {MatButton, MatButtonModule} from "@angular/material/button";
+import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
+import {provideNativeDateAdapter} from "@angular/material/core";
+import { CurrentProjectViewComponent } from './components/current-project-view/current-project-view.component';
+import {MatIconModule} from "@angular/material/icon";
+import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -21,15 +32,30 @@ import { RegisterComponent } from './components/register/register.component';
     ProjectContentComponent,
     MenuComponent,
     RegisterComponent,
+    ProjectListComponent,
+    UserProjectsComponent,
+    AddProjectFormComponent,
+    CurrentProjectViewComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    MatDialogModule,
+    MatButton,
+    MatDatepickerInput,
+    MatDatepickerToggle,
+    MatDatepicker,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuTrigger,
+    MatMenu,
+    BrowserAnimationsModule,
+    MatMenuItem,
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
   ],
   bootstrap: [AppComponent]
 })

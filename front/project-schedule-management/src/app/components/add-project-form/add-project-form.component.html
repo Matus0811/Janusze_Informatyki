@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Dodaj projekt</h2>
+<mat-dialog-content>
+  <form [formGroup]="projectForm">
+    <div class="form-input-group">
+      <label for="project-name">Nazwa projektu</label>
+      <input class="d-block project-input" id="project-name" type="text" formControlName="name"/>
+    </div>
+    <div class="form-input-group">
+      <label for="description">Opis projektu</label>
+      <textarea class="d-block project-input" id="description" name="description" rows="4" cols="50"
+                formControlName="description">
+    </textarea>
+    </div>
+    <div class="form-input-group">
+      <label for="finish-date">Data ukończenia(opcjonalne)</label>
+      <input class="d-block project-input" id="finish-date" type="datetime-local" formControlName="finishDate">
+
+    </div>
+  </form>
+</mat-dialog-content>
+
+<div class="buttons-container">
+  <button class="add-project-button" (click)="close()">Zamknij</button>
+  <button class="add-project-button" type="submit" (click)="submitForm()">Dodaj projekt</button>
+</div>
+

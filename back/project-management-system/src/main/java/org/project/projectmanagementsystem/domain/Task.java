@@ -46,7 +46,7 @@ public class Task {
         return Task.builder()
                 .taskCode(UUID.randomUUID().toString())
                 .name("BUG id: %s".formatted(bug.getSerialNumber()))
-                .description("Błąd do naprawy dla projektu: %s".formatted(bug.getProject().getName()))
+                .description("Błąd do naprawy dla projektu: %s".formatted(bug.getProject().getProjectId()))
                 .status(TaskStatus.BUG)
                 .priority(Priority.MEDIUM)
                 .startDate(OffsetDateTime.now())

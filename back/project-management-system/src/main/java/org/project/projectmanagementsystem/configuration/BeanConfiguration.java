@@ -31,7 +31,7 @@ public class BeanConfiguration {
         log.info("Default ObjectMapper configuration override");
         return new ObjectMapper()
                 .registerModule(new JavaTimeModule())
-                .configure(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS, false)
+                .configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false)
                 .registerModule(new Jdk8Module())
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false)
                 .setSerializationInclusion(JsonInclude.Include.NON_NULL);
@@ -47,7 +47,7 @@ public class BeanConfiguration {
                 "Access-Control-Request-Method", "Access-Control-Request-Headers"));
         corsConfiguration.setExposedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization",
                 "Access-Control-Allow-Origin", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT","PATCH", "DELETE", "OPTIONS"));
         UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
         urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", corsConfiguration);
         return new CorsFilter(urlBasedCorsConfigurationSource);
