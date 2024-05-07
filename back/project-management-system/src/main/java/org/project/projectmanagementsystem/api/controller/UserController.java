@@ -3,7 +3,7 @@ package org.project.projectmanagementsystem.api.controller;
 import org.project.projectmanagementsystem.api.dto.CredentialsDTO;
 import org.project.projectmanagementsystem.api.dto.TokenDTO;
 import org.project.projectmanagementsystem.api.dto.UserDTO;
-import org.project.projectmanagementsystem.api.dto.UserDataDTO;
+import org.project.projectmanagementsystem.api.dto.UserFormDTO;
 import org.project.projectmanagementsystem.configuration.UserAuthProvider;
 import org.project.projectmanagementsystem.domain.Role;
 import org.project.projectmanagementsystem.domain.User;
@@ -31,14 +31,14 @@ public class UserController {
     private final UserProjectRoleService userProjectRoleService;
 
     @GetMapping("/{id}")
-    public UserDTO getUser(@PathVariable("id") Long userId){
+    public UserFormDTO getUser(@PathVariable("id") Long userId){
         User user = userService.getUser(userId);
 
-        return UserMapper.INSTANCE.mapFromDomainToDto(user);
+        return UserMapper.INSTANCE.mapFromDomainToFormDto(user);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserDTO user){
+    public ResponseEntity<UserDTO> registerUser(@RequestBody @Valid UserFormDTO user){
         UserDTO registeredUser = UserMapper.INSTANCE.mapFromDomainToDto(
                 userService.registerUser(UserMapper.INSTANCE.mapFromDtoToDomain(user))
         );

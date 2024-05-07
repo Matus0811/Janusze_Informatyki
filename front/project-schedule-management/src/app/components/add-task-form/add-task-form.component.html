@@ -1,0 +1,51 @@
+<div class="container h-75">
+  <mat-dialog-content>
+    <form [formGroup]="taskForm">
+      <div class="mb-md-3">
+          <label class="col-form-label d-block" for="name">Nazwa zadania</label>
+          <input id="name" class="form-text d-block w-100" type="text" formControlName="name">
+      </div>
+
+      <div class="mb-md-3">
+        <label class="form-label d-block" for="description">Opis zadania</label>
+        <textarea class="form-text d-block w-100" id="description" name="description" rows="4" cols="50"
+                  formControlName="description">
+        </textarea>
+      </div>
+
+      <div class="mb-md-3">
+        <label class="form-label" for="status">Status zadania</label>
+        <select class="form-select" formControlName="status" id="status">
+          <option value="CONCEPT">Koncepcja</option>
+          <option value="TO_DO">Do wykonania</option>
+          <option value="UNDEFINED_STATUS" selected>-</option>
+        </select>
+      </div>
+
+      <div class="mb-md-3">
+        <label class="form-label" for="priority">Priorytet</label>
+        <select class="form-select" formControlName="priority" id="priority">
+          <option value="LOW">Niski</option>
+          <option value="MEDIUM">Średni</option>
+          <option value="HIGH">Wysoki</option>
+        </select>
+      </div>
+
+      <div *ngIf="taskForm.controls.priority.value == 'HIGH'" class="mb-md-3">
+        <label class="form-label d-block" for="finishDate">Data ukończenia</label>
+        <input class="d-block w-100" type="datetime-local" id="finishDate" formControlName="finishDate">
+      </div>
+    </form>
+
+
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <button class="btn btn-dark" (click)="close()">Zamknij</button>
+      </div>
+      <div class="col-md-6 text-center">
+        <button class="btn btn-dark" type="submit" (click)="submitForm()">Dodaj projekt</button>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+</div>

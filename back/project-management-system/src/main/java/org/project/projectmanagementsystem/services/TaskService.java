@@ -1,6 +1,7 @@
 package org.project.projectmanagementsystem.services;
 
 import lombok.RequiredArgsConstructor;
+import org.project.projectmanagementsystem.api.dto.ProjectTaskStatusCount;
 import org.project.projectmanagementsystem.database.TaskRepository;
 import org.project.projectmanagementsystem.domain.*;
 import org.project.projectmanagementsystem.services.exceptions.task.TaskException;
@@ -24,7 +25,7 @@ public class TaskService {
 
         if (priority == Task.Priority.HIGH
             && (Objects.isNull(task.getFinishDate()) || task.getFinishDate().toString().isBlank())) {
-            throw new TaskException("Task with HIGH priority should have finish date!", HttpStatus.NOT_ACCEPTABLE);
+            throw new TaskException("Task with HIGH priority should have finish date!", HttpStatus.NOT_FOUND);
         }
 
         return taskRepository.addTask(task);
@@ -48,7 +49,7 @@ public class TaskService {
         Task taskToDelete = findByTaskCode(taskCode);
 
         if(Task.TaskStatus.FINISHED == taskToDelete.getStatus()){
-            throw new TaskException("Cannot remove task which is already finished!",HttpStatus.NOT_ACCEPTABLE);
+            throw new TaskException("Cannot remove task which is already finished!",HttpStatus.NOT_FOUND);
         }
         taskRepository.remove(taskToDelete);
     }
@@ -58,4 +59,7 @@ public class TaskService {
     }
 
 
+    public List<ProjectTaskStatusCount> findAllProjectTasksGrouped(UUID projectId) {
+        return taskRepository.findAllProjectTasksGrouped(projectId);
+    }
 }

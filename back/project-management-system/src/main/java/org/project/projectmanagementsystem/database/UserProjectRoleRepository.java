@@ -2,6 +2,7 @@ package org.project.projectmanagementsystem.database;
 
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.jpa.UserProjectRoleJpaRepository;
+import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.UserProjectRole;
 import org.project.projectmanagementsystem.domain.mapper.UserProjectRoleMapper;
 import org.springframework.data.domain.Pageable;
@@ -60,6 +61,12 @@ public class UserProjectRoleRepository {
 
     public List<UserProjectRole> findAllUserProjectsAsOwner(String email) {
         return userProjectRoleJpaRepository.findAllUserProjectsAsOwner(email)
+                .stream().map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserProjectRole> findPagedProjectMembers(UUID projectId, Pageable pageable) {
+        return userProjectRoleJpaRepository.findPagedProjectMembers(projectId,pageable)
                 .stream().map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain)
                 .collect(Collectors.toList());
     }

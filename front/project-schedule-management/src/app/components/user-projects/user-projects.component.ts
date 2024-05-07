@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Project} from "../../domain/project";
 import {ProjectService} from "../../services/project.service";
 import {UserService} from "../../services/user.service";
@@ -14,6 +14,7 @@ import {Router} from "@angular/router";
 export class UserProjectsComponent implements OnInit{
   projects: Project[] = [];
   page = 0;
+  lastLoadedPageSize = 0;
 
   constructor(private projectService: ProjectService,
               private userService: UserService,
@@ -30,7 +31,7 @@ export class UserProjectsComponent implements OnInit{
     this.projectService.findPagedUserProjects(currentUser.email,this.page).then(
       value => {
         this.projects = value.data;
-        console.log(this.page);
+        this.lastLoadedPageSize = value.data.length;
       }
     ).catch(reason => console.log(reason));
   }
@@ -52,24 +53,14 @@ export class UserProjectsComponent implements OnInit{
   );
   }
 
-  @HostListener('window:scroll',[])
-  onWindowScroll(){
-    const pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight;
-    const max = document.documentElement.scrollHeight;
-    console.log(pos);
-    console.log(max);
-    if (Math.ceil(pos) === max) {
-      this.loadProjectPage();
-    }
-  }
-
-  private loadProjectPage() {
+  public loadProjectPage() {
     let currentUser = this.userService.getLoggedUserData();
     this.page++;
 
     this.projectService.findPagedUserProjects(currentUser.email,this.page).then(
       value => {
-        this.projects = [...this.projects, ...value.data]
+        this.lastLoadedPageSize = value.data.length;
+        this.projects = [...this.projects, ...value.data];
       }
     ).catch(reason => console.log(reason));
   }

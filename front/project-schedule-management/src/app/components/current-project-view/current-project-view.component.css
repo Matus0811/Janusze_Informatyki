@@ -1,0 +1,35 @@
+.main-container{
+  display: flex;
+  font-family: "Arial Narrow", sans-serif;
+}
+.left-content-project-info{
+  flex: 1;
+}
+
+.right-content-project-info{
+  flex:2;
+  display: flex;
+  height: 300px;
+}
+
+.task-chart{
+  width: 50%;
+}
+
+.users-info{
+  flex:1;
+  height: 500px;
+}
+
+.project-info{
+  margin-top: 48px;
+  font-size: 12px;
+}
+.project-info p{
+  margin-top:2px;
+  margin-bottom: 6px;
+}
+.right-content-title{
+  text-align: center;
+}
+

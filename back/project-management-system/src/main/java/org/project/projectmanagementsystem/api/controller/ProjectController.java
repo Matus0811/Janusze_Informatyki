@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.project.projectmanagementsystem.api.dto.ProjectDTO;
 import org.project.projectmanagementsystem.api.dto.ProjectFormDTO;
 import org.project.projectmanagementsystem.api.dto.UserDTO;
+import org.project.projectmanagementsystem.api.dto.UserFormDTO;
 import org.project.projectmanagementsystem.domain.mapper.FormMapper;
 import org.project.projectmanagementsystem.domain.mapper.ProjectMapper;
 import org.project.projectmanagementsystem.domain.mapper.UserMapper;
@@ -125,5 +126,18 @@ public class ProjectController {
                 .toList();
 
         return ResponseEntity.ok(users);
+    }
+
+    @GetMapping("/{projectId}/project-members")
+    public ResponseEntity<List<UserDTO>> listProjectMembers(
+            @PathVariable("projectId") UUID projectId,
+            @RequestParam(name = "page") Integer page
+    ){
+        Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("u.username"));
+        List<UserDTO> pagedProjectMember = projectUserService.findPagedProjectMembers(projectId,pageable)
+                .stream()
+                .map(UserMapper.INSTANCE::mapFromDomainToDto).toList();
+
+        return new ResponseEntity<>(pagedProjectMember,HttpStatus.OK);
     }
 }

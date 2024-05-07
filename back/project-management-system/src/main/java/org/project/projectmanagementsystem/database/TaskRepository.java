@@ -1,6 +1,7 @@
 package org.project.projectmanagementsystem.database;
 
 import lombok.RequiredArgsConstructor;
+import org.project.projectmanagementsystem.api.dto.ProjectTaskStatusCount;
 import org.project.projectmanagementsystem.database.entities.TaskEntity;
 import org.project.projectmanagementsystem.database.jpa.TaskJpaRepository;
 import org.project.projectmanagementsystem.domain.Task;
@@ -37,6 +38,10 @@ public class TaskRepository {
     }
 
     public void remove(Task taskToRemove) {
-        taskJpaRepository.delete(TaskMapper.INSTANCE.mapFromDomainToEntity(taskToRemove));
+        taskJpaRepository.deleteById(taskToRemove.getTaskId());
+    }
+
+    public List<ProjectTaskStatusCount> findAllProjectTasksGrouped(UUID projectId) {
+        return taskJpaRepository.findAllProjectTasksGrouped(projectId);
     }
 }

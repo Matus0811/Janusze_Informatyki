@@ -5,6 +5,8 @@ import {UserAuthComponent} from "./components/auth/user-auth.component";
 import {authGuard} from "./guards/auth.guard";
 import {UserProjectsComponent} from "./components/user-projects/user-projects.component";
 import {CurrentProjectViewComponent} from "./components/current-project-view/current-project-view.component";
+import {TaskListComponent} from "./components/task-list/task-list.component";
+import {TaskDetailsComponent} from "./components/task-details/task-details.component";
 
 const routes: Routes = [
   {
@@ -21,8 +23,23 @@ const routes: Routes = [
     canActivate: [authGuard],
     children: [
       {
+        path: 'my-projects/project/:id/task/:id',
+        component: TaskDetailsComponent
+      },
+
+      {
         path: 'my-projects/project/:id',
-        component: CurrentProjectViewComponent
+        component: CurrentProjectViewComponent,
+        children: [
+          {
+            path: 'tasks',
+            component: TaskListComponent
+          },
+          // {
+          //   path: 'users',
+          //   component: ProjectUserListComponent
+          // }
+        ]
       },
       {
         path: 'my-projects',

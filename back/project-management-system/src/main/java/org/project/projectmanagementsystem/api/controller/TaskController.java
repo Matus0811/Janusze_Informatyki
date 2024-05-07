@@ -3,8 +3,8 @@ package org.project.projectmanagementsystem.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.api.dto.TaskDTO;
 import org.project.projectmanagementsystem.api.dto.TaskFormDTO;
+import org.project.projectmanagementsystem.api.dto.ProjectTaskStatusCount;
 import org.project.projectmanagementsystem.domain.mapper.TaskMapper;
-import org.project.projectmanagementsystem.services.BugService;
 import org.project.projectmanagementsystem.services.ProjectTaskService;
 import org.project.projectmanagementsystem.services.TaskService;
 import org.project.projectmanagementsystem.services.TaskUserService;
@@ -38,16 +38,23 @@ public class TaskController {
         return new ResponseEntity<>(taskDTO, HttpStatus.CREATED);
     }
 
+    @GetMapping("/grouped")
+    public ResponseEntity<List<ProjectTaskStatusCount>> getGroupedProjectTaskByStatus(@RequestParam("projectId") UUID projectId){
+        List<ProjectTaskStatusCount> projectTaskStatusCountList = taskService.findAllProjectTasksGrouped(projectId);
+
+        return new ResponseEntity<>(projectTaskStatusCountList,HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<List<TaskDTO>> getPagedTasksForProject(
             @RequestParam("projectId") UUID projectId,
             @RequestParam("page") Integer page,
-            @RequestParam("taskType") String type
+            @RequestParam("taskStatus") String taskStatus
     ) {
         Pageable pageable = PageRequest.of(page, 6).withSort(Sort.by("startDate").descending());
         List<TaskDTO> pagedTasksForProject = taskService.findPagedProjectTasksWithStatus(
                         projectId,
-                        TaskUtils.taskStatuses(type),
+                        TaskUtils.taskStatuses(taskStatus),
                         pageable).stream()
                 .map(TaskMapper.INSTANCE::mapFromDomainToDto).toList();
 
@@ -67,20 +74,11 @@ public class TaskController {
     @PutMapping("/{taskCode}/users/finish-task")
     public ResponseEntity<?> finishTaskByMember(
             @PathVariable("taskCode") String taskCode,
-            @RequestParam("email") String email
+            @RequestParam("email") String email,
+            @RequestParam("projectId") UUID projectId
     ) {
-        taskUserService.finishTaskByMember(taskCode, email);
+        taskUserService.finishTaskByMember(taskCode, email, projectId);
         return ResponseEntity.ok().build();
-    }
-
-    @PutMapping("/{taskCode}/finish")
-    public ResponseEntity<?> finishTaskByOwner(
-            @PathVariable("taskCode") String taskCode,
-            @RequestParam(name = "project") UUID projectId
-    ) {
-        taskUserService.finishTaskByOwner(taskCode, projectId);
-
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{taskCode}/delete")

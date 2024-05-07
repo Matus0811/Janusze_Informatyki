@@ -65,7 +65,7 @@ public class UserService {
                 .withPassword(encodedPassword);
 
         User savedUser = userRepository.save(userToRegister);
-        userProjectRoleService.addUserProjectRole(savedUser,null,registeredUserRole);
+        userProjectRoleService.addUserProjectRole(savedUser, null, registeredUserRole);
 
         log.info("User [{}] registered successfully", savedUser);
         return savedUser;
@@ -92,16 +92,15 @@ public class UserService {
         log.info("Processing sign in by email, credentials: [{}]", credentials);
         User loggedUser = findByEmail(credentials.getLogin());
 
-        if (!passwordEncoder.matches(credentials.getPassword(),loggedUser.getPassword())) {
-            log.info("Comparing user password, given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
-            return loggedUser;
+        if (!passwordEncoder.matches(credentials.getPassword(), loggedUser.getPassword())) {
+            log.error("Gave wrong password: given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
+            throw new IncorrectPasswordException(
+                    "Wrong password for email: [%s]".formatted(credentials.getLogin()),
+                    HttpStatus.NOT_FOUND
+            );
         }
 
-        log.error("Gave wrong password: given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
-        throw new IncorrectPasswordException(
-                "Wrong password for email: [%s]".formatted(credentials.getLogin()),
-                HttpStatus.CONFLICT
-        );
+        return loggedUser;
     }
 
     private User processUsernameLogin(Credentials credentials) {
@@ -111,7 +110,7 @@ public class UserService {
         if (!passwordEncoder.matches(credentials.getPassword(), loggedUser.getPassword())) {
             log.error("Gave wrong password: given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
             throw new IncorrectPasswordException(
-                    "Wrong password for username: [%s]".formatted(credentials.getLogin()),
+                    "Wrong password!",
                     HttpStatus.NOT_FOUND
             );
         }
@@ -124,7 +123,7 @@ public class UserService {
                 () -> {
                     log.error("Error finding user by email: [{}]", email);
                     return new UserNotFoundException(
-                            "User with email [%s] not found".formatted(email),
+                            "User with given email not found",
                             HttpStatus.NOT_FOUND
                     );
                 });
@@ -135,7 +134,7 @@ public class UserService {
                 () -> {
                     log.error("Error during finding user by username: [{}]", username);
                     return new UserNotFoundException(
-                            "User with given username [%s] not found".formatted(username),
+                            "User with given username not found",
                             HttpStatus.NOT_FOUND
                     );
                 });
@@ -148,7 +147,7 @@ public class UserService {
     public User findById(Long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException(
-                        "User with id: [%s] not found!".formatted(userId),
+                        "User  not found!",
                         HttpStatus.NOT_FOUND
                 )
         );

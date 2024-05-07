@@ -10,18 +10,22 @@ import {ProjectCardComponent} from './components/project-card/project-card.compo
 import {ProjectContentComponent} from './components/project-content/project-content.component';
 import {MenuComponent} from './components/menu/menu.component';
 import {UserAuthComponent} from "./components/auth/user-auth.component";
-import { RegisterComponent } from './components/register/register.component';
-import { ProjectListComponent } from './components/project-list/project-list.component';
-import { UserProjectsComponent } from './components/user-projects/user-projects.component';
+import {RegisterComponent} from './components/register/register.component';
+import {ProjectListComponent} from './components/project-list/project-list.component';
+import {UserProjectsComponent} from './components/user-projects/user-projects.component';
 import {MatDialogModule} from "@angular/material/dialog";
-import { AddProjectFormComponent } from './components/add-project-form/add-project-form.component';
+import {AddProjectFormComponent} from './components/add-project-form/add-project-form.component';
 import {MatButton, MatButtonModule} from "@angular/material/button";
 import {MatDatepicker, MatDatepickerInput, MatDatepickerToggle} from "@angular/material/datepicker";
 import {provideNativeDateAdapter} from "@angular/material/core";
-import { CurrentProjectViewComponent } from './components/current-project-view/current-project-view.component';
+import {CurrentProjectViewComponent} from './components/current-project-view/current-project-view.component';
 import {MatIconModule} from "@angular/material/icon";
 import {MatMenu, MatMenuItem, MatMenuTrigger} from "@angular/material/menu";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { TaskListComponent } from './components/task-list/task-list.component';
+import { ErrorHandlerComponent } from './components/error-handler/error-handler.component';
+import { TaskDetailsComponent } from './components/task-details/task-details.component';
+import { AddTaskFormComponent } from './components/add-task-form/add-task-form.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +40,10 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     UserProjectsComponent,
     AddProjectFormComponent,
     CurrentProjectViewComponent,
+    TaskListComponent,
+    ErrorHandlerComponent,
+    TaskDetailsComponent,
+    AddTaskFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -59,4 +67,5 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}

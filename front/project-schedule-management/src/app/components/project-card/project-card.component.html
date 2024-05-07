@@ -3,11 +3,10 @@
 </div>
 <div class="project-details">
   <p class="project-description">{{ project.description }}</p>
-  <p class="project-date"><b>Data rozpoczęcia:</b> {{ project.startDate | date:"yyyy-MM-dd hh:mm:ss" }}</p>
-  <p *ngIf="project.finishDate" class="project-date"><b>Data ukończenia:</b> {{ project.finishDate | date }}</p>
+  <p class="project-date"><b>Data rozpoczęcia:</b> {{ project.startDate | date:"yyyy-MM-dd HH:mm:ss" }}</p>
+  <p *ngIf="project.finishDate" class="project-date"><b>Data ukończenia:</b> {{ project.finishDate | date:"yyyy-MM-dd HH:mm:ss" }}</p>
 </div>
 <div class="project-button-container">
-  <!--    TODO dodać funkcjonalność do przechodzenia do danego projektu -->
   <a class="project-button" (click)="goToProject()">
     Przejdź do projektu
   </a>

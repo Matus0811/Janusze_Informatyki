@@ -6,6 +6,8 @@ import instance from "../http-axios";
 import {Project} from "../domain/project";
 import {ProjectForm} from "../domain/project-form";
 import {UserService} from "./user.service";
+import {UUID} from "node:crypto";
+import httpAxios from "../http-axios";
 
 @Injectable({
   providedIn: 'root'
@@ -45,5 +47,15 @@ export class ProjectService {
       description: value.description,
       finishDate: new Date(value.finishDate)
     };
+  }
+
+  getProjectMembers(projectId: UUID | undefined, page: number) {
+    return instance.request({
+      method: 'GET',
+      url: `/projects/${projectId}/project-members`,
+      params: {
+        page: page
+      }
+    })
   }
 }

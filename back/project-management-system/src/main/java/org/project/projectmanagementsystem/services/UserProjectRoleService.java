@@ -49,11 +49,20 @@ public class UserProjectRoleService {
 
     public List<Role> findAllUserRoles(User loggedUser) {
         return userProjectRoleRepository.findAllUserRoles(loggedUser.getUserId())
-                .stream().map(UserProjectRole::getRole)
+                .stream()
+                .map(UserProjectRole::getRole)
+                .distinct()
                 .collect(Collectors.toList());
     }
 
     public void removeDefaultUserRole(Long userId) {
         userProjectRoleRepository.removeDefaultUserRole(userId);
+    }
+
+    public List<User> findPagedProjectMembers(UUID projectId, Pageable pageable) {
+        return userProjectRoleRepository.findPagedProjectMembers(projectId,pageable)
+                .stream()
+                .map(UserProjectRole::getUser)
+                .toList();
     }
 }

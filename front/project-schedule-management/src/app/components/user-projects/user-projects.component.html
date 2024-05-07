@@ -10,5 +10,8 @@
   </div>
   <div class="projects">
     <app-project-list class="projects-wrapper" [projects]="projects"></app-project-list>
+    <div class="button-container" [hidden]="lastLoadedPageSize < 6">
+      <button mat-raised-button (click)="loadProjectPage()" >Pokaż więcej</button>
+    </div>
   </div>
 </div>

@@ -78,4 +78,8 @@ public class ProjectUserService {
             userProjectRoleService.removeDefaultUserRole(owner.getUserId());
         }
     }
+
+    public List<User> findPagedProjectMembers(UUID projectId,Pageable pageable) {
+        return userProjectRoleService.findPagedProjectMembers(projectId,pageable);
+    }
 }

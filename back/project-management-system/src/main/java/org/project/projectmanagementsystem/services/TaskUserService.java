@@ -31,12 +31,28 @@ public class TaskUserService {
     }
 
     @Transactional
-    public void finishTaskByMember(String taskCode, String userEmail) {
+    public void finishTaskByMember(String taskCode, String userEmail, UUID projectId) {
         UserTask userTask = findUserTask(taskCode, userEmail);
 
         userTask = userTask.withFinished(true);
 
         userTaskRepository.save(userTask);
+
+        finishWholeTask(taskCode, projectId);
+    }
+
+    private void finishWholeTask(String taskCode, UUID projectId) {
+        Task task = taskService.findByTaskCode(taskCode);
+
+        int numberOfUsersWorkingOnTask = findUsersWhoAreWorkingAtTask(taskCode, projectId).size();
+
+        if (numberOfUsersWorkingOnTask == 0) {
+            if(Task.TaskStatus.BUG == task.getStatus()){
+                bugService.finishBugForProject(task.getProject());
+            }
+            task = task.withStatus(Task.TaskStatus.FINISHED).withFinishDate(OffsetDateTime.now());
+            taskService.save(task);
+        }
     }
 
     public List<UserTask> findUsersWhoAreWorkingAtTask(String taskCode, UUID projectId) {
@@ -76,23 +92,5 @@ public class TaskUserService {
         return usersToAssign.stream()
                 .map(user -> UserTask.buildTaskUser(task, user))
                 .collect(Collectors.toList());
-    }
-
-    @Transactional
-    public void finishTaskByOwner(String taskCode, UUID projectId) {
-        Task task = taskService.findByTaskCode(taskCode);
-
-        int numberOfUsersWorkingOnTask = findUsersWhoAreWorkingAtTask(taskCode, projectId).size();
-
-        if (numberOfUsersWorkingOnTask > 0) {
-            throw new TaskException("There are still [%s] users who are working on given task".formatted(numberOfUsersWorkingOnTask), HttpStatus.CONFLICT);
-        }
-
-        if(Task.TaskStatus.BUG == task.getStatus()){
-            bugService.finishBugForProject(task.getProject());
-        }
-
-        task = task.withStatus(Task.TaskStatus.FINISHED).withFinishDate(OffsetDateTime.now());
-        taskService.save(task);
     }
 }

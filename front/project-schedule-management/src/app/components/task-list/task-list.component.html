@@ -1,0 +1,80 @@
+<div class="container-fluid mt-md-5">
+  <h1>Lista zadan</h1>
+  <div class="row justify-content-md-center">
+    <div class="col-md-4 text-center">
+      <button mat-raised-button (click)="openModal()">
+        <mat-icon>add</mat-icon>
+        Dodaj zadanie
+      </button>
+    </div>
+  </div>
+  <ul class="nav nav-pills nav-fill mt-md-5 mb-md-3 border">
+    <li class="nav-item border-right">
+      <button class="nav-link" (click)="loadTasks(TaskStatus.ALL)" aria-selected="true">Wszystkie zadania</button>
+    </li>
+    <li class="nav-item border-right">
+      <button class="nav-link" (click)="loadTasks(TaskStatus.CONCEPT)">Koncepcje</button>
+    </li>
+    <li class="nav-item border-right">
+      <button class="nav-link" (click)="loadTasks(TaskStatus.TO_DO)">Do wykonania</button>
+    </li>
+    <li class="nav-item border-right">
+      <button class="nav-link" (click)="loadTasks(TaskStatus.IN_PROGRESS)">W trakcie</button>
+    </li>
+    <li class="nav-item border-right">
+      <button class="nav-link" (click)="loadTasks(TaskStatus.FINISHED)">Ukończone</button>
+    </li>
+    <li class="nav-item border-right">
+      <button class="nav-link" (click)="loadTasks(TaskStatus.BUG)">Błędy</button>
+    </li>
+    <li class="nav-item ">
+      <button class="nav-link" (click)="loadTasks(TaskStatus.REJECTED)">Odrzucone</button>
+    </li>
+  </ul>
+  <div *ngIf="tasks.length > 0; else emptyArray" class="container-fluid">
+    <div class="row p-3 fw-bold border">
+      <div class="col-md-3">#ID</div>
+      <div class="col-md-2">Nazwa</div>
+      <div class="col-md-2 text-center">Priorytet</div>
+      <div class="col-md-2">Data rozpoczęcia</div>
+      <div class="col-md-2">Data ukończenia</div>
+    </div>
+    <div class="row border-bottom pt-3 text-dark hover-div" *ngFor="let task of tasks">
+      <div class="col-md-3">
+        <p>{{task.taskCode}}</p>
+      </div>
+      <div class="col-md-2">
+        <p>{{task.name}}</p>
+      </div>
+      <div class="col-md-2 d-flex justify-content-md-center">
+        <div class="align-self-center w-50 p-2 rounded-4" [style.background-color]="getColor(task.priority)">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <p>{{ task.startDate | date: "yyyy-MM-dd" }}</p>
+      </div>
+      <div class="col-md-2">
+        <p *ngIf="task.finishDate; else elseBlock">{{ task.finishDate | date: "yyyy-MM-dd" }}</p>
+        <ng-template #elseBlock><p>Nie określono daty</p></ng-template>
+      </div>
+      <div class="col-md-1 d-flex justify-content-md-center">
+        <a [matMenuTriggerFor]="settings" class="settings-btn">
+          <i class="material-icons">more_vert</i>
+        </a>
+        <mat-menu #settings="matMenu">
+          <a mat-menu-item (click)="showTaskDetails(task)">Pokaż więcej</a>
+          <a mat-menu-item class="text-bg-danger" (click)="removeTask(task.taskCode)">Usuń</a>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+  <div>
+    <ng-template #emptyArray><p>Lista jest pusta</p></ng-template>
+  </div>
+  <div class="row justify-content-md-center mt-3">
+    <div class="col-md-4 text-center">
+      <button mat-raised-button *ngIf="lastLoadedTaskSize >= 6" (click)="loadMoreTasks()">Pokaż więcej</button>
+    </div>
+  </div>
+
+</div>

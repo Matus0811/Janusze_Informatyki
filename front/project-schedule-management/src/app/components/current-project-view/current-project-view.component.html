@@ -1,2 +1,40 @@
-<h1>DZIALA</h1>
-<p>current-project-view works!</p>
+<div class="container">
+  <div class="row justify-content-md-center">
+    <div class="col-md-12">
+      <header class="header">
+        <h2 style="text-transform: uppercase;">Informacje o projekcie</h2>
+      </header>
+      <div class="project-info">
+        <p><b>Id:</b> {{ project.projectId }}</p>
+        <p><b>Nazwa:</b> {{ project.name }}</p>
+        <p><b>Opis:</b> {{ project.description }}</p>
+        <p><b>Data rozpoczęcia:</b> {{ project.startDate | date:"yyyy-MM-dd HH:mm:ss" }}</p>
+        <p *ngIf="project.finishDate"><b>Data ukończenia:</b> {{ project.finishDate | date:"yyyy-MM-dd HH:mm:ss" }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-md-around mt-md-5"
+       [hidden]="groupedTaskByStatusList.length == 0 || projectMembers.length == 0">
+    <div class="col-md-4">
+      <h3>Zadania</h3>
+      <canvas id="chart" width="300" height="300"></canvas>
+    </div>
+    <div class="col-md-4">
+      <h3>Liczba uzytkownikow</h3>
+
+      <div class="col-md-6 justify-content-md-around">
+        <p class="text-center">{{ projectMembersSize() }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-md-around mt-md-5">
+    <div class="col-md-6 align-content-center text-center">
+      <a routerLink="tasks" class="btn btn-dark">Wyświetl zadania</a>
+    </div>
+    <div class="col-md-6 align-content-center text-center">
+      <a href="#" class="btn btn-dark">Wyświetl użytkowników</a>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</div>

@@ -2,6 +2,7 @@ package org.project.projectmanagementsystem.database.jpa;
 
 import org.project.projectmanagementsystem.database.entities.ProjectEntity;
 import org.project.projectmanagementsystem.database.entities.UserProjectRoleEntity;
+import org.project.projectmanagementsystem.domain.UserProjectRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -86,4 +87,14 @@ public interface UserProjectRoleJpaRepository extends JpaRepository<UserProjectR
     WHERE u.email = :email AND r.name = 'PROJECT_OWNER'
     """)
     List<UserProjectRoleEntity> findAllUserProjectsAsOwner(@Param("email") String ownerEmail);
+
+    @Query("""
+    SELECT upre FROM UserProjectRoleEntity upre
+    JOIN FETCH upre.project p
+    JOIN FETCH upre.user u
+    JOIN FETCH upre.role r
+    WHERE p.projectId = :projectId
+    AND r.name = 'TEAM_MEMBER'
+    """)
+    Page<UserProjectRoleEntity> findPagedProjectMembers(@Param("projectId") UUID projectId, Pageable pageable);
 }
