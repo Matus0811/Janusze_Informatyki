@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Task} from "../../domain/task";
 import {TaskService} from "../../services/task.service";
 import {TaskStatus} from "../../domain/task-status";
@@ -99,6 +99,7 @@ export class TaskListComponent implements OnInit {
         this.taskService.createTask(taskToCreate).then(response =>{
             let createdTask:Task = response.data;
             this.tasks = [createdTask,...this.tasks];
+
           }
         )
       }

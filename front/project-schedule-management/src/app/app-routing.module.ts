@@ -21,6 +21,7 @@ const routes: Routes = [
     path: "projects",
     component: ProjectContentComponent,
     canActivate: [authGuard],
+    canActivateChild: [authGuard],
     children: [
       {
         path: 'my-projects/project/:id/task/:id',

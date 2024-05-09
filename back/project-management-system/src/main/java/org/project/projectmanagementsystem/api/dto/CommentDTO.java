@@ -1,13 +1,12 @@
 package org.project.projectmanagementsystem.api.dto;
 
-import lombok.Builder;
-import lombok.Value;
-import lombok.With;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 
-@With
-@Value
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class CommentDTO {
     Long commentId;

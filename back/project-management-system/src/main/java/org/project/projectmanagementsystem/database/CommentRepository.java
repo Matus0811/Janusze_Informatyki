@@ -26,7 +26,7 @@ public class CommentRepository {
                 .toList();
     }
 
-    public void deleteCommentWhereId(Long commentId) {
-        commentJpaRepository.deleteByCommentId(commentId);
+    public void deleteComment(Long commentToDeleteId) {
+        commentJpaRepository.deleteById(commentToDeleteId);
     }
 }

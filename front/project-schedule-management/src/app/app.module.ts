@@ -26,6 +26,8 @@ import { TaskListComponent } from './components/task-list/task-list.component';
 import { ErrorHandlerComponent } from './components/error-handler/error-handler.component';
 import { TaskDetailsComponent } from './components/task-details/task-details.component';
 import { AddTaskFormComponent } from './components/add-task-form/add-task-form.component';
+import { CommentListComponent } from './components/comment-list/comment-list.component';
+import { AddCommentComponent } from './components/add-comment/add-comment.component';
 
 @NgModule({
   declarations: [
@@ -44,10 +46,11 @@ import { AddTaskFormComponent } from './components/add-task-form/add-task-form.c
     ErrorHandlerComponent,
     TaskDetailsComponent,
     AddTaskFormComponent,
+    CommentListComponent,
+    AddCommentComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
     MatDialogModule,
@@ -61,6 +64,7 @@ import { AddTaskFormComponent } from './components/add-task-form/add-task-form.c
     MatMenu,
     BrowserAnimationsModule,
     MatMenuItem,
+    AppRoutingModule,
   ],
   providers: [
     provideClientHydration(),

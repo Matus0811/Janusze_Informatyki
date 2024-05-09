@@ -1,10 +1,10 @@
 package org.project.projectmanagementsystem.api.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.project.projectmanagementsystem.api.dto.TaskDTO;
-import org.project.projectmanagementsystem.api.dto.TaskFormDTO;
-import org.project.projectmanagementsystem.api.dto.ProjectTaskStatusCount;
+import org.project.projectmanagementsystem.api.dto.*;
+import org.project.projectmanagementsystem.domain.UserTask;
 import org.project.projectmanagementsystem.domain.mapper.TaskMapper;
+import org.project.projectmanagementsystem.domain.mapper.UserMapper;
 import org.project.projectmanagementsystem.services.ProjectTaskService;
 import org.project.projectmanagementsystem.services.TaskService;
 import org.project.projectmanagementsystem.services.TaskUserService;
@@ -71,6 +71,22 @@ public class TaskController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping("/{taskCode}/users")
+    public ResponseEntity<List<UserDTO>> getPagedUsersAssignedToTask(
+            @PathVariable("taskCode") String taskCode,
+            @RequestParam("page") Integer page
+    ){
+        Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("u.username"));
+
+        List<UserDTO> pagedUsersAssignedToTask = taskUserService.findPagedUsersAssignedToTask(taskCode,pageable)
+                .stream()
+                .map(UserTask::getUser)
+                .map(UserMapper.INSTANCE::mapFromDomainToDto)
+                .toList();
+
+        return new ResponseEntity<>(pagedUsersAssignedToTask,HttpStatus.OK);
+    }
+
     @PutMapping("/{taskCode}/users/finish-task")
     public ResponseEntity<?> finishTaskByMember(
             @PathVariable("taskCode") String taskCode,
@@ -86,5 +102,15 @@ public class TaskController {
         taskService.deleteTask(taskCode);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @DeleteMapping("/{taskCode}/remove-user")
+    public ResponseEntity<?> removeUserFromTask(
+            @PathVariable("taskCode") String taskCode,
+            @RequestParam("username") String username
+            ){
+        taskUserService.removeUserAssignedToTask(taskCode,username);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

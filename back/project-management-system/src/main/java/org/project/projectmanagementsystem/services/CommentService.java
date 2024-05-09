@@ -7,7 +7,9 @@ import org.project.projectmanagementsystem.domain.Comment;
 import org.project.projectmanagementsystem.domain.CommentForm;
 import org.project.projectmanagementsystem.domain.Task;
 import org.project.projectmanagementsystem.domain.User;
+import org.project.projectmanagementsystem.services.exceptions.AppException;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,9 +24,12 @@ public class CommentService {
     @Transactional
     public Comment processCommentCreation(CommentForm commentForm) {
         Task task = taskService.findByTaskCode(commentForm.getTaskCode());
-        User user = userService.findByEmail(commentForm.getUserEmail());
+        User user = userService.findByUsername(commentForm.getUsername());
         String commentText = commentForm.getText();
 
+        if(commentText.trim().isEmpty()){
+            throw new AppException("Comment empty!", HttpStatus.NOT_ACCEPTABLE);
+        }
         Comment newComment = Comment.buildComment(commentText, task, user);
 
         return commentRepository.save(newComment);
@@ -37,7 +42,7 @@ public class CommentService {
         return commentRepository.findPagedCommentsForTask(task.getTaskId(),pageable);
     }
 
-    public void deleteCommentForTask(Long commentId) {
-        commentRepository.deleteCommentWhereId(commentId);
+    public void deleteComment(Long commentToDeleteId) {
+        commentRepository.deleteComment(commentToDeleteId);
     }
 }

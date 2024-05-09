@@ -51,6 +51,10 @@ export class UserService {
     return user;
   }
 
+  public getLoggedUsername(){
+    return this.getLoggedUserData().username;
+  }
+
   getProjectMembers(projectId: UUID | undefined, page: number) {
     httpAxios.request({
       method: 'GET',

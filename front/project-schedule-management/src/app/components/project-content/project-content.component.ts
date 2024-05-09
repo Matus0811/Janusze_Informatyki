@@ -10,12 +10,4 @@ import {Router} from "@angular/router";
   styleUrl: './project-content.component.css'
 })
 export class ProjectContentComponent {
-
-
-  constructor(private projectService: ProjectService, private userService : UserService, private router: Router) {
-
-  }
-
-
-
 }

@@ -21,10 +21,10 @@ import java.util.List;
 public class CommentController {
     private final CommentService commentService;
     @PostMapping("/add")
-    public ResponseEntity<CommentDTO> addComment(@RequestBody CommentFormDTO commentFormDTO){
-        Comment comment = commentService.processCommentCreation(CommentMapper.INSTANCE.mapFromDtoToDomain(commentFormDTO));
+    public ResponseEntity<CommentDTO> addComment(@RequestBody CommentFormDTO commentToAdd){
+        Comment addedComment = commentService.processCommentCreation(CommentMapper.INSTANCE.mapFromDtoFormToDomainForm(commentToAdd));
 
-        CommentDTO commentDTO = buildCommentDTO(comment);
+        CommentDTO commentDTO = buildCommentDTO(addedComment);
 
         return new ResponseEntity<>(commentDTO,HttpStatus.CREATED);
     }
@@ -44,11 +44,11 @@ public class CommentController {
         return new ResponseEntity<>(pagedCommentsForTask,HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{commentId}")
+    @DeleteMapping("/delete")
     public ResponseEntity<?> deleteCommentForTask(
-            @PathVariable("commentId") Long commentId
+            @RequestBody CommentDTO commentDTO
     ){
-        commentService.deleteCommentForTask(commentId);
+        commentService.deleteComment(commentDTO.getCommentId());
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }

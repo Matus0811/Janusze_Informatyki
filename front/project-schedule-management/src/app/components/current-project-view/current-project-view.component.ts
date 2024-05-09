@@ -17,13 +17,12 @@ export class CurrentProjectViewComponent implements OnInit {
   projectMembers: User[] = [];
   page = 0;
 
-  constructor(private taskService : TaskService, private projectService : ProjectService){
-    this.project = history.state.project;
-
-  }
+  constructor(private taskService : TaskService, private projectService : ProjectService){}
   ngOnInit(): void {
+    this.project = history.state.project;
     this.loadProjectMembers()
     this.loadGroupedTasks();
+    this.projectMembersSize();
   }
 
 

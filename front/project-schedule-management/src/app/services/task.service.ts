@@ -65,4 +65,14 @@ export class TaskService {
       projectId: projectId
     };
   }
+
+  getPagedUsersAssignedToTask(taskCode: string, page: number) {
+    return instance.request({
+      method: "GET",
+      url: `/tasks/${taskCode}/users`,
+      params: {
+        page: page
+      }
+    });
+  }
 }

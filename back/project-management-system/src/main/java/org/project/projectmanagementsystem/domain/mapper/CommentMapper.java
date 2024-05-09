@@ -2,6 +2,7 @@ package org.project.projectmanagementsystem.domain.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
+import org.project.projectmanagementsystem.api.dto.CommentDTO;
 import org.project.projectmanagementsystem.api.dto.CommentFormDTO;
 import org.project.projectmanagementsystem.database.entities.CommentEntity;
 import org.project.projectmanagementsystem.domain.Comment;
@@ -12,8 +13,10 @@ public interface CommentMapper {
     CommentMapper INSTANCE = Mappers.getMapper(CommentMapper.class);
 
 
-    CommentForm mapFromDtoToDomain(CommentFormDTO commentFormDTO);
+    CommentForm mapFromDtoFormToDomainForm(CommentFormDTO commentFormDTO);
 
     CommentEntity mapFromDomainToEntity(Comment comment);
     Comment mapFromEntityToDomain(CommentEntity commentEntity);
+
+    Comment mapFromDtoToDomain(CommentDTO commentDTO);
 }

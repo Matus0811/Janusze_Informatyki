@@ -15,10 +15,10 @@ public interface CommentJpaRepository extends JpaRepository<CommentEntity,Long> 
     @Query("""
     SELECT ce FROM CommentEntity ce
     JOIN FETCH ce.task t
+    JOIN FETCH ce.user u
     WHERE t.taskId = :taskId
     """)
     Page<CommentEntity> findPagedCommentsForTask(@Param("taskId") Long taskId, Pageable pageable);
 
 
-    void deleteByCommentId(Long commentId);
 }

@@ -5,6 +5,7 @@ import org.project.projectmanagementsystem.database.entities.UserTaskEntity;
 import org.project.projectmanagementsystem.database.jpa.UserTaskJpaRepository;
 import org.project.projectmanagementsystem.domain.UserTask;
 import org.project.projectmanagementsystem.domain.mapper.UserTaskMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class UserTaskRepository {
     }
 
     public Optional<UserTask> findUserTask(String taskCode, String userEmail) {
-        return userTaskJpaRepository.findByTaskIdAndUserId(taskCode,userEmail)
+        return userTaskJpaRepository.findByTaskCodeAndUserEmail(taskCode,userEmail)
                 .map(UserTaskMapper.INSTANCE::mapFromEntityToDomain);
     }
 
@@ -50,5 +51,11 @@ public class UserTaskRepository {
                 .map(UserTaskMapper.INSTANCE::mapFromDomainToEntity)
                 .collect(Collectors.toList())
         );
+    }
+
+    public List<UserTask> findPagedUsersAssignedToTask(String taskCode, Pageable pageable) {
+        return userTaskJpaRepository.findPagedUsersAssignedToTask(taskCode,pageable).stream()
+                .map(UserTaskMapper.INSTANCE::mapFromEntityToDomain)
+                .collect(Collectors.toList());
     }
 }

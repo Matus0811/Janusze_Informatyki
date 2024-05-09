@@ -2,12 +2,14 @@ package org.project.projectmanagementsystem.services;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.project.projectmanagementsystem.api.dto.UserDTO;
 import org.project.projectmanagementsystem.database.UserTaskRepository;
 import org.project.projectmanagementsystem.domain.Task;
 import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.UserTask;
 import org.project.projectmanagementsystem.services.exceptions.task.TaskException;
 import org.project.projectmanagementsystem.services.exceptions.task.UserTaskNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -92,5 +94,17 @@ public class TaskUserService {
         return usersToAssign.stream()
                 .map(user -> UserTask.buildTaskUser(task, user))
                 .collect(Collectors.toList());
+    }
+
+    public List<UserTask> findPagedUsersAssignedToTask(String taskCode, Pageable pageable) {
+        return userTaskRepository.findPagedUsersAssignedToTask(taskCode,pageable);
+    }
+
+    @Transactional
+    public void removeUserAssignedToTask(String taskCode, String username) {
+        User assignedUser = userService.findByUsername(username);
+        UserTask userTask = findUserTask(taskCode,assignedUser.getEmail());
+
+        userTaskRepository.remove(userTask);
     }
 }

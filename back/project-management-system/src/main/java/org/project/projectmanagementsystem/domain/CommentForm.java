@@ -11,6 +11,6 @@ import org.project.projectmanagementsystem.database.entities.UserEntity;
 @Builder
 public class CommentForm {
     String text;
-    String userEmail;
+    String username;
     String taskCode;
 }
