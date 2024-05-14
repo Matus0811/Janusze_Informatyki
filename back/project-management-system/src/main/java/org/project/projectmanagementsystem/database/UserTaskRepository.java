@@ -58,4 +58,10 @@ public class UserTaskRepository {
                 .map(UserTaskMapper.INSTANCE::mapFromEntityToDomain)
                 .collect(Collectors.toList());
     }
+
+    public List<UserTask> findAllUsersAssignedToTask(String taskCode) {
+        return userTaskJpaRepository.findAllUsersAssignedToTask(taskCode).stream()
+                .map(UserTaskMapper.INSTANCE::mapFromEntityToDomain)
+                .collect(Collectors.toList());
+    }
 }

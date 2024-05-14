@@ -3,9 +3,7 @@ package org.project.projectmanagementsystem.services;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.project.projectmanagementsystem.domain.Project;
-import org.project.projectmanagementsystem.domain.Task;
-import org.project.projectmanagementsystem.domain.TaskForm;
+import org.project.projectmanagementsystem.domain.*;
 import org.project.projectmanagementsystem.util.TaskUtils;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +16,8 @@ import java.util.UUID;
 public class ProjectTaskService {
     private final ProjectService projectService;
     private final TaskService taskService;
+    private final UserProjectRoleService userProjectRoleService;
+    private final TaskUserService taskUserService;
 
 
     @Transactional
@@ -43,4 +43,15 @@ public class ProjectTaskService {
         );
     }
 
+    public List<User> findUsersInProjectNotAssignedToTaskWithUsername(UUID projectId, String taskCode, String username, Pageable pageable) {
+        List<Long> allAssignedUserToTaskIds = taskUserService.findAllUsersAssignedToTask(taskCode).stream()
+                .map(UserTask::getUser)
+                .map(User::getUserId)
+                .toList();
+
+        return userProjectRoleService.findPagedProjectMembersWithGivenUsernameNotIncludeUsersIdsInCurrentTask(projectId,username,pageable,allAssignedUserToTaskIds)
+                .stream()
+                .map(UserProjectRole::getUser)
+                .toList();
+    }
 }

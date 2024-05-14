@@ -10,6 +10,7 @@ import org.project.projectmanagementsystem.domain.mapper.FormMapper;
 import org.project.projectmanagementsystem.domain.mapper.ProjectMapper;
 import org.project.projectmanagementsystem.domain.mapper.UserMapper;
 import org.project.projectmanagementsystem.services.ProjectService;
+import org.project.projectmanagementsystem.services.ProjectTaskService;
 import org.project.projectmanagementsystem.services.ProjectUserService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,10 +29,10 @@ import java.util.UUID;
 public class ProjectController {
     private final ProjectService projectService;
     private final ProjectUserService projectUserService;
+    private final ProjectTaskService projectTaskService;
 
     @PostMapping("/create")
     public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectFormDTO project) {
-
         ProjectDTO createdProject = ProjectMapper.INSTANCE
                 .mapFromDomainToDto(
                         projectUserService.processProjectCreation(FormMapper.INSTANCE.mapFromDtoToDomain(project))
@@ -91,9 +92,9 @@ public class ProjectController {
     @PatchMapping("/{projectId}/add-users")
     public ResponseEntity<?> addUsersToProject(
             @PathVariable("projectId") UUID projectId,
-            @RequestBody List<String> emails
+            @RequestBody List<String> usernames
     ) {
-        projectUserService.addUsersToProject(projectId,emails);
+        projectUserService.addUsersToProject(projectId,usernames);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
@@ -139,5 +140,31 @@ public class ProjectController {
                 .map(UserMapper.INSTANCE::mapFromDomainToDto).toList();
 
         return new ResponseEntity<>(pagedProjectMember,HttpStatus.OK);
+    }
+
+    @GetMapping("/{projectId}/task/{taskCode}")
+    public ResponseEntity<List<UserDTO>> listUsersAssignedToProjectButNotAssignedToTask(
+            @PathVariable("projectId") UUID projectId,
+            @PathVariable("taskCode") String taskCode,
+            @RequestParam(name = "username") String username,
+            @RequestParam(name = "page") Integer page
+    ){
+        Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("u.username"));
+        List<UserDTO> foundUsers = projectTaskService.findUsersInProjectNotAssignedToTaskWithUsername(projectId,taskCode,username, pageable)
+                .stream()
+                .map(UserMapper.INSTANCE::mapFromDomainToDto)
+                .toList();
+
+        return new ResponseEntity<>(foundUsers,HttpStatus.OK);
+
+    }
+
+    @GetMapping("/{projectId}/project-members-size")
+    public ResponseEntity<Long> getProjectMembersSize(
+            @PathVariable("projectId") UUID projectId
+            ){
+        Long projectMembersSize = projectUserService.countProjectMembers(projectId);
+
+        return new ResponseEntity<>(projectMembersSize, HttpStatus.OK);
     }
 }

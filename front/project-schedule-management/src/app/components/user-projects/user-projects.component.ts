@@ -40,15 +40,15 @@ export class UserProjectsComponent implements OnInit{
     const dialogRef = this.dialog.open(AddProjectFormComponent);
 
     dialogRef.afterClosed().subscribe(result =>{
-      let projectForm = this.projectService.createProjectForm(result);
-      console.log(`PROJECT FROM OPENMODAL METHOD: ${JSON.stringify(projectForm)}`);
-      this.projectService.createProject(projectForm).then(
-        res => {
-          this.page = 0;
-          this.loadProjects();
-        }
-      );
-      this.router.navigate(["/projects/my-projects"]);
+      if(result){
+        let projectForm = this.projectService.createProjectForm(result);
+        this.projectService.createProject(projectForm).then(
+          res => {
+            this.page = 0;
+            this.loadProjects();
+          }
+        );
+      }
     }
   );
   }

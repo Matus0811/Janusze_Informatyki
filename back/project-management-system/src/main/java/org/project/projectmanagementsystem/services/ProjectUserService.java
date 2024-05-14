@@ -20,9 +20,10 @@ public class ProjectUserService {
     private final ProjectService projectService;
     private final UserProjectRoleService userProjectRoleService;
     private final TaskUserService taskUserService;
+    private final CommentService commentService;
     @Transactional
-    public void addUsersToProject(UUID projectId, List<String> emails) {
-        List<User> usersToAssignToProject = userService.findUsersByEmail(emails);
+    public void addUsersToProject(UUID projectId, List<String> usernames) {
+        List<User> usersToAssignToProject = userService.findUsersWithGivenUsernames(usernames);
         if (usersToAssignToProject.isEmpty()) {
             throw new UserAssignToProjectException("Cannot assign users to project, list is empty!", HttpStatus.CONFLICT);
         }
@@ -50,6 +51,7 @@ public class ProjectUserService {
     public void removeUserFromProject(UUID projectId, String email) {
         taskUserService.removeUserAssignedToTasks(projectId,email);
         userProjectRoleService.removeUserProjectRole(projectId, email);
+        commentService.removeUserCommentsInProject(email,projectId);
     }
 
     public List<Project> findAllUserProjectsAsMember(String userEmail, Pageable pageable) {
@@ -81,5 +83,9 @@ public class ProjectUserService {
 
     public List<User> findPagedProjectMembers(UUID projectId,Pageable pageable) {
         return userProjectRoleService.findPagedProjectMembers(projectId,pageable);
+    }
+
+    public Long countProjectMembers(UUID projectId) {
+        return userProjectRoleService.countProjectMembers(projectId);
     }
 }

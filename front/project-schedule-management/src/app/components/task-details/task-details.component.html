@@ -34,12 +34,11 @@
             <h3>Użytkownicy</h3>
           </div>
         </div>
-        <div class="col">
+        <div *ngIf="currentTask.status != 'FINISHED'" class="col">
           <a [matMenuTriggerFor]="settings" class="settings-btn">
             <i class="material-icons">more_vert</i>
           </a>
           <mat-menu #settings="matMenu">
-<!--            TODO dodawanie uzytkownika do zadania-->
             <a mat-menu-item (click)="addUsers(currentTask)">Dodaj użytkowników</a>
           </mat-menu>
         </div>

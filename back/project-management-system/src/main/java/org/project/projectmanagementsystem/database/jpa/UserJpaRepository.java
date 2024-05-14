@@ -1,7 +1,6 @@
 package org.project.projectmanagementsystem.database.jpa;
 
 import org.project.projectmanagementsystem.database.entities.UserEntity;
-import org.project.projectmanagementsystem.database.entities.UserProjectRoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,7 +23,7 @@ public interface UserJpaRepository extends JpaRepository<UserEntity,Long> {
     List<UserEntity> findUsersUnassignedToProject(@Param("projectId") UUID projectId);
 
     @Query("""
-    SELECT u FROM UserEntity u where u.email in :emails
+    SELECT u FROM UserEntity u where u.username in :usernames
     """)
-    List<UserEntity> findAllByEmail(@Param("emails") List<String> emails);
+    List<UserEntity> findAllByUsername(@Param("usernames") List<String> usernames);
 }

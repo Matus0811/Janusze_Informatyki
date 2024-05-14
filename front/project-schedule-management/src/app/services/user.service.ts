@@ -44,7 +44,7 @@ export class UserService {
 
   getLoggedUserData(): User {
     let data = localStorage.getItem("logged_user");
-    let user: User = {};
+    let user;
     if (data) {
       user = JSON.parse(data);
     }
@@ -59,6 +59,17 @@ export class UserService {
     httpAxios.request({
       method: 'GET',
       url: ``
+    })
+  }
+
+  findUsersInProjectNotAssignedToTask(projectId: string, taskCode: string, username: string | null, page: number)  {
+    return instance.request({
+      method: "GET",
+      url: `/projects/${projectId}/task/${taskCode}`,
+      params: {
+        username: username,
+        page: page
+      }
     })
   }
 }

@@ -5,21 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.project.projectmanagementsystem.database.UserRepository;
 import org.project.projectmanagementsystem.domain.Credentials;
 import org.project.projectmanagementsystem.domain.Role;
-import org.project.projectmanagementsystem.domain.Task;
 import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.services.exceptions.user.IncorrectPasswordException;
 import org.project.projectmanagementsystem.services.exceptions.user.UserExistsException;
 import org.project.projectmanagementsystem.services.exceptions.user.UserNotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -140,8 +135,8 @@ public class UserService {
                 });
     }
 
-    public List<User> findUsersByEmail(List<String> userEmails) {
-        return userRepository.findUsersByEmailList(userEmails);
+    public List<User> findUsersWithGivenUsernames(List<String> usernames) {
+        return userRepository.findUsersWithUsernames(usernames);
     }
 
     public User findById(Long userId) {

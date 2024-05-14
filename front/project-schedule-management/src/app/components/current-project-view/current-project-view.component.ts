@@ -14,15 +14,14 @@ import {Chart} from "chart.js/auto";
 export class CurrentProjectViewComponent implements OnInit {
   project: Project = {};
   groupedTaskByStatusList: TaskStatusCount[] = [];
-  projectMembers: User[] = [];
-  page = 0;
+  projectMembersSize : number = 0;
+  totalTasks: number = 0;
 
   constructor(private taskService : TaskService, private projectService : ProjectService){}
   ngOnInit(): void {
     this.project = history.state.project;
-    this.loadProjectMembers()
     this.loadGroupedTasks();
-    this.projectMembersSize();
+    this.countProjectMembers();
   }
 
 
@@ -31,21 +30,19 @@ export class CurrentProjectViewComponent implements OnInit {
       .then(response => {
         this.createChart(response.data);
         this.groupedTaskByStatusList = response.data;
+        this.totalTasks = this.groupedTaskByStatusList.map(value => value.count)
+          .reduce((prev, current) => prev + current);
       })
       .catch(error => console.log(error))
   }
 
-  private loadProjectMembers() {
-    this.projectService.getProjectMembers(this.project.projectId, this.page)
+  private countProjectMembers() {
+    this.projectService.countProjectMembers(this.project.projectId)
       .then(response => {
-        this.projectMembers = response.data;
-        this.page++;
+        this.projectMembersSize = response.data;
       });
   }
 
-  projectMembersSize(){
-    return this.projectMembers.length;
-  }
 
   private createChart(groupedTaskByStatusList: TaskStatusCount[]) {
     const ctx = document.getElementById('chart') as HTMLCanvasElement;

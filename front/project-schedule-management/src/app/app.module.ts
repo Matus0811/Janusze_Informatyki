@@ -28,6 +28,10 @@ import { TaskDetailsComponent } from './components/task-details/task-details.com
 import { AddTaskFormComponent } from './components/add-task-form/add-task-form.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { AddUsersToTaskComponent } from './components/add-users-to-task/add-users-to-task.component';
+import { ProjectUserListComponent } from './components/project-user-list/project-user-list.component';
+import { AddUserToProjectFormComponent } from './components/add-user-to-project-form/add-user-to-project-form.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +52,10 @@ import { AddCommentComponent } from './components/add-comment/add-comment.compon
     AddTaskFormComponent,
     CommentListComponent,
     AddCommentComponent,
+    PageNotFoundComponent,
+    AddUsersToTaskComponent,
+    ProjectUserListComponent,
+    AddUserToProjectFormComponent,
   ],
   imports: [
     BrowserModule,

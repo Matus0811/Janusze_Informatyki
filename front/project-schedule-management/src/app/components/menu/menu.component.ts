@@ -8,7 +8,7 @@ import {User} from "../../domain/user";
   styleUrl: './menu.component.css'
 })
 export class MenuComponent {
-  loggedUser: User = {};
+  loggedUser: User;
   constructor(private userService: UserService) {
     this.loggedUser = userService.getLoggedUserData();
   }

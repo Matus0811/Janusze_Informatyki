@@ -54,7 +54,7 @@ export class CommentListComponent implements OnInit {
   removeComment(commentToDelete: Comment) {
     this.commentService.removeComment(commentToDelete)
       .then(response => {
-          this.comments = this.comments.filter(deletedComment => deletedComment.commentId === commentToDelete.commentId);
+          this.comments = this.comments.filter(deletedComment => deletedComment.commentId !== commentToDelete.commentId);
           console.log(response);
         }
       );

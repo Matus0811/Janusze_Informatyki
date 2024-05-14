@@ -2,38 +2,81 @@
   <div class="row justify-content-md-center">
     <div class="col-md-12">
       <header class="header">
-        <h2 style="text-transform: uppercase;">Informacje o projekcie</h2>
+        <h1 class="display-6">{{ project.name }}</h1>
       </header>
-      <div class="project-info">
-        <p><b>Id:</b> {{ project.projectId }}</p>
-        <p><b>Nazwa:</b> {{ project.name }}</p>
+      <div class="row mt-5">
         <p><b>Opis:</b> {{ project.description }}</p>
-        <p><b>Data rozpoczęcia:</b> {{ project.startDate | date:"yyyy-MM-dd HH:mm:ss" }}</p>
-        <p *ngIf="project.finishDate"><b>Data ukończenia:</b> {{ project.finishDate | date:"yyyy-MM-dd HH:mm:ss" }}</p>
       </div>
     </div>
   </div>
-  <div class="row justify-content-md-around mt-md-5"
-       [hidden]="groupedTaskByStatusList.length == 0 || projectMembers.length == 0">
-    <div class="col-md-4">
-      <h3>Zadania</h3>
-      <canvas id="chart" width="300" height="300"></canvas>
-    </div>
-    <div class="col-md-4">
-      <h3>Liczba uzytkownikow</h3>
-
-      <div class="col-md-6 justify-content-md-around">
-        <p class="text-center">{{ this.projectMembers.length }}</p>
+  <div class="row justify-content-md-between mt-md-5">
+    <div class="col-md-5">
+      <div class="row border-bottom">
+        <h3>Zadania</h3>
+      </div>
+      <div class="row mt-3 justify-content-md-between">
+        <canvas id="chart" width="300" height="300"></canvas>
       </div>
     </div>
-  </div>
-
-  <div class="row justify-content-md-around mt-md-5">
-    <div class="col-md-6 align-content-center text-center">
-      <a routerLink="tasks" class="btn btn-dark">Wyświetl zadania</a>
-    </div>
-    <div class="col-md-6 align-content-center text-center">
-      <a href="#" class="btn btn-dark">Wyświetl użytkowników</a>
+    <div class="col-md-5">
+      <div class="row border-bottom">
+        <h3>Informacje o projekcie</h3>
+      </div>
+      <div class="row mt-3">
+        <div class="row">
+          <div routerLink="users" class="col-md-6 p-3 users cursor-pointer text-center">
+            <div class="row">
+              <p class="display-3">{{ projectMembersSize }}</p>
+            </div>
+            <div class="row">
+              <p class="text-dark"><b>Użytkowników</b></p>
+            </div>
+          </div>
+          <div routerLink="tasks" class="col-md-6 p-3 tasks cursor-pointer text-center">
+            <div class="row">
+              <p class="display-3">{{ totalTasks }}</p>
+            </div>
+            <div class="row">
+              <p><b>Zadania</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 p-3 start-date-info cursor-pointer">
+            <div class="row">
+              <p class="display-5 mb-0">{{ project.startDate | date:"yyyy" }}</p>
+              <p class="display-5">{{ project.startDate | date:"MM-dd" }}</p>
+            </div>
+            <div class="row text-center">
+              <p class="text-dark"><b>Data rozpoczęcia</b></p>
+            </div>
+          </div>
+          <div class="col-md-6 p-3 finish-date-info cursor-pointer">
+            <div *ngIf="project.finishDate; else noData" class="row">
+              <p class="display-5 mb-0">{{ project.finishDate | date:"yyyy" }}</p>
+              <p class="display-5">{{ project.finishDate | date:"MM-dd" }}</p>
+            </div>
+            <ng-template #noData>
+              <div class="row">
+                <p class="display-5 text-dark">Nie określono</p>
+              </div>
+            </ng-template>
+            <div class="row text-center align-content-end">
+              <p class="text-dark"><b>Data zakończenia</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 p-3 project-status-info text-center cursor-pointer">
+            <div class="row">
+              <p class="display-5">{{ project.projectStatus }}</p>
+            </div>
+            <div class="row text-center">
+              <p class="text-dark"><b>Status projektu</b></p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
   <router-outlet></router-outlet>

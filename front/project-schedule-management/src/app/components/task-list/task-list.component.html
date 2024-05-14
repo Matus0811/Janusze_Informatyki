@@ -1,5 +1,5 @@
 <div class="container-fluid mt-md-5">
-  <h1>Lista zadan</h1>
+  <h3>Lista zadan</h3>
   <div class="row justify-content-md-center">
     <div class="col-md-4 text-center">
       <button mat-raised-button (click)="openModal()">
@@ -59,7 +59,7 @@
       </div>
       <div class="col-md-1 d-flex justify-content-md-center">
         <a [matMenuTriggerFor]="settings" class="settings-btn">
-          <i class="material-icons">more_vert</i>
+          <i class="material-icons ">more_vert</i>
         </a>
         <mat-menu #settings="matMenu">
           <a mat-menu-item (click)="showTaskDetails(task)">Pokaż więcej</a>

@@ -2,6 +2,7 @@ package org.project.projectmanagementsystem.database.jpa;
 
 import org.project.projectmanagementsystem.database.entities.ProjectEntity;
 import org.project.projectmanagementsystem.database.entities.UserProjectRoleEntity;
+import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.UserProjectRole;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -97,4 +98,29 @@ public interface UserProjectRoleJpaRepository extends JpaRepository<UserProjectR
     AND r.name = 'TEAM_MEMBER'
     """)
     Page<UserProjectRoleEntity> findPagedProjectMembers(@Param("projectId") UUID projectId, Pageable pageable);
+
+    @Query("""
+    SELECT upre FROM UserProjectRoleEntity upre
+    JOIN FETCH upre.project p
+    JOIN FETCH upre.user u
+    JOIN FETCH upre.role r
+    WHERE p.projectId = :projectId
+    AND r.name = 'TEAM_MEMBER'
+    AND LOWER(u.username) LIKE LOWER(CONCAT(:username,'%'))
+    AND u.userId NOT IN :userIds
+    """)
+    List<UserProjectRoleEntity> findPagedProjectMembersWithGivenUsernameNotIncludeUsersIdsInCurrentTask(
+            @Param("projectId") UUID projectId,
+            @Param("username") String username,
+            Pageable pageable,
+            @Param("userIds") List<Long> allAssignedUserToTaskIds
+    );
+
+    @Query("""
+    SELECT COUNT (upre) FROM UserProjectRoleEntity upre
+    JOIN upre.project p
+    where p.projectId = :projectId
+    """)
+    Long countProjectMembers(@Param("projectId") UUID projectId);
+
 }

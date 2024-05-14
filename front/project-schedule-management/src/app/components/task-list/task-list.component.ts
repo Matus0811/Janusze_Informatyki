@@ -99,7 +99,6 @@ export class TaskListComponent implements OnInit {
         this.taskService.createTask(taskToCreate).then(response =>{
             let createdTask:Task = response.data;
             this.tasks = [createdTask,...this.tasks];
-
           }
         )
       }

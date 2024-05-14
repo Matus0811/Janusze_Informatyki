@@ -1,6 +1,7 @@
 package org.project.projectmanagementsystem.database.jpa;
 
 import org.project.projectmanagementsystem.database.entities.UserTaskEntity;
+import org.project.projectmanagementsystem.domain.UserTask;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -50,4 +51,12 @@ public interface UserTaskJpaRepository extends JpaRepository<UserTaskEntity, Lon
     WHERE t.taskCode = :taskCode
     """)
     List<UserTaskEntity> findPagedUsersAssignedToTask(@Param("taskCode") String taskCode, Pageable pageable);
+
+    @Query("""
+    SELECT ute FROM UserTaskEntity ute
+    JOIN FETCH ute.user u
+    JOIN FETCH ute.task t
+    WHERE t.taskCode = :taskCode
+    """)
+    List<UserTaskEntity> findAllUsersAssignedToTask(@Param("taskCode") String taskCode);
 }

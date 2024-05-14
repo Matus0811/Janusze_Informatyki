@@ -3,16 +3,14 @@ package org.project.projectmanagementsystem.services;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.CommentRepository;
-import org.project.projectmanagementsystem.domain.Comment;
-import org.project.projectmanagementsystem.domain.CommentForm;
-import org.project.projectmanagementsystem.domain.Task;
-import org.project.projectmanagementsystem.domain.User;
+import org.project.projectmanagementsystem.domain.*;
 import org.project.projectmanagementsystem.services.exceptions.AppException;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +31,11 @@ public class CommentService {
         Comment newComment = Comment.buildComment(commentText, task, user);
 
         return commentRepository.save(newComment);
+    }
+
+    public void removeUserCommentsInProject(String userEmail, UUID projectId){
+        List<Comment> commentsToDelete = commentRepository.findAllUserCommentsInProject(userEmail,projectId);
+        commentRepository.removeUserCommentsInProject(commentsToDelete);
     }
 
     @Transactional

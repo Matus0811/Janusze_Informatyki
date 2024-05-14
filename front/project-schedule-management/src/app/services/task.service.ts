@@ -6,6 +6,7 @@ import {AxiosResponse} from "axios";
 import instance from "../http-axios";
 import {TaskStatus} from "../domain/task-status";
 import {TaskForm} from "../domain/task-form";
+import {User} from "../domain/user";
 
 @Injectable({
   providedIn: 'root'
@@ -74,5 +75,20 @@ export class TaskService {
         page: page
       }
     });
+  }
+
+  addUsersToTask(usersToAdd: User[], taskCode: string) {
+    return instance.request({
+      method: "PATCH",
+      url: `/tasks/${taskCode}/add-users`,
+      data : usersToAdd
+    })
+  }
+
+  removeUserFromTask(taskCode: string, userToRemove: User) {
+    return instance.request({
+      method: "DELETE",
+      url: `/${taskCode}/remove-user`
+    })
   }
 }

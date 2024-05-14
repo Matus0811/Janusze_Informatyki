@@ -24,12 +24,6 @@ public class BugService {
         Project projectWithBug = projectService.findById(bugForm.getProjectId());
         User reporter = userService.findByEmail(bugForm.getUserEmail());
 
-        // status tylko zmieniany jezeli projekt jest ukończony
-        if(Project.ProjectStatus.FINISHED == projectWithBug.getProjectStatus()){
-            projectWithBug = projectWithBug.withFinishDate(null);
-            projectService.updateProjectStatus(projectWithBug, Project.ProjectStatus.BUG_FOUND);
-        }
-
         Bug bugToCreate = Bug.buildBug(bugForm,reporter,projectWithBug);
         Task bugTask = Task.buildBugTask(bugToCreate);
 

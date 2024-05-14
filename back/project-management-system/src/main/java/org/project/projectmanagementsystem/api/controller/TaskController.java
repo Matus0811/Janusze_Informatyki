@@ -64,9 +64,9 @@ public class TaskController {
     @PatchMapping("/{taskCode}/add-users")
     public ResponseEntity<?> addUsersToTask(
             @PathVariable("taskCode") String taskCode,
-            @RequestBody List<String> userEmails) {
+            @RequestBody List<UserDTO> usersToAdd) {
 
-        taskUserService.addUsersToTask(taskCode, userEmails);
+        taskUserService.addUsersToTask(taskCode, usersToAdd.stream().map(UserMapper.INSTANCE::mapFromDtoToDomain).toList());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

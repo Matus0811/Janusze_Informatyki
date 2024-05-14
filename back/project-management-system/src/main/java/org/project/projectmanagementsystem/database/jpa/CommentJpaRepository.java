@@ -1,15 +1,14 @@
 package org.project.projectmanagementsystem.database.jpa;
 
 import org.project.projectmanagementsystem.database.entities.CommentEntity;
-import org.project.projectmanagementsystem.domain.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface CommentJpaRepository extends JpaRepository<CommentEntity,Long> {
     @Query("""
@@ -20,5 +19,10 @@ public interface CommentJpaRepository extends JpaRepository<CommentEntity,Long> 
     """)
     Page<CommentEntity> findPagedCommentsForTask(@Param("taskId") Long taskId, Pageable pageable);
 
-
+    @Query("""
+    SELECT ce FROM CommentEntity ce
+    WHERE ce.user.email = :email
+    AND ce.task.project.projectId = :projectId
+    """)
+    List<CommentEntity> findAllUserCommentsInProject(@Param("email") String userEmail, @Param("projectId")UUID projectId);
 }

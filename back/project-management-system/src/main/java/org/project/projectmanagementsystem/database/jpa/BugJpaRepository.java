@@ -14,6 +14,7 @@ public interface BugJpaRepository extends JpaRepository<BugEntity,Long> {
     SELECT be FROM BugEntity be
     JOIN FETCH be.project p
     WHERE p.projectId = :projectId
+    AND be.fixedDate IS NULL
     """)
     Optional<BugEntity> findBugWithProjectId(@Param("projectId") UUID projectId);
 }

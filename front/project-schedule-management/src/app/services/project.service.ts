@@ -8,6 +8,7 @@ import {ProjectForm} from "../domain/project-form";
 import {UserService} from "./user.service";
 import {UUID} from "node:crypto";
 import httpAxios from "../http-axios";
+import {User} from "../domain/user";
 
 @Injectable({
   providedIn: 'root'
@@ -21,13 +22,13 @@ export class ProjectService {
     // this.axiosService.request("GET",`${environment.url}/`)
   }
 
-  findPagedUserProjects(email: string | undefined, page: number) {
+  findPagedUserProjects(projectsOwnerEmail: string | undefined, page: number) {
     return instance.request({
       method: "GET",
       url:`/projects`,
       params: {
         page: page,
-        email: email
+        email: projectsOwnerEmail
       }
   });
   }
@@ -45,16 +46,33 @@ export class ProjectService {
       email: this.userService.getLoggedUserData().email,
       name: value.name,
       description: value.description,
-      finishDate: new Date(value.finishDate)
+      finishDate: new Date(value.finishDate),
     };
   }
 
-  getProjectMembers(projectId: UUID | undefined, page: number) {
+  getProjectMembers(projectId:string, page: number) {
     return instance.request({
       method: 'GET',
       url: `/projects/${projectId}/project-members`,
       params: {
         page: page
+      }
+    })
+  }
+
+  countProjectMembers(projectId: UUID | undefined){
+    return instance.request({
+      method: "GET",
+      url: `/projects/${projectId}/project-members-size`
+    })
+  }
+
+  removeUserFromProject(projectId:UUID | undefined | string,userToRemove: User) {
+    return instance.request({
+      method: "DELETE",
+      url: `/projects/${projectId}/remove-user`,
+      params: {
+        memberEmail: userToRemove.email
       }
     })
   }

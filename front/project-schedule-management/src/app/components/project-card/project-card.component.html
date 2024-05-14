@@ -1,14 +1,23 @@
-<div class="project-name-content">
-  <h2 class="project-name">{{ project.name }}</h2>
-</div>
-<div class="project-details">
-  <p class="project-description">{{ project.description }}</p>
-  <p class="project-date"><b>Data rozpoczęcia:</b> {{ project.startDate | date:"yyyy-MM-dd HH:mm:ss" }}</p>
-  <p *ngIf="project.finishDate" class="project-date"><b>Data ukończenia:</b> {{ project.finishDate | date:"yyyy-MM-dd HH:mm:ss" }}</p>
-</div>
-<div class="project-button-container">
-  <a class="project-button" (click)="goToProject()">
-    Przejdź do projektu
-  </a>
-</div>
+<div class="col m-3">
+  <div class="card">
+    <div class="card-body">
+      <div class="card-header mb-3">
+        <h5 class="card-title">{{project.name}}</h5>
+      </div>
+      <div class="row">
+        <p class="card-text">{{project.description}}</p>
+        <div class="row">
+          <div class="col-md-8">
+            <button class="btn btn-primary" (click)="goToProject()">
+            Przejdź do projektu
+            </button>
+          </div>
 
+          <div class="col-md-4">
+            Usun
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

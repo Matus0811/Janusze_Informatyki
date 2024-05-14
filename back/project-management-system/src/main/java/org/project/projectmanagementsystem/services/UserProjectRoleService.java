@@ -65,4 +65,22 @@ public class UserProjectRoleService {
                 .map(UserProjectRole::getUser)
                 .toList();
     }
+
+    public List<UserProjectRole> findPagedProjectMembersWithGivenUsernameNotIncludeUsersIdsInCurrentTask(
+            UUID projectId,
+            String username,
+            Pageable pageable,
+            List<Long> allAssignedUserToTaskIds
+    ) {
+        return userProjectRoleRepository.findPagedProjectMembersWithGivenUsernameNotIncludeUsersIdsInCurrentTask(
+                 projectId,
+                 username,
+                 pageable,
+                allAssignedUserToTaskIds
+        );
+    }
+
+    public Long countProjectMembers(UUID projectId) {
+        return userProjectRoleRepository.countProjectMembers(projectId);
+    }
 }

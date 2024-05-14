@@ -7,6 +7,7 @@ import {UserProjectsComponent} from "./components/user-projects/user-projects.co
 import {CurrentProjectViewComponent} from "./components/current-project-view/current-project-view.component";
 import {TaskListComponent} from "./components/task-list/task-list.component";
 import {TaskDetailsComponent} from "./components/task-details/task-details.component";
+import {ProjectUserListComponent} from "./components/project-user-list/project-user-list.component";
 
 const routes: Routes = [
   {
@@ -36,10 +37,10 @@ const routes: Routes = [
             path: 'tasks',
             component: TaskListComponent
           },
-          // {
-          //   path: 'users',
-          //   component: ProjectUserListComponent
-          // }
+          {
+            path: 'users',
+            component: ProjectUserListComponent
+          }
         ]
       },
       {

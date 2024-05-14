@@ -34,8 +34,8 @@ public class UserRepository{
         return byUsername.map(UserMapper.INSTANCE::mapFromEntityToDomain);
     }
 
-    public List<User> findUsersByEmailList(List<String> userEmails) {
-        return userJpaRepository.findAllByEmail(userEmails).stream()
+    public List<User> findUsersWithUsernames(List<String> userEmails) {
+        return userJpaRepository.findAllByUsername(userEmails).stream()
                 .map(UserMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
     }

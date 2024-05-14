@@ -33,3 +33,51 @@
   text-align: center;
 }
 
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.users{
+  background-color: #08c26c;
+  transition: background-color .2s;
+}
+
+.users:hover{
+  background-color: #07b15b;
+}
+
+.tasks{
+  background-color: #6C8DFF;
+  transition: background-color .2s;
+}
+
+.tasks:hover{
+  background-color: #5b7cee;
+}
+
+.start-date-info{
+  background-color: #ff8b43;
+  transition: background-color .2s;
+}
+
+.start-date-info:hover{
+  background-color: #ee7a32;
+}
+
+.finish-date-info{
+  background-color: #ff4a46;
+  transition: background-color .2s;
+}
+
+.finish-date-info:hover{
+  background-color: #ee3935;
+}
+
+.project-status-info{
+  background-color: #ffcd32;
+  transition: background-color .2s;
+}
+
+.project-status-info:hover{
+  background-color: #eebc21;
+}

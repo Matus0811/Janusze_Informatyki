@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.api.dto.UserDTO;
 import org.project.projectmanagementsystem.database.UserTaskRepository;
+import org.project.projectmanagementsystem.domain.Project;
 import org.project.projectmanagementsystem.domain.Task;
 import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.UserTask;
@@ -73,8 +74,9 @@ public class TaskUserService {
 
 
     @Transactional
-    public void addUsersToTask(String taskCode, List<String> usersEmail) {
-        List<User> usersToAssign = userService.findUsersByEmail(usersEmail);
+    public void addUsersToTask(String taskCode, List<User> usersToAdd) {
+        List<String> usernames = usersToAdd.stream().map(User::getUsername).toList();
+        List<User> usersToAssign = userService.findUsersWithGivenUsernames(usernames);
         Task task = taskService.findByTaskCode(taskCode);
 
         if (task.getStatus() == Task.TaskStatus.FINISHED) {
@@ -106,5 +108,9 @@ public class TaskUserService {
         UserTask userTask = findUserTask(taskCode,assignedUser.getEmail());
 
         userTaskRepository.remove(userTask);
+    }
+
+    public List<UserTask> findAllUsersAssignedToTask(String taskCode) {
+        return userTaskRepository.findAllUsersAssignedToTask(taskCode);
     }
 }

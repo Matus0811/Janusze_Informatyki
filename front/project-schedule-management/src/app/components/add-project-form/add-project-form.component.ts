@@ -1,7 +1,6 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MatDialogRef} from "@angular/material/dialog";
-import {UserService} from "../../services/user.service";
 import {ProjectService} from "../../services/project.service";
 import {ProjectForm} from "../../domain/project-form";
 

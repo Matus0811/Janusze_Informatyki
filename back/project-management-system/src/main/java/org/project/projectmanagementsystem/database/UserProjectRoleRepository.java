@@ -70,4 +70,20 @@ public class UserProjectRoleRepository {
                 .stream().map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain)
                 .collect(Collectors.toList());
     }
+
+    public List<UserProjectRole> findPagedProjectMembersWithGivenUsernameNotIncludeUsersIdsInCurrentTask(
+            UUID projectId,
+            String username,
+            Pageable pageable,
+            List<Long> allAssignedUserToTaskIds
+    ) {
+        return userProjectRoleJpaRepository.findPagedProjectMembersWithGivenUsernameNotIncludeUsersIdsInCurrentTask(
+                projectId,username,pageable,allAssignedUserToTaskIds
+        ).stream()
+                .map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain).toList();
+    }
+
+    public Long countProjectMembers(UUID projectId) {
+        return userProjectRoleJpaRepository.countProjectMembers(projectId);
+    }
 }

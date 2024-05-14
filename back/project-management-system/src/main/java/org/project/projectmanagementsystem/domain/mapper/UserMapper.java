@@ -17,6 +17,7 @@ public interface UserMapper {
     UserFormDTO mapFromDomainToFormDto(User user);
 
     UserDTO mapFromDomainToDto(User user);
+    User mapFromDtoToDomain(UserDTO userDTO);
 
     User mapFromEntityToDomain(UserEntity user);
 
