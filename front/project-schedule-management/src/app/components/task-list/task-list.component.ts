@@ -26,7 +26,7 @@ export class TaskListComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private dialog: MatDialog,
     private projectService: ProjectService
-    ) {
+  ) {
   }
 
   ngOnInit(): void {
@@ -95,12 +95,14 @@ export class TaskListComponent implements OnInit {
     const dialogRef = this.dialog.open(AddTaskFormComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-        let taskToCreate = this.taskService.createTaskForm(result,this.projectId);
-        this.taskService.createTask(taskToCreate).then(response =>{
-            let createdTask:Task = response.data;
-            this.tasks = [createdTask,...this.tasks];
-          }
-        )
+        if (result) {
+          let taskToCreate = this.taskService.createTaskForm(result, this.projectId);
+          this.taskService.createTask(taskToCreate).then(response => {
+              let createdTask: Task = response.data;
+              this.tasks = [createdTask, ...this.tasks];
+            }
+          );
+        }
       }
     );
   }

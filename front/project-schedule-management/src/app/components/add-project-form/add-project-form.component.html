@@ -16,10 +16,11 @@
       <input class="d-block project-input" id="finish-date" type="datetime-local" formControlName="finishDate">
     </div>
   </form>
+
+  <div class="buttons-container">
+    <button class="add-project-button" (click)="close()">Zamknij</button>
+    <button class="add-project-button" type="submit" (click)="submitForm()">Dodaj projekt</button>
+  </div>
 </mat-dialog-content>
 
-<div class="buttons-container">
-  <button class="add-project-button" (click)="close()">Zamknij</button>
-  <button class="add-project-button" type="submit" (click)="submitForm()">Dodaj projekt</button>
-</div>
 

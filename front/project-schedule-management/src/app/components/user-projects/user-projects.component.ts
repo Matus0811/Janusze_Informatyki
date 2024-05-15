@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
   templateUrl: './user-projects.component.html',
   styleUrl: './user-projects.component.css'
 })
-export class UserProjectsComponent implements OnInit{
+export class UserProjectsComponent implements OnInit {
   projects: Project[] = [];
   page = 0;
   lastLoadedPageSize = 0;
@@ -20,7 +20,8 @@ export class UserProjectsComponent implements OnInit{
               private userService: UserService,
               private dialog: MatDialog,
               private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.loadProjects();
@@ -28,7 +29,7 @@ export class UserProjectsComponent implements OnInit{
 
   private loadProjects() {
     let currentUser = this.userService.getLoggedUserData();
-    this.projectService.findPagedUserProjects(currentUser.email,this.page).then(
+    this.projectService.findPagedUserProjects(currentUser.email, this.page).then(
       value => {
         this.projects = value.data;
         this.lastLoadedPageSize = value.data.length;
@@ -39,25 +40,23 @@ export class UserProjectsComponent implements OnInit{
   openModal() {
     const dialogRef = this.dialog.open(AddProjectFormComponent);
 
-    dialogRef.afterClosed().subscribe(result =>{
-      if(result){
+    dialogRef.afterClosed().subscribe(result => {
         let projectForm = this.projectService.createProjectForm(result);
-        this.projectService.createProject(projectForm).then(
-          res => {
+        console.log(projectForm);
+        this.projectService.createProject(projectForm).then(res => {
             this.page = 0;
             this.loadProjects();
           }
         );
       }
-    }
-  );
+    );
   }
 
   public loadProjectPage() {
     let currentUser = this.userService.getLoggedUserData();
     this.page++;
 
-    this.projectService.findPagedUserProjects(currentUser.email,this.page).then(
+    this.projectService.findPagedUserProjects(currentUser.email, this.page).then(
       value => {
         this.lastLoadedPageSize = value.data.length;
         this.projects = [...this.projects, ...value.data];

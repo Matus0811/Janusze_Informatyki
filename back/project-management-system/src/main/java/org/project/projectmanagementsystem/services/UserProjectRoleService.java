@@ -23,10 +23,12 @@ public class UserProjectRoleService {
         return userProjectRoleRepository.addUserProjectRole(userProjectRoleEntityToSave);
     }
 
-    public List<UserProjectRole> findUnassignedUsersToProjectWhereUsernameStartsWith(Project project, String word) {
-        UUID projectId = project.getProjectId();
-
-        return userProjectRoleRepository.findUnassignedUsersToProjectWhereUsernameStartsWith(projectId,word);
+    public List<UserProjectRole> findUnassignedUsersToProjectWhereUsernameStartsWith(Project project, String word, Pageable pageable) {
+        return userProjectRoleRepository.findUnassignedUsersToProjectWhereUsernameStartsWith(
+                project.getProjectId(),
+                word,
+                pageable
+                );
     }
 
     public void removeUserProjectRole(UUID projectId, String userEmail) {
@@ -82,5 +84,9 @@ public class UserProjectRoleService {
 
     public Long countProjectMembers(UUID projectId) {
         return userProjectRoleRepository.countProjectMembers(projectId);
+    }
+
+    public boolean existProjectName(String name, String email) {
+        return userProjectRoleRepository.findOwnerProjectName(name, email).isPresent();
     }
 }

@@ -89,11 +89,12 @@ public class ProjectController {
         return new ResponseEntity<>(projectDTO, HttpStatus.OK);
     }
 
-    @PatchMapping("/{projectId}/add-users")
+    @PostMapping("/{projectId}/add-users")
     public ResponseEntity<?> addUsersToProject(
             @PathVariable("projectId") UUID projectId,
-            @RequestBody List<String> usernames
+            @RequestBody List<UserDTO> userDTOS
     ) {
+        List<String> usernames = userDTOS.stream().map(UserDTO::username).toList();
         projectUserService.addUsersToProject(projectId,usernames);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
@@ -119,10 +120,12 @@ public class ProjectController {
     @GetMapping("/{projectId}/unassigned-users")
     public ResponseEntity<List<UserDTO>> getUnassignedUsers(
             @PathVariable(name = "projectId") UUID projectId,
-            @RequestParam(name="username") String username
+            @RequestParam(name="username") String username,
+            @RequestParam(name="page") Integer page
     ) {
         log.info("Searching unassigned users to project: [{}]", projectId);
-        List<UserDTO> users = projectUserService.getUnassignedUsers(projectId,username).stream()
+        Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("u.username"));
+        List<UserDTO> users = projectUserService.getUnassignedUsers(projectId,username,pageable).stream()
                 .map(UserMapper.INSTANCE::mapFromDomainToDto)
                 .toList();
 

@@ -2,9 +2,7 @@ package org.project.projectmanagementsystem.services;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.project.projectmanagementsystem.api.dto.UserDTO;
 import org.project.projectmanagementsystem.database.UserTaskRepository;
-import org.project.projectmanagementsystem.domain.Project;
 import org.project.projectmanagementsystem.domain.Task;
 import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.UserTask;
@@ -51,7 +49,7 @@ public class TaskUserService {
 
         if (numberOfUsersWorkingOnTask == 0) {
             if(Task.TaskStatus.BUG == task.getStatus()){
-                bugService.finishBugForProject(task.getProject());
+                bugService.finishBugForTask(task);
             }
             task = task.withStatus(Task.TaskStatus.FINISHED).withFinishDate(OffsetDateTime.now());
             taskService.save(task);

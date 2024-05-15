@@ -1,0 +1,50 @@
+<div class="container-fluid mt-md-5">
+  <h3>Lista użytkowników</h3>
+  <div class="row justify-content-md-center mb-2">
+    <div class="col-md-4 text-center">
+      <button mat-raised-button (click)="openModal()">
+        <mat-icon>add</mat-icon>
+        Dodaj użytkownika
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="projectUsers.length > 0; else emptyArray" class="container-fluid">
+    <div class="row p-3 fw-bold border">
+      <div class="col-md-3">Imię i nazwisko</div>
+      <div class="col-md-2">Nazwa użytkownika</div>
+      <div class="col-md-4">Email</div>
+      <div class="col-md-2">Numer telefonu</div>
+    </div>
+    <div class="row border-bottom p-3 text-dark hover-div" *ngFor="let user of projectUsers">
+      <div class="col-md-3">
+        <p>{{user.name}} {{user.surname}}</p>
+      </div>
+      <div class="col-md-2">
+        <p>{{user.username}}</p>
+      </div>
+      <div class="col-md-4">
+        <p>{{user.email}}</p>
+      </div>
+      <div class="col-md-2">
+        <p>{{user.phone}}</p>
+      </div>
+      <div class="col-md-1 d-flex justify-content-md-center">
+        <a [matMenuTriggerFor]="settings" class="settings-btn">
+          <i class="material-icons ">more_vert</i>
+        </a>
+        <mat-menu #settings="matMenu">
+          <a mat-menu-item (click)="removeUser(user)" class="text-bg-danger">Usuń</a>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+  <div>
+    <ng-template #emptyArray><p>Lista jest pusta</p></ng-template>
+  </div>
+  <div *ngIf="lastLoadedUsersSize == 6" class="row justify-content-md-center mt-3">
+    <div class="col-md-4 text-center">
+      <button mat-raised-button (click)="loadMoreUsers()">Pokaż więcej</button>
+    </div>
+  </div>
+</div>

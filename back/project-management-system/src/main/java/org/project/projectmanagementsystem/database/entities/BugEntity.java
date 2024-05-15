@@ -34,6 +34,10 @@ public class BugEntity {
     private ProjectEntity project;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_id")
+    private TaskEntity taskEntity;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="user_id")
     private UserEntity user;
 

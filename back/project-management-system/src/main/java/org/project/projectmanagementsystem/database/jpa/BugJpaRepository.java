@@ -13,8 +13,10 @@ public interface BugJpaRepository extends JpaRepository<BugEntity,Long> {
     @Query("""
     SELECT be FROM BugEntity be
     JOIN FETCH be.project p
+    JOIN FETCH be.taskEntity t
     WHERE p.projectId = :projectId
     AND be.fixedDate IS NULL
+    AND t.taskCode = :taskCode
     """)
-    Optional<BugEntity> findBugWithProjectId(@Param("projectId") UUID projectId);
+    Optional<BugEntity> findBugWithProjectIdAndTask(@Param("projectId") UUID projectId, @Param("taskCode") String taskCode);
 }

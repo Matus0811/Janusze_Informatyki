@@ -49,11 +49,6 @@ public class ProjectService {
         return projectRepository.findNotFinishedUserProjectsPaged(ownerEmail,pageable);
     }
 
-
-    public boolean projectExists(String projectName) {
-        return projectRepository.findByName(projectName).isPresent();
-    }
-
     @Transactional
     public void removeProject(UUID projectId) {
         Project projectToDelete = findById(projectId);

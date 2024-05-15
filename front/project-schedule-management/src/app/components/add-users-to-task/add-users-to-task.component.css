@@ -1,0 +1,15 @@
+.add-user-btn{
+  background-color: #19d37d;
+}
+
+.add-user-btn:hover{
+  background-color: #08c26c;
+}
+
+.remove-user-btn{
+  background-color: rgb(220,53,69);
+}
+
+.remove-user-btn:hover{
+  background-color: rgba(220,53,69,0.9);
+}

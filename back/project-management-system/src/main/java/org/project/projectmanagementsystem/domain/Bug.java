@@ -15,12 +15,13 @@ public class Bug {
     String title;
     String description;
     Project project;
+    Task task;
     User user;
     Bug.BugType bugType;
     OffsetDateTime reportDate;
     OffsetDateTime fixedDate;
 
-    public static Bug buildBug(BugForm bugForm,User reporter, Project projectWithBug) {
+    public static Bug buildBug(BugForm bugForm,User reporter, Project projectWithBug, Task task) {
         return Bug.builder()
                 .serialNumber(UUID.randomUUID().toString())
                 .title(bugForm.getTitle())

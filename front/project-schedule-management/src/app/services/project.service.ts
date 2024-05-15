@@ -33,7 +33,7 @@ export class ProjectService {
   });
   }
 
-  createProject(projectForm: ProjectForm) {
+  createProject(projectForm: any) {
     return instance.request({
       method: "POST",
       url: '/projects/create',
@@ -46,7 +46,7 @@ export class ProjectService {
       email: this.userService.getLoggedUserData().email,
       name: value.name,
       description: value.description,
-      finishDate: new Date(value.finishDate),
+      finishDate: new Date(value.finishDate)
     };
   }
 
@@ -74,6 +74,14 @@ export class ProjectService {
       params: {
         memberEmail: userToRemove.email
       }
+    })
+  }
+
+  addUsersToProject(projectId: string, usersToAdd: any) {
+    return instance.request({
+      method: "POST",
+      url: `/projects/${projectId}/add-users`,
+      data: usersToAdd
     })
   }
 }

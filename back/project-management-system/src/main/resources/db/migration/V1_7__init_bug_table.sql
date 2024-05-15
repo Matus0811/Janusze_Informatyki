@@ -5,6 +5,7 @@ CREATE TABLE bug
     title         VARCHAR(255)             NOT NULL,
     description   TEXT                     NOT NULL,
     project_id    uuid                     NOT NULL,
+    task_id       INT                      NOT NULL,
     user_id       INT                      NOT NULL,
     type          VARCHAR(32)              NOT NULL,
     report_date   TIMESTAMP WITH TIME ZONE NOT NULL,
@@ -14,5 +15,8 @@ CREATE TABLE bug
             REFERENCES project (project_id),
     CONSTRAINT fk_bug_user
         FOREIGN KEY (user_id)
-            REFERENCES user_table (user_id)
+            REFERENCES user_table (user_id),
+    CONSTRAINT fk_bug_task
+        FOREIGN KEY (task_id)
+            REFERENCES task (task_id)
 );

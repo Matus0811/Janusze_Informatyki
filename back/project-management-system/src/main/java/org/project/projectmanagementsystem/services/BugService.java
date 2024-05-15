@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,24 +23,30 @@ public class BugService {
         Project projectWithBug = projectService.findById(bugForm.getProjectId());
         User reporter = userService.findByEmail(bugForm.getUserEmail());
 
-        Bug bugToCreate = Bug.buildBug(bugForm,reporter,projectWithBug);
-        Task bugTask = Task.buildBugTask(bugToCreate);
+        Task bugTask = Task.buildBugTask();
+        Bug bugToCreate = Bug.buildBug(bugForm,reporter,projectWithBug,bugTask);
 
-        taskService.createTask(bugTask);
+        bugTask = bugTask.withName(bugToCreate.getTitle())
+                .withDescription(bugToCreate.getDescription())
+                .withProject(projectWithBug);
+
+        Task createdTask = taskService.createTask(bugTask);
+
+        bugToCreate = bugToCreate.withTask(createdTask);
 
         return bugRepository.save(bugToCreate);
     }
 
 
-    public Bug findBugWithProject(UUID projectId) {
-        return bugRepository.findBugWithProjectId(projectId)
+    public Bug findBugForTask(Task task) {
+        return bugRepository.findBugForTask(task)
                 .orElseThrow(() -> new BugNotFoundException(
-                        "Bug with project [%s] not found".formatted(projectId), HttpStatus.NOT_FOUND)
+                        "Bug with project [%s] not found".formatted(task.getProject().getProjectId()), HttpStatus.NOT_FOUND)
                 );
     }
 
-    public void finishBugForProject(Project project) {
-        Bug bugToFinish = findBugWithProject(project.getProjectId());
+    public void finishBugForTask(Task task) {
+        Bug bugToFinish = findBugForTask(task);
         bugToFinish = bugToFinish.withFixedDate(OffsetDateTime.now());
 
         bugRepository.save(bugToFinish);

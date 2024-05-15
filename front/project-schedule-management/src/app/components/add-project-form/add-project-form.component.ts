@@ -22,8 +22,7 @@ export class AddProjectFormComponent {
 
   submitForm(){
     if(this.projectForm.valid){
-      const projectForm: ProjectForm = this.projectService.createProjectForm(this.projectForm.value);
-      this.dialogRef.close(projectForm);
+      this.dialogRef.close(this.projectForm.value);
     }
   }
 

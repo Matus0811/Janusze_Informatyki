@@ -51,7 +51,7 @@ export class UserService {
     return user;
   }
 
-  public getLoggedUsername(){
+  public getLoggedUsername() {
     return this.getLoggedUserData().username;
   }
 
@@ -62,13 +62,24 @@ export class UserService {
     })
   }
 
-  findUsersInProjectNotAssignedToTask(projectId: string, taskCode: string, username: string | null, page: number)  {
+  findUsersInProjectNotAssignedToTask(projectId: string, taskCode: string, username: string | null, page: number) {
     return instance.request({
       method: "GET",
       url: `/projects/${projectId}/task/${taskCode}`,
       params: {
         username: username,
         page: page
+      }
+    })
+  }
+
+  findAvailableUsers(projectId: string, page: number, username: string | null) {
+    return instance.request({
+      method: "GET",
+      url: `/projects/${projectId}/unassigned-users`,
+      params: {
+        username: username,
+        page: page,
       }
     })
   }
