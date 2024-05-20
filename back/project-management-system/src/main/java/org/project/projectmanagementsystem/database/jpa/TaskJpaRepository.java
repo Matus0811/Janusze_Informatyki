@@ -8,10 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public interface TaskJpaRepository extends JpaRepository<TaskEntity,Long> {
     Optional<TaskEntity> findByTaskCode(String taskCode);
@@ -32,4 +29,18 @@ public interface TaskJpaRepository extends JpaRepository<TaskEntity,Long> {
     GROUP BY t.status
     """)
     List<ProjectTaskStatusCount> findAllProjectTasksGrouped(@Param("projectId") UUID projectId);
+
+    @Query("""
+            SELECT te FROM TaskEntity te
+            JOIN te.project p
+            WHERE te.taskId IN
+                (SELECT t.taskId FROM UserTaskEntity ute
+                    JOIN ute.task t
+                    JOIN ute.user u
+                    WHERE u.username = :username
+                    AND t.finishDate IS NULL
+                )
+            AND p.projectId = :projectId
+            """)
+    List<TaskEntity> findPagedMemberTasks(@Param("projectId") UUID projectId,@Param("username") String username, Pageable pageable);
 }

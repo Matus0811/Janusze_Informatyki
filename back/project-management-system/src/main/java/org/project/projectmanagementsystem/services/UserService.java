@@ -4,16 +4,19 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.projectmanagementsystem.database.UserRepository;
 import org.project.projectmanagementsystem.domain.Credentials;
+import org.project.projectmanagementsystem.domain.Project;
 import org.project.projectmanagementsystem.domain.Role;
 import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.services.exceptions.user.IncorrectPasswordException;
 import org.project.projectmanagementsystem.services.exceptions.user.UserExistsException;
 import org.project.projectmanagementsystem.services.exceptions.user.UserNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -148,4 +151,7 @@ public class UserService {
         );
     }
 
+    public List<User> findUnassignedUsersToProject(Project project, String username, Pageable pageable) {
+        return userRepository.findUnassignedUsersToProject(project.getProjectId(),username,pageable);
+    }
 }

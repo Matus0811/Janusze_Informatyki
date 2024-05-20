@@ -3,8 +3,10 @@ package org.project.projectmanagementsystem.database;
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.entities.UserEntity;
 import org.project.projectmanagementsystem.database.jpa.UserJpaRepository;
+import org.project.projectmanagementsystem.domain.Project;
 import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.mapper.UserMapper;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,6 +44,13 @@ public class UserRepository{
 
     public List<User> findUsersUnassignedToProject(UUID projectId) {
         return userJpaRepository.findUsersUnassignedToProject(projectId).stream()
+                .map(UserMapper.INSTANCE::mapFromEntityToDomain)
+                .toList();
+    }
+
+    public List<User> findUnassignedUsersToProject(UUID projectId, String username, Pageable pageable) {
+        return userJpaRepository.findUnassignedUsersToProject(projectId,username,pageable)
+                .stream()
                 .map(UserMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
     }

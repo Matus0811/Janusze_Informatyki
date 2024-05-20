@@ -23,14 +23,6 @@ public class UserProjectRoleService {
         return userProjectRoleRepository.addUserProjectRole(userProjectRoleEntityToSave);
     }
 
-    public List<UserProjectRole> findUnassignedUsersToProjectWhereUsernameStartsWith(Project project, String word, Pageable pageable) {
-        return userProjectRoleRepository.findUnassignedUsersToProjectWhereUsernameStartsWith(
-                project.getProjectId(),
-                word,
-                pageable
-                );
-    }
-
     public void removeUserProjectRole(UUID projectId, String userEmail) {
         UserProjectRole userProjectRoleToRemove = findUserProjectRole(projectId, userEmail);
         userProjectRoleRepository.removeUserProjectRole(userProjectRoleToRemove);

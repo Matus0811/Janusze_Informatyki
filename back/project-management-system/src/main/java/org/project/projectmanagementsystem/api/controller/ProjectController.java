@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.project.projectmanagementsystem.api.dto.ProjectDTO;
 import org.project.projectmanagementsystem.api.dto.ProjectFormDTO;
 import org.project.projectmanagementsystem.api.dto.UserDTO;
-import org.project.projectmanagementsystem.api.dto.UserFormDTO;
 import org.project.projectmanagementsystem.domain.mapper.FormMapper;
 import org.project.projectmanagementsystem.domain.mapper.ProjectMapper;
 import org.project.projectmanagementsystem.domain.mapper.UserMapper;
@@ -67,7 +66,7 @@ public class ProjectController {
     }
 
     @GetMapping("/member-project-list")
-    public ResponseEntity<List<ProjectDTO>> findPagedMemberUserProjects(
+    public ResponseEntity<List<ProjectDTO>> findPagedMemberProjects(
             @RequestParam(name="page") Integer page,
             @RequestParam(name="email") String email) {
         Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("project.startDate").descending());

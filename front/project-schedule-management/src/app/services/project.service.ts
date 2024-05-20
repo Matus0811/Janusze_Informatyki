@@ -33,6 +33,17 @@ export class ProjectService {
   });
   }
 
+  findPagedMemberProjects(memberUsername: string | undefined, page: number){
+    return instance.request({
+      method: "GET",
+      url: "/projects/member-project-list",
+      params: {
+        page: page,
+        email: memberUsername
+      }
+    })
+  }
+
   createProject(projectForm: any) {
     return instance.request({
       method: "POST",
@@ -82,6 +93,13 @@ export class ProjectService {
       method: "POST",
       url: `/projects/${projectId}/add-users`,
       data: usersToAdd
+    })
+  }
+
+  removeProject(projectToRemove: Project) {
+    return instance.request({
+      method: "DELETE",
+      url: `/projects/delete/${projectToRemove.projectId}`
     })
   }
 }

@@ -18,7 +18,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class TaskRepository {
     private final TaskJpaRepository taskJpaRepository;
-    public Task addTask(Task task) {
+    public Task create(Task task) {
         TaskEntity taskEntity = TaskMapper.INSTANCE.mapFromDomainToEntity(task);
         return TaskMapper.INSTANCE.mapFromEntityToDomain(taskJpaRepository.save(taskEntity));
     }
@@ -43,5 +43,11 @@ public class TaskRepository {
 
     public List<ProjectTaskStatusCount> findAllProjectTasksGrouped(UUID projectId) {
         return taskJpaRepository.findAllProjectTasksGrouped(projectId);
+    }
+
+    public List<Task> findPagedMemberTasks(UUID projectId, String username, Pageable pageable) {
+        return taskJpaRepository.findPagedMemberTasks(projectId, username,pageable).stream()
+                .map(TaskMapper.INSTANCE::mapFromEntityToDomain)
+                .toList();
     }
 }

@@ -32,6 +32,10 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { AddUsersToTaskComponent } from './components/add-users-to-task/add-users-to-task.component';
 import { ProjectUserListComponent } from './components/project-user-list/project-user-list.component';
 import { AddUserToProjectFormComponent } from './components/add-user-to-project-form/add-user-to-project-form.component';
+import { ProjectsMemberComponent } from './components/projects-member/projects-member.component';
+import { ProjectMemberListComponent } from './components/project-member-list/project-member-list.component';
+import { ProjectMemberCardComponent } from './components/project-member-card/project-member-card.component';
+import { ProjectMemberViewComponent } from './components/project-member-view/project-member-view.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +60,10 @@ import { AddUserToProjectFormComponent } from './components/add-user-to-project-
     AddUsersToTaskComponent,
     ProjectUserListComponent,
     AddUserToProjectFormComponent,
+    ProjectsMemberComponent,
+    ProjectMemberListComponent,
+    ProjectMemberCardComponent,
+    ProjectMemberViewComponent,
   ],
   imports: [
     BrowserModule,

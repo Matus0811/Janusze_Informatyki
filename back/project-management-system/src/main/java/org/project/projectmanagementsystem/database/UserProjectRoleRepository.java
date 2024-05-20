@@ -25,13 +25,6 @@ public class UserProjectRoleRepository {
         );
     }
 
-    public List<UserProjectRole> findUnassignedUsersToProjectWhereUsernameStartsWith(UUID projectId, String word, Pageable pageable) {
-        return userProjectRoleJpaRepository.findUsersUnassignedToProject(projectId,word,pageable)
-                .stream()
-                .map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain)
-                .toList();
-    }
-
     public void removeUserProjectRole(UserProjectRole userProjectRole) {
         userProjectRoleJpaRepository.delete(UserProjectRoleMapper.INSTANCE.mapFromDomainToEntity(userProjectRole));
     }

@@ -27,17 +27,6 @@ public interface UserProjectRoleJpaRepository extends JpaRepository<UserProjectR
             """)
     Page<ProjectEntity> findNotFinishedUserProjects(@Param("email") String email, Pageable pageable);
 
-    @Query(value = """
-                SELECT upr FROM UserProjectRoleEntity upr
-                JOIN FETCH upr.user u
-                WHERE u.userId NOT IN (
-                    SELECT upr2.user.userId FROM UserProjectRoleEntity upr2
-                        WHERE upr2.project.projectId = :projectId
-                )
-                AND LOWER(u.username) LIKE LOWER(CONCAT(:username,'%'))
-            """)
-    List<UserProjectRoleEntity> findUsersUnassignedToProject(@Param("projectId") UUID projectId, @Param("username") String word, Pageable pageable);
-
     @Query("""
             SELECT upre FROM UserProjectRoleEntity upre
             JOIN FETCH upre.project p

@@ -42,8 +42,7 @@ public class ProjectUserService {
     @Transactional
     public List<User> getUnassignedUsers(UUID projectId, String username, Pageable pageable) {
         Project project = projectService.findById(projectId);
-        return userProjectRoleService.findUnassignedUsersToProjectWhereUsernameStartsWith(project, username,pageable).stream()
-                .map(UserProjectRole::getUser)
+        return userService.findUnassignedUsersToProject(project, username, pageable).stream()
                 .distinct()
                 .toList();
     }

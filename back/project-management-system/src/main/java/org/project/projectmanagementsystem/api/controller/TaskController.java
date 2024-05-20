@@ -32,7 +32,7 @@ public class TaskController {
     public ResponseEntity<TaskDTO> createTask(@RequestBody TaskFormDTO taskFormDTO) {
         TaskDTO taskDTO = TaskMapper.INSTANCE.mapFromDomainToDto(
                 projectTaskService.processProjectTaskCreation(
-                        TaskMapper.INSTANCE.mapFromDtoToDomain(taskFormDTO)
+                        TaskMapper.INSTANCE.mapFromFormDtoToForm(taskFormDTO)
                 )
         );
         return new ResponseEntity<>(taskDTO, HttpStatus.CREATED);
@@ -59,6 +59,20 @@ public class TaskController {
                 .map(TaskMapper.INSTANCE::mapFromDomainToDto).toList();
 
         return new ResponseEntity<>(pagedTasksForProject,HttpStatus.OK);
+    }
+
+    @GetMapping("/member-tasks")
+    public ResponseEntity<List<TaskDTO>> getPagedMemberTasks(
+            @RequestParam("projectId") UUID projectId,
+            @RequestParam("page") Integer page,
+            @RequestParam("username") String username
+    ){
+        Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("startDate").descending());
+        List<TaskDTO> memberTasks = taskService.findPagedMemberTasks(projectId,username,pageable).stream()
+                .map(TaskMapper.INSTANCE::mapFromDomainToDto)
+                .toList();
+
+        return new ResponseEntity<>(memberTasks,HttpStatus.OK);
     }
 
     @PatchMapping("/{taskCode}/add-users")

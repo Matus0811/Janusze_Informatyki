@@ -26,13 +26,11 @@ public class ProjectTaskService {
 
         Task taskToCreate = Task.buildTaskFromTaskForm(taskForm,project);
 
-        Task createdTask = taskService.createTask(taskToCreate);
-
         if(findAllTasksAssignedToProject(project).isEmpty()){
             projectService.updateProjectStatus(project, Project.ProjectStatus.IN_PROGRESS);
         }
 
-        return createdTask;
+        return taskService.createTask(taskToCreate);
     }
 
     public List<Task> findAllTasksAssignedToProject(Project project){

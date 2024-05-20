@@ -8,6 +8,8 @@ import {CurrentProjectViewComponent} from "./components/current-project-view/cur
 import {TaskListComponent} from "./components/task-list/task-list.component";
 import {TaskDetailsComponent} from "./components/task-details/task-details.component";
 import {ProjectUserListComponent} from "./components/project-user-list/project-user-list.component";
+import {ProjectsMemberComponent} from "./components/projects-member/projects-member.component";
+import {ProjectMemberViewComponent} from "./components/project-member-view/project-member-view.component";
 
 const routes: Routes = [
   {
@@ -44,11 +46,17 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'projects-member/project/:id',
+        component: ProjectMemberViewComponent
+      },
+      
+      {
+        path: 'projects-member',
+        component: ProjectsMemberComponent
+      },
+      {
         path: 'my-projects',
-        component: UserProjectsComponent,
-        // children: [
-
-        // ]
+        component: UserProjectsComponent
       }
     ]
   },

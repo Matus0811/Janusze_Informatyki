@@ -55,12 +55,6 @@ export class UserService {
     return this.getLoggedUserData().username;
   }
 
-  getProjectMembers(projectId: UUID | undefined, page: number) {
-    httpAxios.request({
-      method: 'GET',
-      url: ``
-    })
-  }
 
   findUsersInProjectNotAssignedToTask(projectId: string, taskCode: string, username: string | null, page: number) {
     return instance.request({

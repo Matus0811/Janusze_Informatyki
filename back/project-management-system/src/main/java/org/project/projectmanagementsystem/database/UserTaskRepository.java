@@ -3,6 +3,7 @@ package org.project.projectmanagementsystem.database;
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.entities.UserTaskEntity;
 import org.project.projectmanagementsystem.database.jpa.UserTaskJpaRepository;
+import org.project.projectmanagementsystem.domain.Task;
 import org.project.projectmanagementsystem.domain.UserTask;
 import org.project.projectmanagementsystem.domain.mapper.UserTaskMapper;
 import org.springframework.data.domain.Pageable;
