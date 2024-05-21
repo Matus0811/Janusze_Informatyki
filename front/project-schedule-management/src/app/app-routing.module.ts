@@ -10,6 +10,7 @@ import {TaskDetailsComponent} from "./components/task-details/task-details.compo
 import {ProjectUserListComponent} from "./components/project-user-list/project-user-list.component";
 import {ProjectsMemberComponent} from "./components/projects-member/projects-member.component";
 import {ProjectMemberViewComponent} from "./components/project-member-view/project-member-view.component";
+import {ProjectStatusDetailsComponent} from "./components/project-status-details/project-status-details.component";
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
           {
             path: 'users',
             component: ProjectUserListComponent
+          },
+          {
+            path: 'project-status',
+            component: ProjectStatusDetailsComponent
           }
         ]
       },
@@ -49,10 +54,11 @@ const routes: Routes = [
         path: 'projects-member/project/:id',
         component: ProjectMemberViewComponent
       },
-      
+
       {
         path: 'projects-member',
-        component: ProjectsMemberComponent
+        component: ProjectsMemberComponent,
+        children: []
       },
       {
         path: 'my-projects',

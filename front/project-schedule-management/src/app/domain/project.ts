@@ -7,5 +7,4 @@ export interface Project {
   projectStatus?: string;
   startDate?: number;
   finishDate?: number;
-
 }

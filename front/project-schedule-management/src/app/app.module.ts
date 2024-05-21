@@ -36,6 +36,9 @@ import { ProjectsMemberComponent } from './components/projects-member/projects-m
 import { ProjectMemberListComponent } from './components/project-member-list/project-member-list.component';
 import { ProjectMemberCardComponent } from './components/project-member-card/project-member-card.component';
 import { ProjectMemberViewComponent } from './components/project-member-view/project-member-view.component';
+import { ProjectStatusDetailsComponent } from './components/project-status-details/project-status-details.component';
+import { MemberTaskListComponent } from './components/member-task-list/member-task-list.component';
+import { TaskCardComponent } from './components/task-card/task-card.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +67,9 @@ import { ProjectMemberViewComponent } from './components/project-member-view/pro
     ProjectMemberListComponent,
     ProjectMemberCardComponent,
     ProjectMemberViewComponent,
+    ProjectStatusDetailsComponent,
+    MemberTaskListComponent,
+    TaskCardComponent,
   ],
   imports: [
     BrowserModule,

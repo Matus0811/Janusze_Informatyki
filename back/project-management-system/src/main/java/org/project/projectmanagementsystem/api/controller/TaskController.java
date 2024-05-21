@@ -67,7 +67,7 @@ public class TaskController {
             @RequestParam("page") Integer page,
             @RequestParam("username") String username
     ){
-        Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("startDate").descending());
+        Pageable pageable = PageRequest.of(page,12).withSort(Sort.by("startDate").descending());
         List<TaskDTO> memberTasks = taskService.findPagedMemberTasks(projectId,username,pageable).stream()
                 .map(TaskMapper.INSTANCE::mapFromDomainToDto)
                 .toList();

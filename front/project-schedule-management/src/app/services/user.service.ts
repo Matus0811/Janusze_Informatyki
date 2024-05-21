@@ -1,13 +1,8 @@
 import {Injectable} from '@angular/core';
 import {TokenService} from "./token.service";
-import {environment} from "../../environment/environment";
 import {User} from "../domain/user";
-import {jwtDecode} from "jwt-decode";
-import {response} from "express";
 import {Router} from "@angular/router";
 import instance from "../http-axios";
-import {UUID} from "node:crypto";
-import httpAxios from "../http-axios";
 
 @Injectable({
   providedIn: 'root'

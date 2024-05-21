@@ -7,6 +7,7 @@ import instance from "../http-axios";
 import {TaskStatus} from "../domain/task-status";
 import {TaskForm} from "../domain/task-form";
 import {User} from "../domain/user";
+import {Project} from "../domain/project";
 
 @Injectable({
   providedIn: 'root'
@@ -90,5 +91,17 @@ export class TaskService {
       method: "DELETE",
       url: `/${taskCode}/remove-user`
     })
+  }
+
+  getPagedMemberTasks(project: Project, page: number, user: User) {
+    return instance.request({
+      method: "GET",
+      url: `/tasks/member-tasks`,
+      params: {
+        projectId: project.projectId,
+        page: page,
+        username: user.username
+      }
+    });
   }
 }

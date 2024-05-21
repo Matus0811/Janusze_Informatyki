@@ -41,7 +41,7 @@ public class BugService {
     public Bug findBugForTask(Task task) {
         return bugRepository.findBugForTask(task)
                 .orElseThrow(() -> new BugNotFoundException(
-                        "Bug with project [%s] not found".formatted(task.getProject().getProjectId()), HttpStatus.NOT_FOUND)
+                        "Bug for project [%s] not found".formatted(task.getProject().getProjectId()), HttpStatus.NOT_FOUND)
                 );
     }
 
