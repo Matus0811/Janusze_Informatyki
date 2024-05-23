@@ -37,10 +37,14 @@ class BugServiceTest {
     void createBug() {
         //given
         UUID projectId = UUID.randomUUID();
-        BugForm bugForm = TestData.someBugForm1().withProjectId(projectId);
+        UUID taskId = UUID.randomUUID();
+        BugForm bugForm = TestData.someBugForm1()
+                .withProjectId(projectId)
+                .withTaskId(taskId);
         Project projectWithBug = TestData.project1();
         User user = TestData.user1();
         Task createdTask = Task.buildBugTask()
+                .withTaskCode(taskId.toString())
                 .withName(bugForm.getTitle())
                 .withDescription(bugForm.getDescription())
                 .withProject(projectWithBug);
@@ -49,7 +53,7 @@ class BugServiceTest {
 
         Mockito.when(projectService.findById(Mockito.any(UUID.class))).thenReturn(projectWithBug);
         Mockito.when(userService.findByEmail(Mockito.anyString())).thenReturn(user);
-        Mockito.when(taskService.createTask(Mockito.any(Task.class))).thenReturn(createdTask.withTaskId(1L));
+        Mockito.when(taskService.findByTaskCode(Mockito.anyString())).thenReturn(createdTask.withTaskId(1L));
         Mockito.when(bugRepository.save(Mockito.any(Bug.class))).thenReturn(expected);
         //when
         Bug result = bugService.createBug(bugForm);

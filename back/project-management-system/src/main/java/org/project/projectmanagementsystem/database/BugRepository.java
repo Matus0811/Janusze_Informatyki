@@ -7,7 +7,9 @@ import org.project.projectmanagementsystem.domain.Task;
 import org.project.projectmanagementsystem.domain.mapper.BugMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,5 +25,9 @@ public class BugRepository {
     public Optional<Bug> findBugForTask(Task task) {
         return bugJpaRepository.findBugWithProjectIdAndTask(task.getProject().getProjectId(),task.getTaskCode())
                 .map(BugMapper.INSTANCE::mapFromEntityToDomain);
+    }
+
+    public List<Bug> findBugsForProject(UUID projectId) {
+        return bugJpaRepository.findBugsForProject(projectId);
     }
 }

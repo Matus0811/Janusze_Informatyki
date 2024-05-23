@@ -13,6 +13,7 @@ public class BugForm {
     String title;
     String description;
     UUID projectId;
+    UUID taskId;
     String userEmail;
     Bug.BugType bugType;
 }

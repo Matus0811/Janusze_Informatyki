@@ -2,6 +2,7 @@ package org.project.projectmanagementsystem.services;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.project.projectmanagementsystem.api.dto.BugDTO;
 import org.project.projectmanagementsystem.database.BugRepository;
 import org.project.projectmanagementsystem.domain.*;
 import org.project.projectmanagementsystem.services.exceptions.BugNotFoundException;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,17 +25,9 @@ public class BugService {
     public Bug createBug(BugForm bugForm) {
         Project projectWithBug = projectService.findById(bugForm.getProjectId());
         User reporter = userService.findByEmail(bugForm.getUserEmail());
+        Task taskWithBug = taskService.findByTaskCode(bugForm.getTaskId().toString());
 
-        Task bugTask = Task.buildBugTask();
-        Bug bugToCreate = Bug.buildBug(bugForm,reporter,projectWithBug,bugTask);
-
-        bugTask = bugTask.withName(bugToCreate.getTitle())
-                .withDescription(bugToCreate.getDescription())
-                .withProject(projectWithBug);
-
-        Task createdTask = taskService.createTask(bugTask);
-
-        bugToCreate = bugToCreate.withTask(createdTask);
+        Bug bugToCreate = Bug.buildBug(bugForm,reporter,projectWithBug, taskWithBug);
 
         return bugRepository.save(bugToCreate);
     }
@@ -50,5 +45,9 @@ public class BugService {
         bugToFinish = bugToFinish.withFixedDate(OffsetDateTime.now());
 
         bugRepository.save(bugToFinish);
+    }
+
+    public List<Bug> findBugsForProject(UUID projectId) {
+        return bugRepository.findBugsForProject(projectId);
     }
 }

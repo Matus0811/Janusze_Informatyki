@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/bugs")
 @RequiredArgsConstructor
@@ -24,14 +27,22 @@ public class BugController {
         return new ResponseEntity<>(bugDTO, HttpStatus.CREATED);
     }
 
-    //TODO add getMapping
+    @GetMapping("/list")
+    public ResponseEntity<List<BugDTO>> getBugList(@RequestParam UUID projectId){
+        List<BugDTO> bugs = bugService.findBugsForProject(projectId).stream()
+                .map(BugMapper.INSTANCE::mapFromDomainToDto)
+                .toList();
+
+        return new ResponseEntity<>(bugs,HttpStatus.OK);
+    }
+
     private BugDTO createBugDto(Bug createdBug) {
         return BugDTO.builder()
                 .serialNumber(createdBug.getSerialNumber())
                 .title(createdBug.getTitle())
                 .description(createdBug.getDescription())
-                .project(createdBug.getProject().getProjectId())
-                .username(createdBug.getUser().getUsername())
+                .task(createdBug.getTaskWithBug())
+                .username(createdBug.getReportedUser().getUsername())
                 .bugType(createdBug.getBugType())
                 .reportDate(createdBug.getReportDate())
                 .fixedDate(createdBug.getFixedDate())

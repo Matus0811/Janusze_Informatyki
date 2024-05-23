@@ -3,6 +3,7 @@ package org.project.projectmanagementsystem.api.dto;
 import lombok.Builder;
 import org.project.projectmanagementsystem.domain.Bug;
 import org.project.projectmanagementsystem.domain.Project;
+import org.project.projectmanagementsystem.domain.Task;
 import org.project.projectmanagementsystem.domain.User;
 
 import java.time.OffsetDateTime;
@@ -13,7 +14,7 @@ public record BugDTO(
         String serialNumber,
         String title,
         String description,
-        UUID project,
+        Task task,
         String username,
         Bug.BugType bugType,
         OffsetDateTime reportDate,
