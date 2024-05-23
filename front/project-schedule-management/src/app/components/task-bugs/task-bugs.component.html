@@ -1,0 +1,31 @@
+<div class="container mt-5 mb-5">
+  <div class="row">
+    <h3 class="display-5">Zgłoszone błędy</h3>
+  </div>
+  <div *ngIf="!task.finishDate" class="row justify-content-md-center">
+    <div class="col-md-4 text-center">
+      <button class="btn btn-danger" (click)="showBugReportForm()">Zgłoś błąd</button>
+    </div>
+  </div>
+  <div *ngIf="lastLoadedPageSize > 0; else emptyBugList" class="row mt-3 mb-3 justify-content-md-center">
+    <div *ngFor="let bug of reportedBugs" class="col-md-10 border-bottom">
+      <div class="row">
+        <div class="col-md-4">
+          <p>{{bug.serialNumber}}</p>
+        </div>
+        <div class="col-md-4 text-center">
+          <p>{{bug.bugType}}</p>
+        </div>
+        <div class="col-md-4 text-center">
+          <p>{{bug.reportDate | date:"yyyy-MM-dd"}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #emptyBugList>
+    <div class="row">
+      <p class="text-info">Lista błędów aktualnie jest pusta</p>
+    </div>
+  </ng-template>
+</div>

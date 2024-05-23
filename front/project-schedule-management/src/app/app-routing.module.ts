@@ -11,6 +11,7 @@ import {ProjectUserListComponent} from "./components/project-user-list/project-u
 import {ProjectsMemberComponent} from "./components/projects-member/projects-member.component";
 import {ProjectMemberViewComponent} from "./components/project-member-view/project-member-view.component";
 import {ProjectStatusDetailsComponent} from "./components/project-status-details/project-status-details.component";
+import {ProjectBugsComponent} from "./components/project-bugs/project-bugs.component";
 
 const routes: Routes = [
   {
@@ -47,6 +48,10 @@ const routes: Routes = [
           {
             path: 'project-status',
             component: ProjectStatusDetailsComponent
+          },
+          {
+            path: 'project-bugs',
+            component: ProjectBugsComponent
           }
         ]
       },

@@ -1,6 +1,5 @@
 package org.project.projectmanagementsystem.services;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,12 +11,8 @@ import org.project.projectmanagementsystem.TestData;
 import org.project.projectmanagementsystem.database.BugRepository;
 import org.project.projectmanagementsystem.domain.*;
 
-import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class BugServiceTest {
@@ -40,7 +35,7 @@ class BugServiceTest {
         UUID taskId = UUID.randomUUID();
         BugForm bugForm = TestData.someBugForm1()
                 .withProjectId(projectId)
-                .withTaskId(taskId);
+                .withTaskCode(taskId);
         Project projectWithBug = TestData.project1();
         User user = TestData.user1();
         Task createdTask = Task.buildBugTask()
@@ -52,7 +47,7 @@ class BugServiceTest {
         Bug expected = Bug.buildBug(bugForm, user, projectWithBug, createdTask);
 
         Mockito.when(projectService.findById(Mockito.any(UUID.class))).thenReturn(projectWithBug);
-        Mockito.when(userService.findByEmail(Mockito.anyString())).thenReturn(user);
+        Mockito.when(userService.findByUsername(Mockito.anyString())).thenReturn(user);
         Mockito.when(taskService.findByTaskCode(Mockito.anyString())).thenReturn(createdTask.withTaskId(1L));
         Mockito.when(bugRepository.save(Mockito.any(Bug.class))).thenReturn(expected);
         //when

@@ -7,6 +7,9 @@ import {AddTaskFormComponent} from "../add-task-form/add-task-form.component";
 import {AddUsersToTaskComponent} from "../add-users-to-task/add-users-to-task.component";
 import {DialogRef} from "@angular/cdk/dialog";
 import {MatDialog} from "@angular/material/dialog";
+import {BugService} from "../../services/bug.service";
+import {Router} from "@angular/router";
+import { Priority } from '../../domain/priority';
 
 @Component({
   selector: 'app-task-details',
@@ -15,11 +18,17 @@ import {MatDialog} from "@angular/material/dialog";
 })
 export class TaskDetailsComponent implements OnInit{
   currentTask : Task;
+  projectId!: string;
   taskUsers: User[] = [];
   page:number = 0;
+  bugsListVisible = true;
 
-  constructor(private taskService: TaskService, private dialog: MatDialog) {
+  constructor(
+    private taskService: TaskService,
+    private dialog: MatDialog,
+    private router: Router) {
     this.currentTask = this.currentTask = history.state.task;
+    this.projectId = this.router.getCurrentNavigation()?.extras.state?.['projectId'];
     console.log(this.currentTask);
   }
 
@@ -49,4 +58,20 @@ export class TaskDetailsComponent implements OnInit{
         });
     })
   }
+
+  showTaskBugs() {
+    this.bugsListVisible = !this.bugsListVisible;
+  }
+
+  public getColor(taskPriority: string): Priority {
+    if (taskPriority === 'LOW') {
+      return this.Priority.LOW;
+    }
+    if (taskPriority === 'MEDIUM') {
+      return this.Priority.MEDIUM;
+    }
+    return this.Priority.HIGH;
+  }
+
+  protected readonly Priority = Priority;
 }

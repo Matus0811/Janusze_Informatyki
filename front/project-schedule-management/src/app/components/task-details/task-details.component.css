@@ -2,3 +2,43 @@
   cursor: pointer;
   color: #222222;
 }
+
+.cursor-pointer{
+  cursor: pointer;
+}
+
+.transition-2s{
+  transition: background-color .2s ease-in-out;
+}
+
+.task-priority-container{
+
+}
+
+.task-status{
+  font-size: 22px;
+  font-weight: normal;
+}
+
+.task-status-container{
+  background-color: #452dff;
+}
+
+.task-status-container:hover{
+  background-color: #341cee;
+}
+
+.task-start-date-container{
+  background-color: #08c26c;
+}
+.task-start-date-container:hover{
+  background-color: #07b15b;
+}
+
+.task-finish-date-container{
+  background-color: #ff8b43;
+}
+
+.task-finish-date-container:hover{
+  background-color: #ee7a32;
+}

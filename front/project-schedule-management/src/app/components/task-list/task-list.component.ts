@@ -85,7 +85,8 @@ export class TaskListComponent implements OnInit {
       relativeTo: this.activatedRoute,
       queryParams: {id: task.taskCode},
       state: {
-        task: task
+        task: task,
+        projectId: this.projectId
       }
     })
       .catch(e => console.log(e));

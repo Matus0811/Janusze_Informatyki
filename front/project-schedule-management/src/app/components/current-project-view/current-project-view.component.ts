@@ -5,6 +5,8 @@ import {TaskStatusCount} from "../../domain/task-status-count";
 import {User} from "../../domain/user";
 import {ProjectService} from "../../services/project.service";
 import {Chart} from "chart.js/auto";
+import {BugService} from "../../services/bug.service";
+import {response} from "express";
 
 @Component({
   selector: 'app-current-project-view',
@@ -16,12 +18,14 @@ export class CurrentProjectViewComponent implements OnInit {
   groupedTaskByStatusList: TaskStatusCount[] = [];
   projectMembersSize : number = 0;
   totalTasks: number = 0;
+  numberOfBugsToFix: number = 0;
 
-  constructor(private taskService : TaskService, private projectService : ProjectService){}
+  constructor(private taskService : TaskService, private projectService : ProjectService, private bugService: BugService){}
   ngOnInit(): void {
     this.project = history.state.project;
     this.loadGroupedTasks();
     this.countProjectMembers();
+    this.countBugsToFix();
   }
 
 
@@ -56,5 +60,12 @@ export class CurrentProjectViewComponent implements OnInit {
         }]
       },
     });
+  }
+
+  private countBugsToFix() {
+    this.bugService.countProjectBugs(this.project)
+      .then(response  => {
+        this.numberOfBugsToFix = response.data;
+      })
   }
 }

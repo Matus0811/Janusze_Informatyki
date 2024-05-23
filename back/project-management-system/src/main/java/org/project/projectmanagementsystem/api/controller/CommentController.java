@@ -34,7 +34,7 @@ public class CommentController {
             @RequestParam(name="page") Integer page,
             @RequestParam(name = "taskCode") String taskCode
             ){
-        Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("date"));
+        Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("date").descending());
 
         List<CommentDTO> pagedCommentsForTask = commentService.findPagedCommentsForTask(taskCode, pageable)
                 .stream()

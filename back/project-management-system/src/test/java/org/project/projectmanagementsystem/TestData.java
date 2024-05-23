@@ -43,7 +43,7 @@ public class TestData {
         return BugForm.builder()
                 .title("Example bug 1")
                 .description("Some description")
-                .userEmail("user1@gmail.com")
+                .username("user1@gmail.com")
                 .projectId(UUID.randomUUID())
                 .bugType(Bug.BugType.LOGICAL)
                 .build();

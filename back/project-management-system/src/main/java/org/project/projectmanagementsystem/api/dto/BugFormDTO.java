@@ -8,6 +8,7 @@ public record BugFormDTO(
         String title,
         String description,
         UUID projectId,
-        String userEmail,
+        UUID taskCode,
+        String username,
         Bug.BugType bugType){
 }

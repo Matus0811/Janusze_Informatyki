@@ -17,7 +17,7 @@ export class AddProjectFormComponent {
   });
 
 
-  constructor(private dialogRef: MatDialogRef<AddProjectFormComponent>, private projectService: ProjectService) {
+  constructor(private dialogRef: MatDialogRef<AddProjectFormComponent>) {
   }
 
   submitForm(){

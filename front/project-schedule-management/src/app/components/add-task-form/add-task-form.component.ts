@@ -17,7 +17,7 @@ export class AddTaskFormComponent {
     finishDate: new FormControl(''),
   });
 
-  constructor(private dialogRef: MatDialogRef<AddTaskFormComponent>, private taskService: TaskService) {
+  constructor(private dialogRef: MatDialogRef<AddTaskFormComponent>) {
   }
 
   close() {

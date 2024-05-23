@@ -128,9 +128,10 @@ public class UserService {
     }
 
     public User findByUsername(String username) {
+        log.info("Searching user with username: [{}]",username);
         return userRepository.findByUsername(username).orElseThrow(
                 () -> {
-                    log.error("Error during finding user by username: [{}]", username);
+                    log.error("Failed searching user with username: [{}]", username);
                     return new UserNotFoundException(
                             "User with given username not found",
                             HttpStatus.NOT_FOUND

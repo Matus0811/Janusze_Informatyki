@@ -60,8 +60,12 @@ public class ProjectService {
     }
 
     public Project findById(UUID projectId) {
+        log.info("Searching project with id: [{}]",projectId);
         return projectRepository.findById(projectId).orElseThrow(
-                () -> new ProjectNotFoundException("Project with id: [%s] not found".formatted(projectId),HttpStatus.NOT_FOUND)
+                () -> {
+                    log.error("Failed searching project with id: [{}]",projectId);
+                    return new ProjectNotFoundException("Project with id: [%s] not found".formatted(projectId),HttpStatus.NOT_FOUND);
+                }
         );
     }
 
