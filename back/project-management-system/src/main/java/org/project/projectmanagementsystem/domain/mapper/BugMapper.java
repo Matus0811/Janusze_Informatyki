@@ -31,5 +31,9 @@ public interface BugMapper {
     })
     Bug mapFromEntityToDomain(BugEntity bugEntity);
 
+    @Mappings({
+            @Mapping(source = "bug.taskWithBug", target = "task"),
+            @Mapping(source = "bug.reportedUser.username", target = "username")
+    })
     BugDTO mapFromDomainToDto(Bug bug);
 }

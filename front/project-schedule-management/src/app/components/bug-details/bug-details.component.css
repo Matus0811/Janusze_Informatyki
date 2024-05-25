@@ -1,0 +1,18 @@
+.bg-green{
+  background-color: #07b15b;
+}
+
+
+.close-btn{
+  background-color: white;
+  border-radius: 50%;
+  border: 1px black solid;
+  text-align: center;
+  font-size: 16px;
+  transition: background-color .2s;
+}
+
+.close-btn:hover{
+  background-color: black;
+  color: white;
+}

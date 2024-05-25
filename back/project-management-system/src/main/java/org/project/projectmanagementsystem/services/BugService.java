@@ -59,6 +59,8 @@ public class BugService {
 
     public List<Bug> findBugsForTask(String taskCode, Pageable pageable) {
         Task task = taskService.findByTaskCode(taskCode);
-        return bugRepository.findBugsForTask(task,pageable);
+        return bugRepository.findBugsForTask(task,pageable).stream()
+                .map(bug -> bug.withTaskWithBug(task))
+                .toList();
     }
 }

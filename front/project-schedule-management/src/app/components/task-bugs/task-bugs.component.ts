@@ -7,7 +7,8 @@ import {ReportBugFormComponent} from "../report-bug-form/report-bug-form.compone
 import {BugForm} from "../../domain/bug-form";
 
 import {UserService} from "../../services/user.service";
-import { Task } from '../../domain/task';
+import {Task} from '../../domain/task';
+import {BugDetailsComponent} from "../bug-details/bug-details.component";
 
 @Component({
   selector: 'app-task-bugs',
@@ -65,5 +66,11 @@ export class TaskBugsComponent implements OnInit {
       username: this.userService.getLoggedUsername(),
       date: new Date().getTime()
     }
+  }
+
+  showDetails(bug: Bug) {
+    this.dialog.open(BugDetailsComponent, {
+      data: bug
+    });
   }
 }

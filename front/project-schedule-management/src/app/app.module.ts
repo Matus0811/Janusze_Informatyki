@@ -42,6 +42,7 @@ import { TaskCardComponent } from './components/task-card/task-card.component';
 import { ProjectBugsComponent } from './components/project-bugs/project-bugs.component';
 import { TaskBugsComponent } from './components/task-bugs/task-bugs.component';
 import { ReportBugFormComponent } from './components/report-bug-form/report-bug-form.component';
+import { BugDetailsComponent } from './components/bug-details/bug-details.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { ReportBugFormComponent } from './components/report-bug-form/report-bug-
     ProjectBugsComponent,
     TaskBugsComponent,
     ReportBugFormComponent,
+    BugDetailsComponent,
   ],
   imports: [
     BrowserModule,
