@@ -50,7 +50,8 @@ export class TaskBugsComponent implements OnInit {
 
         this.bugService.reportBug(bugForm)
           .then(response => {
-            this.reportedBugs = [response.data, ...this.reportedBugs];
+            this.page = 0;
+            this.findPagedBugsForTask();
           });
       }
     });

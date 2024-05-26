@@ -77,7 +77,7 @@
           </div>
         </div>
         <div class="row">
-          <div routerLink="project-bugs" class="col-md-12 text-center number-of-bugs-info cursor-pointer">
+          <div (click)="showBugs()" class="col-md-12 text-center number-of-bugs-info cursor-pointer">
             <div class="row">
               <p class="display-3">{{ numberOfBugsToFix }}</p>
             </div>

@@ -34,7 +34,9 @@ public class BugRepository {
     }
 
     public List<Bug> findBugsForProject(UUID projectId, Pageable pageable) {
-        return bugJpaRepository.findBugsForProject(projectId,pageable);
+        return bugJpaRepository.findBugsForProject(projectId,pageable).stream()
+                .map(BugMapper.INSTANCE::mapFromEntityToDomain)
+                .toList();
     }
 
     public Long countProjectReportedBugs(UUID projectId) {

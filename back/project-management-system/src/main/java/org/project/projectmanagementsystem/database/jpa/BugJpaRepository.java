@@ -28,7 +28,7 @@ public interface BugJpaRepository extends JpaRepository<BugEntity,Long> {
     JOIN b.project p
     WHERE p.projectId = :projectId
     """)
-    List<Bug> findBugsForProject(@Param("projectId") UUID projectId, Pageable pageable);
+    List<BugEntity> findBugsForProject(@Param("projectId") UUID projectId, Pageable pageable);
 
     @Query("""
     SELECT count(b) FROM BugEntity b

@@ -7,6 +7,7 @@ import {ProjectService} from "../../services/project.service";
 import {Chart} from "chart.js/auto";
 import {BugService} from "../../services/bug.service";
 import {response} from "express";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-current-project-view',
@@ -20,7 +21,12 @@ export class CurrentProjectViewComponent implements OnInit {
   totalTasks: number = 0;
   numberOfBugsToFix: number = 0;
 
-  constructor(private taskService : TaskService, private projectService : ProjectService, private bugService: BugService){}
+  constructor(
+    private taskService : TaskService,
+    private projectService : ProjectService,
+    private bugService: BugService,
+    private router: Router
+  ){}
   ngOnInit(): void {
     this.project = history.state.project;
     this.loadGroupedTasks();
@@ -67,5 +73,13 @@ export class CurrentProjectViewComponent implements OnInit {
       .then(response  => {
         this.numberOfBugsToFix = response.data;
       })
+  }
+
+  showBugs() {
+    this.router.navigate(["projects","my-projects","project", this.project.projectId,"project-bugs"],{
+      state: {
+        project: this.project
+      }
+    }).catch(reason => console.log(reason));
   }
 }

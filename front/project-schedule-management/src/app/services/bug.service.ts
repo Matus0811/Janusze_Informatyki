@@ -39,4 +39,16 @@ export class BugService {
       data: bugForm
     })
   }
+
+  getPagedBugListForProject(project: Project, page:number) {
+    console.log(project.projectId);
+    return instance.request({
+      method: "GET",
+      url:"/bugs/list",
+      params: {
+        projectId: project.projectId,
+        page: page
+      }
+    })
+  }
 }

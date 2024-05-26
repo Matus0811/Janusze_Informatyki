@@ -4,4 +4,37 @@
       <h4 class="display-5">Zgłoszone błędy</h4>
     </div>
   </div>
+  <div class="row p-3 bg-dark text-light">
+    <div class="col-md-4"><b>Id</b></div>
+    <div class="col-md-2"><b>Nazwa błędu</b></div>
+    <div class="col-md-3"><b>Data zgłoszenia</b></div>
+    <div class="col-md-3"><b>Data naprawy</b></div>
+  </div>
+
+  @for (bug of projectBugs; track bug; let i=$even){
+    @if (i){
+      <div (click)="showBugDetails(bug)" class="row p-3 bg-light text-dark cursor-pointer">
+        <div class="col-md-4"><b>{{bug.serialNumber}}</b></div>
+        <div class="col-md-2">{{bug.title}}</div>
+        <div class="col-md-3">{{bug.reportDate | date:"yyyy-MM-dd HH:mm"}}</div>
+        @if(bug.fixedDate){
+          <div class="col-md-3">{{bug.fixedDate | date:"yyyy-MM-dd HH:mm"}}</div>
+        } @else {
+          <div class="col-md-3">Nie naprawiono</div>
+        }
+      </div>
+    } @else {
+      <div (click)="showBugDetails(bug)" class="row p-3 bg-dark text-light cursor-pointer">
+        <div class="col-md-4"><b>{{bug.serialNumber}}</b></div>
+        <div class="col-md-2">{{bug.title}}</div>
+        <div class="col-md-3">{{bug.reportDate | date:"yyyy-MM-dd HH:mm"}}</div>
+        @if(bug.fixedDate){
+          <div class="col-md-3">{{bug.fixedDate | date:"yyyy-MM-dd HH:mm"}}</div>
+        } @else {
+          <div class="col-md-3">Nie naprawiono</div>
+        }
+      </div>
+    }
+  }
+
 </div>
