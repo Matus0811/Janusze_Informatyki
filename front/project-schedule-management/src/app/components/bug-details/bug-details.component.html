@@ -1,7 +1,10 @@
 <div class="container p-4">
   <div class="row border-bottom justify-content-end">
-    <div class="col-md-8">
+    <div class="col-md">
       <h3>Informacje o błędzie</h3>
+    </div>
+    <div *ngIf="!bugToShow.fixedTaskCreated" class="col-md-2">
+      <button (click)="createTask()">Utwórz zadanie</button>
     </div>
     <div class="col-md-4 text-end">
       <button class="close-btn" (click)="closeDialog()"><i class="bi bi-x"></i></button>
@@ -11,12 +14,12 @@
     <div class="col-md-8 border-end">
       <div class="row">
         <div class="col">
-          <h4>{{ bug.title }}</h4>
+          <h4>{{ bugToShow.title }}</h4>
         </div>
       </div>
       <div class="row">
         <div class="col">
-          <p class="m-0"><b>Id: </b><span class="text-primary">{{ bug.serialNumber }}</span></p>
+          <p class="m-0"><b>Id: </b><span class="text-primary">{{ bugToShow.serialNumber }}</span></p>
         </div>
         <div class="row">
           <div class="row">
@@ -25,17 +28,17 @@
             </div>
           </div>
           <div class="row">
-            <p class="text-secondary">{{ bug.description }}</p>
+            <p class="text-secondary">{{ bugToShow.description }}</p>
           </div>
         </div>
         <div class="row">
           <div class="col">
-            <p class="m-0"><b>Rodzaj błędu:</b> {{ bug.bugType }}</p>
+            <p class="m-0"><b>Rodzaj błędu:</b> {{ bugToShow.bugType }}</p>
           </div>
         </div>
         <div class="row">
           <div class="col-md-12">
-            <p class="m-0"><b>Data zgłoszenia:</b> {{ bug.reportDate | date: "yyyy-MM-dd HH:mm" }}</p>
+            <p class="m-0"><b>Data zgłoszenia:</b> {{ bugToShow.reportDate | date: "yyyy-MM-dd HH:mm" }}</p>
           </div>
         </div>
       </div>
@@ -46,7 +49,7 @@
           <p><b>Id zadania:</b></p>
         </div>
         <div class="col-md-6">
-          <p class="text-primary">{{ bug.task?.taskCode }}</p>
+          <p class="text-primary">{{ bugToShow.task?.taskCode }}</p>
         </div>
       </div>
       <div class="row">
@@ -54,7 +57,7 @@
           <p><b>Zgłoszono przez</b></p>
         </div>
         <div class="col-md-6">
-          <p>{{ bug.username }}</p>
+          <p>{{ bugToShow.username }}</p>
         </div>
       </div>
 
@@ -63,7 +66,7 @@
           <p><b>Status</b></p>
         </div>
         <div class="col-md-6 text-center">
-          <div *ngIf="bug.fixedDate; else redFlag" class="row p-2 bg-green rounded-4"><p class="m-0">Naprawiono</p>
+          <div *ngIf="bugToShow.fixedDate; else redFlag" class="row p-2 bg-green rounded-4"><p class="m-0">Naprawiono</p>
           </div>
           <ng-template #redFlag>
             <div class="row p-2 bg-danger rounded-4"><p class="m-0">Nie naprawiono</p></div>

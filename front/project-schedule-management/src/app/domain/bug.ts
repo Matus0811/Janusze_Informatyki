@@ -8,5 +8,6 @@ export interface Bug {
   username?: string,
   bugType?: string,
   reportDate?: number,
-  fixedDate?: number
+  fixedDate?: number,
+  fixedTaskCreated?:boolean
 }

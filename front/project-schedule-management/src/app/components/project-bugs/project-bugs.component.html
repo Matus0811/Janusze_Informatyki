@@ -18,9 +18,9 @@
         <div class="col-md-2">{{bug.title}}</div>
         <div class="col-md-3">{{bug.reportDate | date:"yyyy-MM-dd HH:mm"}}</div>
         @if(bug.fixedDate){
-          <div class="col-md-3">{{bug.fixedDate | date:"yyyy-MM-dd HH:mm"}}</div>
+          <div class="col-md-2">{{bug.fixedDate | date:"yyyy-MM-dd HH:mm"}}</div>
         } @else {
-          <div class="col-md-3">Nie naprawiono</div>
+          <div class="col-md-2">Nie naprawiono</div>
         }
       </div>
     } @else {
@@ -29,9 +29,9 @@
         <div class="col-md-2">{{bug.title}}</div>
         <div class="col-md-3">{{bug.reportDate | date:"yyyy-MM-dd HH:mm"}}</div>
         @if(bug.fixedDate){
-          <div class="col-md-3">{{bug.fixedDate | date:"yyyy-MM-dd HH:mm"}}</div>
+          <div class="col-md-2">{{bug.fixedDate | date:"yyyy-MM-dd HH:mm"}}</div>
         } @else {
-          <div class="col-md-3">Nie naprawiono</div>
+          <div class="col-md-2">Nie naprawiono</div>
         }
       </div>
     }

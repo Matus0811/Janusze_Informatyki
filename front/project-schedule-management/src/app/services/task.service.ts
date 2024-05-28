@@ -57,7 +57,7 @@ export class TaskService {
     });
   }
 
-  createTaskForm(taskFormData: any, projectId:string): TaskForm {
+  createTaskForm(taskFormData: any, projectId:any): TaskForm {
     return {
       name: taskFormData.name,
       description: taskFormData.description,

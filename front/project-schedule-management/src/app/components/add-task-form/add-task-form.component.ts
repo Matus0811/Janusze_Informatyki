@@ -1,7 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {MatDialogRef} from "@angular/material/dialog";
-import {TaskService} from "../../services/task.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-add-task-form',
@@ -10,14 +9,20 @@ import {TaskService} from "../../services/task.service";
 })
 export class AddTaskFormComponent {
   taskForm = new FormGroup({
-    name: new FormControl('',[Validators.required]),
-    description: new FormControl('',[Validators.required]),
-    status: new FormControl('',Validators.required),
-    priority: new FormControl('',Validators.required),
+    name: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
+    status: new FormControl(''),
+    priority: new FormControl('', Validators.required),
     finishDate: new FormControl(''),
   });
+  createBugTask: boolean = false;
 
-  constructor(private dialogRef: MatDialogRef<AddTaskFormComponent>) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) private data: any,
+    private dialogRef: MatDialogRef<AddTaskFormComponent>) {
+    if(this.data){
+      this.createBugTask = this.data.createBugTask;
+    }
   }
 
   close() {
@@ -25,7 +30,7 @@ export class AddTaskFormComponent {
   }
 
   submitForm() {
-    if(this.taskForm.valid){
+    if (this.taskForm.valid) {
       this.dialogRef.close(this.taskForm.value);
     }
   }

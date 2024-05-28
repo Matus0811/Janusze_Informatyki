@@ -40,7 +40,10 @@ export class ProjectBugsComponent implements OnInit {
 
   showBugDetails(bug: Bug) {
     this.dialog.open(BugDetailsComponent,{
-      data: bug
+      data: {
+        bugToShow:bug,
+        project: this.project
+      }
     })
   }
 }
