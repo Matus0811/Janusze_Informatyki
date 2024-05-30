@@ -6,7 +6,7 @@ export interface BugForm {
   projectId?: string;
   taskCode?: string;
   username?: string;
-  date?: number;
+  reportDate?: Date;
   bugType?: string;
 
 }

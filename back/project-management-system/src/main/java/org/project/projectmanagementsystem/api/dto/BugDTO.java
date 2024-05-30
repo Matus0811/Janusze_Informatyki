@@ -17,6 +17,7 @@ public record BugDTO(
         Task task,
         String username,
         Bug.BugType bugType,
+        Bug.BugStatus bugStatus,
         OffsetDateTime reportDate,
         OffsetDateTime fixedDate
 ) {

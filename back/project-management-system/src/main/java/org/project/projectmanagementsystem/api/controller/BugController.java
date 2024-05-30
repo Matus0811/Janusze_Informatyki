@@ -67,6 +67,15 @@ public class BugController {
         return new ResponseEntity<>(reportedBugs, HttpStatus.OK);
     }
 
+    @PatchMapping("/update-status")
+    public ResponseEntity<BugDTO> updateBugStatus(
+            @RequestParam(name="newStatus") Bug.BugStatus newStatus,
+            @RequestParam(name= "bugSerialNumber") String bugSerialNumber
+    ){
+        BugDTO bugDTO = BugMapper.INSTANCE.mapFromDomainToDto(bugService.updateBugStatus(newStatus,bugSerialNumber));
+        return new ResponseEntity<>(bugDTO, HttpStatus.OK);
+    }
+
     private BugDTO createBugDto(Bug createdBug) {
         return BugDTO.builder()
                 .serialNumber(createdBug.getSerialNumber())

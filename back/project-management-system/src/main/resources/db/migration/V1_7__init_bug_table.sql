@@ -8,6 +8,7 @@ CREATE TABLE bug
     task_id       INT                      NOT NULL,
     user_id       INT                      NOT NULL,
     type          VARCHAR(32)              NOT NULL,
+    bug_status    VARCHAR(32)              NOT NULL,
     report_date   TIMESTAMP WITH TIME ZONE NOT NULL,
     fixed_date    TIMESTAMP WITH TIME ZONE,
     CONSTRAINT fk_bug_project

@@ -18,6 +18,7 @@ public class Bug {
     Task taskWithBug;
     User reportedUser;
     Bug.BugType bugType;
+    Bug.BugStatus bugStatus;
     OffsetDateTime reportDate;
     OffsetDateTime fixedDate;
 
@@ -29,8 +30,9 @@ public class Bug {
                 .projectWithBug(projectWithBug)
                 .reportedUser(reporter)
                 .taskWithBug(taskWithBug)
+                .bugStatus(BugStatus.REPORTED)
                 .bugType(bugForm.getBugType())
-                .reportDate(OffsetDateTime.now())
+                .reportDate(bugForm.getReportDate())
                 .build();
     }
 
@@ -38,4 +40,7 @@ public class Bug {
         LOGICAL, SECURITY, SYNTAX, COMMUNICATION, CALCULATION, FUNCTIONAL
     }
 
+    public enum BugStatus{
+        REPORTED, IN_REPAIR, FIXED
+    }
 }

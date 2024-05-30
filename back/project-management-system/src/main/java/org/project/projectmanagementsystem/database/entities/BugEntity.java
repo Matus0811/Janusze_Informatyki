@@ -45,6 +45,10 @@ public class BugEntity {
     @Enumerated(EnumType.STRING)
     private Bug.BugType bugType;
 
+    @Column(name="bug_status")
+    @Enumerated(EnumType.STRING)
+    private Bug.BugStatus bugStatus;
+
     @Column(name = "report_date")
     private OffsetDateTime reportDate;
 

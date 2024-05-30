@@ -3,8 +3,7 @@ import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog
 import {Bug} from "../../domain/bug";
 import {AddTaskFormComponent} from "../add-task-form/add-task-form.component";
 import {TaskService} from "../../services/task.service";
-import {response} from "express";
-import {Project} from "../../domain/project";
+import {BugService} from "../../services/bug.service";
 
 @Component({
   selector: 'app-bug-details',
@@ -17,7 +16,8 @@ export class BugDetailsComponent {
     @Inject(MAT_DIALOG_DATA) private data: any,
     private dialogRef: MatDialogRef<BugDetailsComponent>,
     private dialog: MatDialog,
-    private taskService: TaskService
+    private taskService: TaskService,
+    private bugService: BugService
   ) {
     this.bugToShow = this.data.bugToShow;
   }
@@ -38,8 +38,9 @@ export class BugDetailsComponent {
         let taskForm = this.taskService.createTaskForm(value,this.data.project.projectId);
         taskForm.status="BUG";
         this.taskService.createTask(taskForm).then(response => {
-          console.log(`Task [${response}] for bug [${this.bugToShow.title}] created`);
-          this.bugToShow.fixedTaskCreated = true;
+          this.bugService.updateBugStatus("IN_REPAIR",this.bugToShow).then(response => {
+            this.bugToShow.bugStatus = response.data.bugStatus;
+          })
         });
       }
     });

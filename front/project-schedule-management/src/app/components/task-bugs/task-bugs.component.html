@@ -2,7 +2,7 @@
   <div class="row border-bottom mb-3">
     <h3 class="display-5">Zgłoszone błędy</h3>
   </div>
-  <div *ngIf="!task.finishDate" class="row justify-content-md-center">
+  <div *ngIf="task.status !== 'FINISHED'" class="row justify-content-md-center">
     <div class="col-md-4 text-center">
       <button class="btn btn-danger" (click)="showBugReportForm()">Zgłoś błąd</button>
     </div>

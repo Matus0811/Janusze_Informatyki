@@ -44,4 +44,6 @@ public interface BugJpaRepository extends JpaRepository<BugEntity,Long> {
     AND b.fixedDate IS NULL
     """)
     List<BugEntity> findBugsForTask(@Param("taskId") Long taskId, Pageable pageable);
+
+    Optional<BugEntity> findBySerialNumber(String serialNumber);
 }

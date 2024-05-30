@@ -8,6 +8,8 @@ import {Chart} from "chart.js/auto";
 import {BugService} from "../../services/bug.service";
 import {response} from "express";
 import {Router} from "@angular/router";
+import {MatDialog} from "@angular/material/dialog";
+import {DateDetailsComponent} from "../date-details/date-details.component";
 
 @Component({
   selector: 'app-current-project-view',
@@ -25,7 +27,8 @@ export class CurrentProjectViewComponent implements OnInit {
     private taskService : TaskService,
     private projectService : ProjectService,
     private bugService: BugService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ){}
   ngOnInit(): void {
     this.project = history.state.project;
@@ -81,5 +84,13 @@ export class CurrentProjectViewComponent implements OnInit {
         project: this.project
       }
     }).catch(reason => console.log(reason));
+  }
+
+  showDate(finishDate: Date | undefined) {
+    this.dialog.open(DateDetailsComponent,{
+      data: {
+        finishDate: finishDate
+      }
+    })
   }
 }

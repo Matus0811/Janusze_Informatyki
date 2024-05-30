@@ -5,6 +5,6 @@ export interface Project {
   name?: string;
   description?: string;
   projectStatus?: string;
-  startDate?: number;
-  finishDate?: number;
+  startDate?: Date;
+  finishDate?: Date;
 }

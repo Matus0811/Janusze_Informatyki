@@ -63,4 +63,17 @@ public class BugService {
                 .map(bug -> bug.withTaskWithBug(task))
                 .toList();
     }
+
+    @Transactional
+    public Bug updateBugStatus(Bug.BugStatus newStatus, String bugSerialNumber) {
+        Bug bugToUpdate = findBySerialNumber(bugSerialNumber);
+        bugToUpdate = bugToUpdate.withBugStatus(newStatus);
+
+        return bugRepository.save(bugToUpdate);
+    }
+
+    public Bug findBySerialNumber(String serialNumber){
+        return bugRepository.findBugBySerialNumber(serialNumber)
+                .orElseThrow(() -> new BugNotFoundException("Given bug not found", HttpStatus.NOT_FOUND));
+    }
 }

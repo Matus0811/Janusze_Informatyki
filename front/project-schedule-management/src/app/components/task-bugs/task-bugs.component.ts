@@ -65,13 +65,15 @@ export class TaskBugsComponent implements OnInit {
       projectId: this.projectId,
       taskCode: this.task.taskCode,
       username: this.userService.getLoggedUsername(),
-      date: new Date().getTime()
+      reportDate: new Date()
     }
   }
 
   showDetails(bug: Bug) {
     this.dialog.open(BugDetailsComponent, {
-      data: bug
+      data: {
+        bugToShow: bug
+      }
     });
   }
 }

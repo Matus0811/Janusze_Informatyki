@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.With;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @With
@@ -15,5 +16,6 @@ public class BugForm {
     UUID projectId;
     UUID taskCode;
     String username;
+    OffsetDateTime reportDate;
     Bug.BugType bugType;
 }

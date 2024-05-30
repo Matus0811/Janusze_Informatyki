@@ -49,4 +49,9 @@ public class BugRepository {
                 .map(BugMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
     }
+
+    public Optional<Bug> findBugBySerialNumber(String bugSerialNumber) {
+        return bugJpaRepository.findBySerialNumber(bugSerialNumber)
+                .map(BugMapper.INSTANCE::mapFromEntityToDomain);
+    }
 }

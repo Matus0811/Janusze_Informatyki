@@ -1,14 +1,16 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Project} from "../domain/project";
 import instance from "../http-axios";
 import {BugForm} from "../domain/bug-form";
+import {Bug} from "../domain/bug";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BugService {
 
-  constructor() { }
+  constructor() {
+  }
 
   countProjectBugs(project: Project) {
     return instance.request({
@@ -40,14 +42,25 @@ export class BugService {
     })
   }
 
-  getPagedBugListForProject(project: Project, page:number) {
+  getPagedBugListForProject(project: Project, page: number) {
     console.log(project.projectId);
     return instance.request({
       method: "GET",
-      url:"/bugs/list",
+      url: "/bugs/list",
       params: {
         projectId: project.projectId,
         page: page
+      }
+    })
+  }
+
+  updateBugStatus(status: string, bug: Bug) {
+    return instance.request({
+      method: "PATCH",
+      url: "/bugs/update-status",
+      params: {
+        newStatus: status,
+        bugSerialNumber: bug.serialNumber
       }
     })
   }

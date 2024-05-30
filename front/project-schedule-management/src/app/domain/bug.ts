@@ -7,7 +7,7 @@ export interface Bug {
   task?: Task,
   username?: string,
   bugType?: string,
+  bugStatus?: string,
   reportDate?: number,
   fixedDate?: number,
-  fixedTaskCreated?:boolean
 }

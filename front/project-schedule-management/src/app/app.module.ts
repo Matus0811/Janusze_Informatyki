@@ -43,6 +43,7 @@ import {ProjectBugsComponent} from './components/project-bugs/project-bugs.compo
 import {TaskBugsComponent} from './components/task-bugs/task-bugs.component';
 import {ReportBugFormComponent} from './components/report-bug-form/report-bug-form.component';
 import {BugDetailsComponent} from './components/bug-details/bug-details.component';
+import { DateDetailsComponent } from './components/date-details/date-details.component';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import {BugDetailsComponent} from './components/bug-details/bug-details.componen
     TaskBugsComponent,
     ReportBugFormComponent,
     BugDetailsComponent,
+    DateDetailsComponent,
   ],
   imports: [
     BrowserModule,
