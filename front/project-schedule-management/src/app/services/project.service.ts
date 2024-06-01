@@ -102,4 +102,18 @@ export class ProjectService {
       url: `/projects/delete/${projectToRemove.projectId}`
     })
   }
+
+  generatePdf(project: Project) {
+    return instance.request({
+      method: "GET",
+      responseType: "blob",
+      headers: {
+        'Accept' : 'application/pdf'
+      },
+      url: "/project/pdf-generate",
+      params : {
+        projectId: project.projectId
+      }
+    })
+  }
 }

@@ -54,4 +54,10 @@ public class UserRepository{
                 .map(UserMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
     }
+
+    public List<User> findUsersAssignedToProject(UUID projectId) {
+        return userJpaRepository.findUsersAssignedToProject(projectId).stream()
+                .map(UserMapper.INSTANCE::mapFromEntityToDomain)
+                .toList();
+    }
 }

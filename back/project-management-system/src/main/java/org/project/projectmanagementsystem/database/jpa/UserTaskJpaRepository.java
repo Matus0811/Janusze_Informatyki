@@ -1,9 +1,7 @@
 package org.project.projectmanagementsystem.database.jpa;
 
-import org.project.projectmanagementsystem.database.entities.TaskEntity;
 import org.project.projectmanagementsystem.database.entities.UserTaskEntity;
-import org.project.projectmanagementsystem.domain.Task;
-import org.project.projectmanagementsystem.domain.UserTask;
+import org.project.projectmanagementsystem.domain.UserTasks;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -61,4 +59,14 @@ public interface UserTaskJpaRepository extends JpaRepository<UserTaskEntity, Lon
     WHERE t.taskCode = :taskCode
     """)
     List<UserTaskEntity> findAllUsersAssignedToTask(@Param("taskCode") String taskCode);
+
+    @Query("""
+    SELECT new org.project.projectmanagementsystem.domain.UserTasks(u.username,count(*)) FROM UserTaskEntity ute
+    JOIN ute.user u
+    JOIN ute.task t
+    WHERE t.project.projectId = :projectId
+    AND ute.finished = true
+    GROUP BY u.username
+    """)
+    List<UserTasks> findFinishedTasksForUsers(@Param("projectId") UUID projectId);
 }

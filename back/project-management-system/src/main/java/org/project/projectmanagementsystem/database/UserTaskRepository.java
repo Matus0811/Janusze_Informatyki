@@ -3,8 +3,9 @@ package org.project.projectmanagementsystem.database;
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.entities.UserTaskEntity;
 import org.project.projectmanagementsystem.database.jpa.UserTaskJpaRepository;
-import org.project.projectmanagementsystem.domain.Task;
+import org.project.projectmanagementsystem.domain.Project;
 import org.project.projectmanagementsystem.domain.UserTask;
+import org.project.projectmanagementsystem.domain.UserTasks;
 import org.project.projectmanagementsystem.domain.mapper.UserTaskMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -64,5 +65,9 @@ public class UserTaskRepository {
         return userTaskJpaRepository.findAllUsersAssignedToTask(taskCode).stream()
                 .map(UserTaskMapper.INSTANCE::mapFromEntityToDomain)
                 .collect(Collectors.toList());
+    }
+
+    public List<UserTasks> findFinishedTasksForUsers(Project project) {
+        return userTaskJpaRepository.findFinishedTasksForUsers(project.getProjectId());
     }
 }

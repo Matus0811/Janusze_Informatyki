@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -154,5 +155,9 @@ public class UserService {
 
     public List<User> findUnassignedUsersToProject(Project project, String username, Pageable pageable) {
         return userRepository.findUnassignedUsersToProject(project.getProjectId(),username,pageable);
+    }
+
+    public List<User> findUsersAssignedToProject(UUID projectId) {
+        return userRepository.findUsersAssignedToProject(projectId);
     }
 }

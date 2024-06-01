@@ -3,9 +3,7 @@ package org.project.projectmanagementsystem.services;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.UserTaskRepository;
-import org.project.projectmanagementsystem.domain.Task;
-import org.project.projectmanagementsystem.domain.User;
-import org.project.projectmanagementsystem.domain.UserTask;
+import org.project.projectmanagementsystem.domain.*;
 import org.project.projectmanagementsystem.services.exceptions.task.TaskException;
 import org.project.projectmanagementsystem.services.exceptions.task.UserTaskNotFoundException;
 import org.springframework.data.domain.Pageable;
@@ -13,8 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
-import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -52,7 +50,11 @@ public class TaskUserService {
             if(Task.TaskStatus.BUG == task.getStatus()){
                 bugService.finishBugForTask(task);
             }
-            task = task.withStatus(Task.TaskStatus.FINISHED).withFinishDate(OffsetDateTime.now());
+            task = task.withStatus(Task.TaskStatus.FINISHED);
+
+            if(Objects.isNull(task.getFinishDate())){
+                task = task.withFinishDate(OffsetDateTime.now());
+            }
             taskService.save(task);
         }
     }
@@ -89,6 +91,10 @@ public class TaskUserService {
 
         List<UserTask> taskUsers = buildTaskUserList(task, usersToAssign);
         userTaskRepository.saveAll(taskUsers);
+    }
+
+    public List<UserTasks> findFinishedTasksForUsers(Project project){
+        return userTaskRepository.findFinishedTasksForUsers(project);
     }
 
     private List<UserTask> buildTaskUserList(Task task, List<User> usersToAssign) {

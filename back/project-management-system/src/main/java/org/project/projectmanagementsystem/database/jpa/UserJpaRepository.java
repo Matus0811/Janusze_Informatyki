@@ -42,4 +42,18 @@ public interface UserJpaRepository extends JpaRepository<UserEntity,Long> {
     AND LOWER(u.username) LIKE LOWER(CONCAT(:username,'%'))
     """)
     List<UserEntity> findUnassignedUsersToProject(@Param("projectId") UUID projectId,@Param("username") String username, Pageable pageable);
+
+    @Query("""
+    SELECT u FROM UserEntity u
+    WHERE u.userId IN
+    (
+        SELECT ut.userId FROM UserProjectRoleEntity upr
+        JOIN upr.user ut
+        JOIN upr.project p
+        JOIN upr.role r
+        WHERE p.projectId = :projectId
+        AND r.name = 'TEAM_MEMBER'
+    )
+    """)
+    List<UserEntity> findUsersAssignedToProject(UUID projectId);
 }
