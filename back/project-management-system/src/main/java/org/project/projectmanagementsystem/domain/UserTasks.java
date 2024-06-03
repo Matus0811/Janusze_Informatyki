@@ -9,5 +9,5 @@ import lombok.With;
 @Builder
 public class UserTasks {
     String username;
-    Long realizedTasks;
+    Long numberOfRealizedTasks;
 }

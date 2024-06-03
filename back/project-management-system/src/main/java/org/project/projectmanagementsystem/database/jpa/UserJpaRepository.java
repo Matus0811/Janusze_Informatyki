@@ -56,4 +56,17 @@ public interface UserJpaRepository extends JpaRepository<UserEntity,Long> {
     )
     """)
     List<UserEntity> findUsersAssignedToProject(UUID projectId);
+
+    @Query("""
+    SELECT u FROM UserEntity u
+    WHERE u.username = (
+        SELECT ut.username FROM UserProjectRoleEntity upr
+        JOIN upr.user ut
+        JOIN upr.project p
+        JOIN upr.role r
+        WHERE p.projectId = :projectId
+        AND r.name = "PROJECT_OWNER"
+    )
+    """)
+    Optional<UserEntity> findProjectOwner(UUID projectId);
 }

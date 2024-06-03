@@ -43,4 +43,17 @@ public interface TaskJpaRepository extends JpaRepository<TaskEntity,Long> {
             AND p.projectId = :projectId
             """)
     List<TaskEntity> findPagedMemberTasks(@Param("projectId") UUID projectId,@Param("username") String username, Pageable pageable);
+
+    @Query("""
+    SELECT count(t) FROM TaskEntity t
+    WHERE t.taskCode IN
+    (
+        SELECT te.taskCode FROM UserTaskEntity ute
+        JOIN ute.task te
+        JOIN ute.user u
+        WHERE ute.finished = true
+        AND u.username = :username
+    )
+    """)
+    Long countFinishedUserTasks(@Param("username")String username);
 }

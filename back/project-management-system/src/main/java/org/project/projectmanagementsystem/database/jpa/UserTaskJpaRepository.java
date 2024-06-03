@@ -68,5 +68,5 @@ public interface UserTaskJpaRepository extends JpaRepository<UserTaskEntity, Lon
     AND ute.finished = true
     GROUP BY u.username
     """)
-    List<UserTasks> findFinishedTasksForUsers(@Param("projectId") UUID projectId);
+    List<UserTasks> findFinishedTasksForUsersInProject(@Param("projectId") UUID projectId);
 }

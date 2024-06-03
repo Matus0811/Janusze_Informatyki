@@ -18,4 +18,5 @@ public class ProjectSummary {
     List<Bug> bugsInProject;
     List<ProjectTaskStatusCount> projectTaskStatusCounts;
     List<UserTasks> usersCountFinishedTasks;
+    User projectOwner;
 }

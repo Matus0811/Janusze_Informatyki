@@ -60,4 +60,9 @@ public class UserRepository{
                 .map(UserMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
     }
+
+    public Optional<User> findProjectOwner(UUID projectId) {
+        return userJpaRepository.findProjectOwner(projectId)
+                .map(UserMapper.INSTANCE::mapFromEntityToDomain);
+    }
 }

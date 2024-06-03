@@ -2,7 +2,6 @@ package org.project.projectmanagementsystem.services;
 
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.api.dto.ProjectTaskStatusCount;
-import org.project.projectmanagementsystem.api.dto.TaskDTO;
 import org.project.projectmanagementsystem.database.TaskRepository;
 import org.project.projectmanagementsystem.domain.*;
 import org.project.projectmanagementsystem.services.exceptions.task.TaskException;
@@ -66,5 +65,9 @@ public class TaskService {
 
     public List<Task> findPagedMemberTasks(UUID projectId, String username, Pageable pageable) {
         return taskRepository.findPagedMemberTasks(projectId,username,pageable);
+    }
+
+    public Long countFinishedUserTasks(User user) {
+        return taskRepository.countFinishedUserTasks(user);
     }
 }

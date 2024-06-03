@@ -160,4 +160,8 @@ public class UserService {
     public List<User> findUsersAssignedToProject(UUID projectId) {
         return userRepository.findUsersAssignedToProject(projectId);
     }
+
+    public User findProjectOwner(UUID projectId) {
+        return userRepository.findProjectOwner(projectId).orElse(User.builder().build());
+    }
 }

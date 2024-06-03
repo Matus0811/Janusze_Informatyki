@@ -5,6 +5,7 @@ import org.project.projectmanagementsystem.api.dto.ProjectTaskStatusCount;
 import org.project.projectmanagementsystem.database.entities.TaskEntity;
 import org.project.projectmanagementsystem.database.jpa.TaskJpaRepository;
 import org.project.projectmanagementsystem.domain.Task;
+import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.mapper.TaskMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -49,5 +50,9 @@ public class TaskRepository {
         return taskJpaRepository.findPagedMemberTasks(projectId, username,pageable).stream()
                 .map(TaskMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
+    }
+
+    public Long countFinishedUserTasks(User user) {
+        return taskJpaRepository.countFinishedUserTasks(user.getUsername());
     }
 }

@@ -68,6 +68,6 @@ public class UserTaskRepository {
     }
 
     public List<UserTasks> findFinishedTasksForUsers(Project project) {
-        return userTaskJpaRepository.findFinishedTasksForUsers(project.getProjectId());
+        return userTaskJpaRepository.findFinishedTasksForUsersInProject(project.getProjectId());
     }
 }
