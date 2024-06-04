@@ -55,7 +55,7 @@ public interface UserJpaRepository extends JpaRepository<UserEntity,Long> {
         AND r.name = 'TEAM_MEMBER'
     )
     """)
-    List<UserEntity> findUsersAssignedToProject(UUID projectId);
+    List<UserEntity> findUsersAssignedToProject(@Param("projectId") UUID projectId);
 
     @Query("""
     SELECT u FROM UserEntity u
@@ -68,5 +68,6 @@ public interface UserJpaRepository extends JpaRepository<UserEntity,Long> {
         AND r.name = "PROJECT_OWNER"
     )
     """)
-    Optional<UserEntity> findProjectOwner(UUID projectId);
+    Optional<UserEntity> findProjectOwner(@Param("projectId")UUID projectId);
+
 }
