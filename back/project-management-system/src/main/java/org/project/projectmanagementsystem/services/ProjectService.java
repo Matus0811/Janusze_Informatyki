@@ -77,7 +77,7 @@ public class ProjectService {
 
 
     @Transactional
-    public void processProjectFinishing(UUID projectId) {
+    public void processProjectFinishing(UUID projectId, OffsetDateTime finishDate) {
         Project finishedProject = findById(projectId);
 
         int numberOfUnfinishedTasks = taskService.findPagedProjectTasksWithStatus(
@@ -87,13 +87,13 @@ public class ProjectService {
         ).size();
 
         if(numberOfUnfinishedTasks > 0 ){
-            throw new ProjectDeleteException("Cannot finish tasks! There are still [%s] tasks in progress"
-                    .formatted(numberOfUnfinishedTasks),HttpStatus.CONFLICT);
+            throw new ProjectDeleteException("Nie można ukończyć projektu! Wciąż realizowane są [%s] zadania"
+                    .formatted(numberOfUnfinishedTasks),HttpStatus.NOT_FOUND);
         }
 
         finishedProject = finishedProject
                 .withProjectStatus(Project.ProjectStatus.FINISHED)
-                .withFinishDate(OffsetDateTime.now());
+                .withFinishDate(finishDate);
 
         projectRepository.save(finishedProject);
     }

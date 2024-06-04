@@ -44,6 +44,7 @@ import {TaskBugsComponent} from './components/task-bugs/task-bugs.component';
 import {ReportBugFormComponent} from './components/report-bug-form/report-bug-form.component';
 import {BugDetailsComponent} from './components/bug-details/bug-details.component';
 import { DateDetailsComponent } from './components/date-details/date-details.component';
+import { GlobalErrorHandlerComponent } from './components/global-error-handler/global-error-handler.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { DateDetailsComponent } from './components/date-details/date-details.com
     ReportBugFormComponent,
     BugDetailsComponent,
     DateDetailsComponent,
+    GlobalErrorHandlerComponent,
   ],
   imports: [
     BrowserModule,

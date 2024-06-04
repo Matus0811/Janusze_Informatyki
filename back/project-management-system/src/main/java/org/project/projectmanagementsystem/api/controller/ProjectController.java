@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -99,8 +100,11 @@ public class ProjectController {
     }
 
     @PutMapping("/{projectId}/finish")
-    public ResponseEntity<?> finishProject(@PathVariable("projectId") UUID projectId) {
-        projectService.processProjectFinishing(projectId);
+    public ResponseEntity<?> finishProject(
+            @PathVariable("projectId") UUID projectId,
+            @RequestParam OffsetDateTime finishDate
+            ) {
+        projectService.processProjectFinishing(projectId,finishDate);
 
         return ResponseEntity.ok().build();
     }

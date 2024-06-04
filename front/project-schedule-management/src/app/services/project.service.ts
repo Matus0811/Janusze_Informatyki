@@ -116,4 +116,14 @@ export class ProjectService {
       }
     })
   }
+
+  finishProject(project: Project,finishDate: Date) {
+    return instance.request({
+      method: "PUT",
+      url: `/projects/${project.projectId}/finish`,
+      params: {
+        finishDate: new Date(finishDate)
+      }
+    })
+  }
 }
