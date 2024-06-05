@@ -44,7 +44,7 @@ public class BugRepository {
     }
 
     public List<Bug> findBugsForTask(Task task, Pageable pageable) {
-        return bugJpaRepository.findBugsForTask(task.getTaskId(),pageable)
+        return bugJpaRepository.findBugsForTask(task.getTaskCode(),pageable)
                 .stream()
                 .map(BugMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
@@ -53,5 +53,9 @@ public class BugRepository {
     public Optional<Bug> findBugBySerialNumber(String bugSerialNumber) {
         return bugJpaRepository.findBySerialNumber(bugSerialNumber)
                 .map(BugMapper.INSTANCE::mapFromEntityToDomain);
+    }
+
+    public void removeAll(List<Bug> bugsForTask) {
+        bugJpaRepository.deleteAllById(bugsForTask.stream().map(Bug::getBugId).toList());
     }
 }

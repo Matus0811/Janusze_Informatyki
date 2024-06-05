@@ -5,6 +5,7 @@ import org.project.projectmanagementsystem.api.dto.*;
 import org.project.projectmanagementsystem.domain.UserTask;
 import org.project.projectmanagementsystem.domain.mapper.TaskMapper;
 import org.project.projectmanagementsystem.domain.mapper.UserMapper;
+import org.project.projectmanagementsystem.services.BugService;
 import org.project.projectmanagementsystem.services.ProjectTaskService;
 import org.project.projectmanagementsystem.services.TaskService;
 import org.project.projectmanagementsystem.services.TaskUserService;
@@ -26,6 +27,7 @@ public class TaskController {
     private final TaskService taskService;
     private final ProjectTaskService projectTaskService;
     private final TaskUserService taskUserService;
+    private final BugService bugService;
 
 
     @PostMapping("/create")
@@ -113,6 +115,7 @@ public class TaskController {
 
     @DeleteMapping("/{taskCode}/delete")
     public ResponseEntity<?> deleteTask(@PathVariable("taskCode") String taskCode) {
+        bugService.removeBugsAssignedToTask(taskCode);
         taskService.deleteTask(taskCode);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

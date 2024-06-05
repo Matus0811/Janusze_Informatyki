@@ -47,7 +47,7 @@ public class ProjectTaskService {
                 .map(User::getUserId)
                 .toList();
 
-        return userProjectRoleService.findPagedProjectMembersWithGivenUsernameNotIncludeUsersIdsInCurrentTask(projectId,username,pageable,allAssignedUserToTaskIds)
+        return userProjectRoleService.findPagedProjectMembersWithGivenUsernameNotIncludeUsersIdsInCurrentTask(projectId, username, pageable, allAssignedUserToTaskIds)
                 .stream()
                 .map(UserProjectRole::getUser)
                 .toList();

@@ -45,11 +45,11 @@ public interface UserTaskJpaRepository extends JpaRepository<UserTaskEntity, Lon
             @Param("projectId") UUID projectId);
 
     @Query("""
-    SELECT ute FROM UserTaskEntity ute
-    JOIN FETCH ute.user u
-    JOIN FETCH ute.task t
-    WHERE t.taskCode = :taskCode
-    """)
+            SELECT ute FROM UserTaskEntity ute
+            JOIN FETCH ute.user u
+            JOIN FETCH ute.task t
+            WHERE t.taskCode = :taskCode
+            """)
     List<UserTaskEntity> findPagedUsersAssignedToTask(@Param("taskCode") String taskCode, Pageable pageable);
 
     @Query("""

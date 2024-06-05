@@ -12,6 +12,7 @@ import {ProjectsMemberComponent} from "./components/projects-member/projects-mem
 import {ProjectMemberViewComponent} from "./components/project-member-view/project-member-view.component";
 import {ProjectStatusDetailsComponent} from "./components/project-status-details/project-status-details.component";
 import {ProjectBugsComponent} from "./components/project-bugs/project-bugs.component";
+import {MemberTaskDetailsComponent} from "./components/member-task-details/member-task-details.component";
 
 const routes: Routes = [
   {
@@ -54,6 +55,10 @@ const routes: Routes = [
             component: ProjectBugsComponent
           }
         ]
+      },
+      {
+        path: 'projects-member/project/:id/task/:id',
+        component: MemberTaskDetailsComponent
       },
       {
         path: 'projects-member/project/:id',

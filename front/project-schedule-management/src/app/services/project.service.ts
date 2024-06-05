@@ -126,4 +126,11 @@ export class ProjectService {
       }
     })
   }
+
+  findProjectById(projectId: string) {
+    return instance.request({
+      method: "GET",
+      url: `/projects/${projectId}`
+    })
+  }
 }

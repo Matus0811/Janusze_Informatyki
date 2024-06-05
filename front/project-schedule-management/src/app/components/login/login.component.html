@@ -16,7 +16,7 @@
         <input class="input-form-element" formControlName="password" type="password" id="password"
                placeholder="Podaj hasło">
         <div class="alert alert-danger" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-          Hasło musi mieć długość co najmniej 8
+          Hasło musi mieć długość co najmniej 8 znaków
         </div>
       </div>
       <div class="button-container">

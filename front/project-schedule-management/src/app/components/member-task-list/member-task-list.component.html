@@ -17,5 +17,7 @@
       </div>
     </div>
   </div>
-  <app-task-card *ngFor="let task of userTasks" [task]="task"></app-task-card>
+  <div class="container" *ngFor="let task of userTasks">
+    <app-task-card [loadedTask]="task"></app-task-card>
+  </div>
 </div>

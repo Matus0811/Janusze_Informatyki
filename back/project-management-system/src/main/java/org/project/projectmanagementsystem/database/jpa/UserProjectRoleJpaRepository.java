@@ -23,7 +23,6 @@ public interface UserProjectRoleJpaRepository extends JpaRepository<UserProjectR
             JOIN upr.role r
             WHERE upr.user.email = :email
             AND r.name = 'PROJECT_OWNER'
-            AND p.projectStatus != 'FINISHED'
             """)
     Page<ProjectEntity> findNotFinishedUserProjects(@Param("email") String email, Pageable pageable);
 

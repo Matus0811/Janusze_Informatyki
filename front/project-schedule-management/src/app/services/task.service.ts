@@ -8,6 +8,7 @@ import {TaskStatus} from "../domain/task-status";
 import {TaskForm} from "../domain/task-form";
 import {User} from "../domain/user";
 import {Project} from "../domain/project";
+import { Task } from '../domain/task';
 
 @Injectable({
   providedIn: 'root'
@@ -103,5 +104,16 @@ export class TaskService {
         username: user.username
       }
     });
+  }
+
+  finishTask(currentTask: Task, userEmail: string | undefined, projectId: string) {
+    return instance.request({
+      method: "PUT",
+      url: `/tasks/${currentTask.taskCode}/finish-task`,
+      params: {
+        email: userEmail,
+        projectId: projectId
+      }
+    })
   }
 }

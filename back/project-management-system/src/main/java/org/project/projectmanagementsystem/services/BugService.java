@@ -76,4 +76,9 @@ public class BugService {
         return bugRepository.findBugBySerialNumber(serialNumber)
                 .orElseThrow(() -> new BugNotFoundException("Given bug not found", HttpStatus.NOT_FOUND));
     }
+
+    public void removeBugsAssignedToTask(String taskCode) {
+        List<Bug> bugsForTask = bugRepository.findBugsForTask(Task.builder().taskCode(taskCode).build(), Pageable.unpaged());
+        bugRepository.removeAll(bugsForTask);
+    }
 }

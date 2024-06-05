@@ -38,7 +38,7 @@ public interface TaskJpaRepository extends JpaRepository<TaskEntity,Long> {
                     JOIN ute.task t
                     JOIN ute.user u
                     WHERE u.username = :username
-                    AND t.finishDate IS NULL
+                    AND t.status != 'FINISHED'
                 )
             AND p.projectId = :projectId
             """)

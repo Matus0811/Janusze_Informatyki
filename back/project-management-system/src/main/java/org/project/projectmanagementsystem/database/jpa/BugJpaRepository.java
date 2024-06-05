@@ -1,7 +1,6 @@
 package org.project.projectmanagementsystem.database.jpa;
 
 import org.project.projectmanagementsystem.database.entities.BugEntity;
-import org.project.projectmanagementsystem.domain.Bug;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -40,10 +39,9 @@ public interface BugJpaRepository extends JpaRepository<BugEntity,Long> {
     @Query("""
     SELECT b FROM BugEntity b
     JOIN b.taskEntity t
-    WHERE t.taskId = :taskId
-    AND b.fixedDate IS NULL
+    WHERE t.taskCode = :taskCode
     """)
-    List<BugEntity> findBugsForTask(@Param("taskId") Long taskId, Pageable pageable);
+    List<BugEntity> findBugsForTask(@Param("taskCode") String taskCode, Pageable pageable);
 
     Optional<BugEntity> findBySerialNumber(String serialNumber);
 }

@@ -7,6 +7,7 @@ import {Priority} from "../../domain/priority";
 import {MatDialog} from "@angular/material/dialog";
 import {AddTaskFormComponent} from "../add-task-form/add-task-form.component";
 import {ProjectService} from "../../services/project.service";
+import {Project} from "../../domain/project";
 
 @Component({
   selector: 'app-task-list',
@@ -19,6 +20,7 @@ export class TaskListComponent implements OnInit {
   lastLoadedTaskSize: number = 0;
   currentTaskStatus: TaskStatus = TaskStatus.ALL;
   projectId: string = this.router.url.split("/")[4];
+  project!: Project;
 
   constructor(
     private taskService: TaskService,
@@ -27,6 +29,9 @@ export class TaskListComponent implements OnInit {
     private dialog: MatDialog,
     private projectService: ProjectService
   ) {
+    projectService.findProjectById(this.projectId).then(response => {
+      this.project = response.data;
+    });
   }
 
   ngOnInit(): void {

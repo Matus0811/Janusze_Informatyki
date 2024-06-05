@@ -52,8 +52,10 @@ public class TaskUserService {
             }
             task = task.withStatus(Task.TaskStatus.FINISHED);
 
-            if(Objects.isNull(task.getFinishDate())){
-                task = task.withFinishDate(OffsetDateTime.now());
+            OffsetDateTime now = OffsetDateTime.now();
+
+            if(Objects.isNull(task.getFinishDate()) || task.getFinishDate().isAfter(now)){
+                task = task.withFinishDate(now);
             }
             taskService.save(task);
         }

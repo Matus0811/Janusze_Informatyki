@@ -8,6 +8,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {AddUsersToTaskComponent} from "../add-users-to-task/add-users-to-task.component";
 import {AddUserToProjectFormComponent} from "../add-user-to-project-form/add-user-to-project-form.component";
 import {response} from "express";
+import {Project} from "../../domain/project";
 
 @Component({
   selector: 'app-project-user-list',
@@ -19,11 +20,15 @@ export class ProjectUserListComponent implements OnInit {
   page:number = 0;
   lastLoadedUsersSize: number = 0;
   projectId:string = this.router.url.split("/")[4];
+  project!: Project;
 
   constructor(private projectService: ProjectService,
               private router: Router,
               private taskService: TaskService,
               private dialogRef: MatDialog) {
+    projectService.findProjectById(this.projectId).then(value => {
+        this.project = value.data;
+    })
   }
 
   ngOnInit(): void {
