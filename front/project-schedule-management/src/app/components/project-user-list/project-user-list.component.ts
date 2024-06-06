@@ -26,13 +26,18 @@ export class ProjectUserListComponent implements OnInit {
               private router: Router,
               private taskService: TaskService,
               private dialogRef: MatDialog) {
-    projectService.findProjectById(this.projectId).then(value => {
-        this.project = value.data;
-    })
+
   }
 
   ngOnInit(): void {
     this.getPagedProjectMembers();
+    this.getProject();
+  }
+
+  private getProject() {
+    this.projectService.findProjectById(this.projectId).then(value => {
+      this.project = value.data;
+    })
   }
 
   getPagedProjectMembers(){

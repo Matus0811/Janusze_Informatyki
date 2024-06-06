@@ -2,12 +2,10 @@
   <h3 class="display-5">Lista użytkowników</h3>
   <div class="row justify-content-md-center mb-2">
     <div class="col-md-4 text-center">
-      @if(project.projectStatus != 'FINISHED'){
-        <button mat-raised-button (click)="openModal()">
-          <mat-icon>add</mat-icon>
-          Dodaj użytkownika
-        </button>
-      }
+      <button mat-raised-button (click)="openModal()">
+        <mat-icon>add</mat-icon>
+        Dodaj użytkownika
+      </button>
     </div>
   </div>
 
@@ -20,16 +18,16 @@
     </div>
     <div class="row border-bottom p-3 text-dark hover-div" *ngFor="let user of projectUsers">
       <div class="col-md-3">
-        <p>{{user.name}} {{user.surname}}</p>
+        <p>{{ user.name }} {{ user.surname }}</p>
       </div>
       <div class="col-md-2">
-        <p>{{user.username}}</p>
+        <p>{{ user.username }}</p>
       </div>
       <div class="col-md-4">
-        <p>{{user.email}}</p>
+        <p>{{ user.email }}</p>
       </div>
       <div class="col-md-2">
-        <p>{{user.phone}}</p>
+        <p>{{ user.phone }}</p>
       </div>
       <div class="col-md-1 d-flex justify-content-md-center">
         <a [matMenuTriggerFor]="settings" class="settings-btn">

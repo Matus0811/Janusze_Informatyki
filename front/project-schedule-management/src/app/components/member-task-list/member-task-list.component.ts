@@ -1,6 +1,7 @@
 import {Component, Inject, Input} from '@angular/core';
 import { Task } from '../../domain/task';
 import {Priority} from "../../domain/priority";
+import {UserTask} from "../../domain/user-task";
 
 @Component({
   selector: 'app-member-task-list',
@@ -8,6 +9,6 @@ import {Priority} from "../../domain/priority";
   styleUrl: './member-task-list.component.css'
 })
 export class MemberTaskListComponent {
-  @Input() userTasks: Task[] = [];
+  @Input() userTasks: UserTask[] = [];
 
 }

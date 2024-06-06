@@ -106,12 +106,12 @@ export class TaskService {
     });
   }
 
-  finishTask(currentTask: Task, userEmail: string | undefined, projectId: string) {
+  finishTask(currentTask: Task, username: string | undefined, projectId: string) {
     return instance.request({
       method: "PUT",
-      url: `/tasks/${currentTask.taskCode}/finish-task`,
+      url: `/tasks/${currentTask.taskCode}/users/finish-task`,
       params: {
-        email: userEmail,
+        username: username,
         projectId: projectId
       }
     })

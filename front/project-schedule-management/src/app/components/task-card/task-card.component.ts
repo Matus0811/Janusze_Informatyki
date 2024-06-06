@@ -2,14 +2,15 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Task} from '../../domain/task';
 import {Priority} from '../../domain/priority';
 import {ActivatedRoute, Router} from "@angular/router";
+import {UserTask} from "../../domain/user-task";
 
 @Component({
   selector: 'app-task-card',
   templateUrl: './task-card.component.html',
   styleUrl: './task-card.component.css'
 })
-export class TaskCardComponent implements OnInit {
-  @Input() loadedTask!: Task;
+export class TaskCardComponent implements OnInit{
+  @Input() loadedTask!: UserTask;
   task!: Task;
   projectId:string = this.router.url.split("/")[4];
 
@@ -18,8 +19,7 @@ export class TaskCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.loadedTask);
-    this.task = this.loadedTask;
+    this.task = this.loadedTask.task;
   }
 
 
@@ -35,12 +35,12 @@ export class TaskCardComponent implements OnInit {
 
   protected readonly Priority = Priority;
 
-  goToTask(task: Task) {
+  goToTask(task: UserTask) {
     this.router.navigate(["task", "id"], {
       relativeTo: this.activatedRoute,
-      queryParams: {id: task.taskCode},
+      queryParams: {id: this.task.taskCode},
       state: {
-        task: task,
+        userTask: task,
         projectId: this.projectId
       }
     })

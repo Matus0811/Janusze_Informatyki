@@ -2,32 +2,34 @@
   <div class="row">
     <div class="col-md-8 mb-4">
       <div class="card-title">
-        <h3 class="display-6">{{ this.currentTask.name }}</h3>
+        <h3 class="display-6">{{ this.task.name }}</h3>
       </div>
       <div class="row mt-3">
         <div class="col">
           <div class="row">
             <div class="text-secondary">
-              <p>{{ currentTask.description }}</p>
+              <p>{{ task.description }}</p>
             </div>
-            <div class="row">
-              <div class="col-md-4">
-                <button class="btn btn-success" (click)="finishTask(currentTask)">Zakończ zadanie</button>
+            @if (!isFinishedTask){
+              <div class="row">
+                <div class="col-md-4">
+                  <button class="btn btn-success" (click)="finishTask(task)">Zakończ zadanie</button>
+                </div>
               </div>
-            </div>
+            }
           </div>
           <div class="row mt-4">
             <div class="col-md-6 p-3 task-status-container text-light cursor-pointer transition-2s">
               <div class="row text-center">
-                <p class="task-status m-0">{{ currentTask.status }}</p>
+                <p class="task-status m-0">{{ task.status }}</p>
               </div>
               <div class="row text-center">
                 <p class="m-0">STATUS</p>
               </div>
             </div>
-            <div class="col-md-6 p-3 text-light task-priority-container cursor-pointer transition-2s" [style.background-color]="getColor(currentTask.priority)">
+            <div class="col-md-6 p-3 text-light task-priority-container cursor-pointer transition-2s" [style.background-color]="getColor(task.priority)">
               <div class="row text-center">
-                <p class="task-status m-0">{{ currentTask.priority }}</p>
+                <p class="task-status m-0">{{ task.priority }}</p>
               </div>
               <div class="row text-center">
                 <p class="m-0">PRIORYTET</p>
@@ -39,7 +41,7 @@
       <div class="row">
         <div class="col-md-6 p-3 task-start-date-container text-light cursor-pointer transition-2s">
           <div class="row text-center">
-            <p class="task-status m-0">{{ this.currentTask.startDate | date:"yyyy-MM-dd" }}</p>
+            <p class="task-status m-0">{{ this.task.startDate | date:"yyyy-MM-dd" }}</p>
           </div>
           <div class="row text-center">
             <p class="m-0">Data rozpoczęcia</p>
@@ -48,7 +50,7 @@
         <div class="col-md-6 p-3 task-finish-date-container text-light cursor-pointer transition-2s">
           <div class="row text-center">
             <p class="task-status m-0"
-               *ngIf="currentTask.finishDate; else dateUndefined">{{ this.currentTask.finishDate | date:"yyyy-MM-dd" }}</p>
+               *ngIf="task.finishDate; else dateUndefined">{{ this.task.finishDate | date:"yyyy-MM-dd" }}</p>
             <ng-template #dateUndefined>
               <p class="task-status m-0">Nie określono daty</p>
             </ng-template>
@@ -86,11 +88,11 @@
       <button class="btn btn-primary" (click)="showTaskBugs()">Wyświetl zgłoszone błędy</button>
     </div>
   </div>
-  <app-task-bugs [projectId]="projectId" [task]="currentTask" [hidden]="bugsListVisible"></app-task-bugs>
+  <app-task-bugs [projectId]="projectId" [task]="task" [hidden]="bugsListVisible"></app-task-bugs>
 
   <div class="row mt-5 justify-content-md-center">
     <div class="col-md-10 justify-content-md-center">
-      <app-comment-list [taskCode]="currentTask.taskCode"></app-comment-list>
+      <app-comment-list [taskCode]="task.taskCode"></app-comment-list>
     </div>
   </div>
 </div>

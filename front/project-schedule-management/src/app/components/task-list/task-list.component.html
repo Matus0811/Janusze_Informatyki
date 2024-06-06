@@ -2,12 +2,10 @@
   <h3 class="display-5">Lista zadań</h3>
   <div class="row justify-content-md-center">
     <div class="col-md-4 text-center">
-      @if (project.projectStatus != 'FINISHED'){
-        <button mat-raised-button (click)="openModal()">
-          <mat-icon>add</mat-icon>
-          Dodaj zadanie
-        </button>
-      }
+      <button mat-raised-button (click)="openModal()">
+        <mat-icon>add</mat-icon>
+        Dodaj zadanie
+      </button>
     </div>
   </div>
   <ul class="nav nav-pills nav-fill mt-md-5 mb-md-3 border">
@@ -43,10 +41,10 @@
     </div>
     <div class="row border-bottom pt-3 text-dark hover-div" *ngFor="let task of tasks">
       <div class="col-md-3">
-        <p>{{task.taskCode}}</p>
+        <p>{{ task.taskCode }}</p>
       </div>
       <div class="col-md-2">
-        <p>{{task.name}}</p>
+        <p>{{ task.name }}</p>
       </div>
       <div class="col-md-2 d-flex justify-content-md-center">
         <div class="align-self-center w-50 p-2 rounded-4" [style.background-color]="getColor(task.priority)">

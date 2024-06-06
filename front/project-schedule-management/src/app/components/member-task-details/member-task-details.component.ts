@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 import {AddUsersToTaskComponent} from "../add-users-to-task/add-users-to-task.component";
 import { Priority } from '../../domain/priority';
 import {UserService} from "../../services/user.service";
+import {UserTask} from "../../domain/user-task";
 
 @Component({
   selector: 'app-member-task-details',
@@ -14,7 +15,8 @@ import {UserService} from "../../services/user.service";
   styleUrl: './member-task-details.component.css'
 })
 export class MemberTaskDetailsComponent implements OnInit{
-  currentTask : Task;
+  userTask : UserTask;
+  task!: Task;
   projectId!: string;
   taskUsers: User[] = [];
   page:number = 0;
@@ -26,8 +28,13 @@ export class MemberTaskDetailsComponent implements OnInit{
     private router: Router,
     private userService: UserService
   ) {
-    this.currentTask = this.router.getCurrentNavigation()?.extras.state?.['task'];
+    this.userTask = this.router.getCurrentNavigation()?.extras.state?.['userTask'];
     this.projectId = this.router.getCurrentNavigation()?.extras.state?.['projectId'];
+
+    if(this.userTask){
+      this.task = this.userTask.task;
+      this.isFinishedTask = this.userTask.finished;
+    }
   }
 
   ngOnInit(): void {
@@ -36,7 +43,7 @@ export class MemberTaskDetailsComponent implements OnInit{
   }
 
   getUsersAssignedToTask(){
-    this.taskService.getPagedUsersAssignedToTask(this.currentTask.taskCode,this.page)
+    this.taskService.getPagedUsersAssignedToTask(this.task.taskCode,this.page)
       .then(response => {
         this.taskUsers = [...this.taskUsers,...response.data];
         this.page++;
@@ -60,10 +67,10 @@ export class MemberTaskDetailsComponent implements OnInit{
   protected readonly Priority = Priority;
 
   finishTask(currentTask: Task) {
-    this.taskService.finishTask(currentTask, this.userService.getLoggedUserData().email, this.projectId)
+    this.taskService.finishTask(currentTask, this.userService.getLoggedUserData().username, this.projectId)
       .then(response => {
         console.log(response);
-
+        this.isFinishedTask = true;
       })
   }
 }

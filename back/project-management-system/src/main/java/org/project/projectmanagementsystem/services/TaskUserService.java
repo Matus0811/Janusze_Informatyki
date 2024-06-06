@@ -23,16 +23,16 @@ public class TaskUserService {
     private final TaskService taskService;
     private final UserService userService;
     private final BugService bugService;
-    public UserTask findUserTask(String taskCode, String userEmail) {
-        return userTaskRepository.findUserTask(taskCode, userEmail)
+    public UserTask findUserTask(String taskCode, String username) {
+        return userTaskRepository.findUserTask(taskCode, username)
                 .orElseThrow(() -> new UserTaskNotFoundException("Couldn't find task: [%s] for user: [%s]".formatted(
-                        taskCode, userEmail
+                        taskCode, username
                 ), HttpStatus.NOT_FOUND));
     }
 
     @Transactional
-    public void finishTaskByMember(String taskCode, String userEmail, UUID projectId) {
-        UserTask userTask = findUserTask(taskCode, userEmail);
+    public void finishTaskByMember(String taskCode, String username, UUID projectId) {
+        UserTask userTask = findUserTask(taskCode, username);
 
         userTask = userTask.withFinished(true);
 
@@ -111,13 +111,16 @@ public class TaskUserService {
 
     @Transactional
     public void removeUserAssignedToTask(String taskCode, String username) {
-        User assignedUser = userService.findByUsername(username);
-        UserTask userTask = findUserTask(taskCode,assignedUser.getEmail());
+        UserTask userTask = findUserTask(taskCode,username);
 
         userTaskRepository.remove(userTask);
     }
 
     public List<UserTask> findAllUsersAssignedToTask(String taskCode) {
         return userTaskRepository.findAllUsersAssignedToTask(taskCode);
+    }
+
+    public List<UserTask> findPagedMemberTasks(UUID projectId, String username, Pageable pageable) {
+        return userTaskRepository.findPagedMemberTasks(projectId,username,pageable);
     }
 }

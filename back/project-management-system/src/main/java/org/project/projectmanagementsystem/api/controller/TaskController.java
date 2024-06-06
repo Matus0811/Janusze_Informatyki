@@ -5,6 +5,7 @@ import org.project.projectmanagementsystem.api.dto.*;
 import org.project.projectmanagementsystem.domain.UserTask;
 import org.project.projectmanagementsystem.domain.mapper.TaskMapper;
 import org.project.projectmanagementsystem.domain.mapper.UserMapper;
+import org.project.projectmanagementsystem.domain.mapper.UserTaskMapper;
 import org.project.projectmanagementsystem.services.BugService;
 import org.project.projectmanagementsystem.services.ProjectTaskService;
 import org.project.projectmanagementsystem.services.TaskService;
@@ -64,15 +65,18 @@ public class TaskController {
     }
 
     @GetMapping("/member-tasks")
-    public ResponseEntity<List<TaskDTO>> getPagedMemberTasks(
+    public ResponseEntity<List<UserTaskDTO>> getPagedMemberTasks(
             @RequestParam("projectId") UUID projectId,
             @RequestParam("page") Integer page,
             @RequestParam("username") String username
     ){
-        Pageable pageable = PageRequest.of(page,12).withSort(Sort.by("startDate").descending());
-        List<TaskDTO> memberTasks = taskService.findPagedMemberTasks(projectId,username,pageable).stream()
-                .map(TaskMapper.INSTANCE::mapFromDomainToDto)
+        Pageable pageable = PageRequest.of(page,12).withSort(Sort.by("t.startDate").descending());
+        var memberTasks = taskUserService.findPagedMemberTasks(projectId,username,pageable).stream()
+                .map(UserTaskMapper.INSTANCE::mapFromDomainToDto)
                 .toList();
+//        List<TaskDTO> memberTasks = taskService.findPagedMemberTasks(projectId,username,pageable).stream()
+//                .map(TaskMapper.INSTANCE::mapFromDomainToDto)
+//                .toList();
 
         return new ResponseEntity<>(memberTasks,HttpStatus.OK);
     }
@@ -106,10 +110,10 @@ public class TaskController {
     @PutMapping("/{taskCode}/users/finish-task")
     public ResponseEntity<?> finishTaskByMember(
             @PathVariable("taskCode") String taskCode,
-            @RequestParam("email") String email,
+            @RequestParam("username") String username,
             @RequestParam("projectId") UUID projectId
     ) {
-        taskUserService.finishTaskByMember(taskCode, email, projectId);
+        taskUserService.finishTaskByMember(taskCode, username, projectId);
         return ResponseEntity.ok().build();
     }
 

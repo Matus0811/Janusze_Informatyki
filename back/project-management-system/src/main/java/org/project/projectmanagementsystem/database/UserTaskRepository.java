@@ -26,7 +26,7 @@ public class UserTaskRepository {
     }
 
     public Optional<UserTask> findUserTask(String taskCode, String userEmail) {
-        return userTaskJpaRepository.findByTaskCodeAndUserEmail(taskCode,userEmail)
+        return userTaskJpaRepository.findByTaskCodeAndUserUsername(taskCode,userEmail)
                 .map(UserTaskMapper.INSTANCE::mapFromEntityToDomain);
     }
 
@@ -69,5 +69,10 @@ public class UserTaskRepository {
 
     public List<UserTasks> findFinishedTasksForUsers(Project project) {
         return userTaskJpaRepository.findFinishedTasksForUsersInProject(project.getProjectId());
+    }
+
+    public List<UserTask> findPagedMemberTasks(UUID projectId, String username, Pageable pageable) {
+        return userTaskJpaRepository.findPagedMemberTasks(projectId,username,pageable).stream()
+                .map(UserTaskMapper.INSTANCE::mapFromEntityToDomain).toList();
     }
 }

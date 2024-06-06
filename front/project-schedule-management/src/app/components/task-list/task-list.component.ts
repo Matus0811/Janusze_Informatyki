@@ -29,13 +29,17 @@ export class TaskListComponent implements OnInit {
     private dialog: MatDialog,
     private projectService: ProjectService
   ) {
-    projectService.findProjectById(this.projectId).then(response => {
-      this.project = response.data;
-    });
   }
 
   ngOnInit(): void {
     this.loadTasks(this.currentTaskStatus);
+    this.loadProject();
+  }
+
+  private loadProject() {
+    this.projectService.findProjectById(this.projectId).then(response => {
+      this.project = response.data;
+    });
   }
 
   public loadMoreTasks() {

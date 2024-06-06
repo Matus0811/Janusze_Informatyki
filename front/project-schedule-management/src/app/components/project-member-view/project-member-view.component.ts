@@ -5,6 +5,7 @@ import {UserService} from "../../services/user.service";
 import {Task} from '../../domain/task';
 import {TaskService} from "../../services/task.service";
 import { Priority } from '../../domain/priority';
+import {UserTask} from "../../domain/user-task";
 
 @Component({
   selector: 'app-project-member-view',
@@ -14,7 +15,7 @@ import { Priority } from '../../domain/priority';
 export class ProjectMemberViewComponent {
   project!: Project;
   user!: User;
-  userTasks: Task[] = [];
+  userTasks: UserTask[] = [];
   page: number = 0;
 
   constructor(private userService: UserService, private taskService: TaskService) {

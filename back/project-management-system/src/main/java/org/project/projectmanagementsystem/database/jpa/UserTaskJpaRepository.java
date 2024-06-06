@@ -17,9 +17,9 @@ public interface UserTaskJpaRepository extends JpaRepository<UserTaskEntity, Lon
             SELECT ute FROM UserTaskEntity ute
             JOIN FETCH ute.user u
             JOIN FETCH ute.task t
-            WHERE t.taskCode = :taskCode AND u.email = :email
+            WHERE t.taskCode = :taskCode AND u.username = :username
             """)
-    Optional<UserTaskEntity> findByTaskCodeAndUserEmail(@Param("taskCode") String taskCode, @Param("email") String email);
+    Optional<UserTaskEntity> findByTaskCodeAndUserUsername(@Param("taskCode") String taskCode, @Param("username") String email);
 
     @Query("""
     SELECT ute FROM UserTaskEntity ute
@@ -69,4 +69,14 @@ public interface UserTaskJpaRepository extends JpaRepository<UserTaskEntity, Lon
     GROUP BY u.username
     """)
     List<UserTasks> findFinishedTasksForUsersInProject(@Param("projectId") UUID projectId);
+
+    @Query("""
+    SELECT ute FROM UserTaskEntity ute
+    JOIN ute.user u
+    JOIN ute.task t
+    WHERE t.project.projectId = :projectId
+    AND u.username = :username
+    AND ute.finished != true
+    """)
+    List<UserTaskEntity> findPagedMemberTasks(@Param("projectId") UUID projectId,@Param("username") String username, Pageable pageable);
 }
