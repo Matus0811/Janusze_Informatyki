@@ -46,6 +46,7 @@ import {BugDetailsComponent} from './components/bug-details/bug-details.componen
 import { DateDetailsComponent } from './components/date-details/date-details.component';
 import { GlobalErrorHandlerComponent } from './components/global-error-handler/global-error-handler.component';
 import { MemberTaskDetailsComponent } from './components/member-task-details/member-task-details.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -84,6 +85,7 @@ import { MemberTaskDetailsComponent } from './components/member-task-details/mem
     DateDetailsComponent,
     GlobalErrorHandlerComponent,
     MemberTaskDetailsComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,

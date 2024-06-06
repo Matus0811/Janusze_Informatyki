@@ -72,4 +72,11 @@ export class UserService {
       }
     })
   }
+
+  getUserProfile(username: string) {
+    return instance.request({
+      method: "GET",
+      url: `/users/${username}`
+    });
+  }
 }

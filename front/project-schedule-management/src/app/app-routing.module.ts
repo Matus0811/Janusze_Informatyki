@@ -13,11 +13,16 @@ import {ProjectMemberViewComponent} from "./components/project-member-view/proje
 import {ProjectStatusDetailsComponent} from "./components/project-status-details/project-status-details.component";
 import {ProjectBugsComponent} from "./components/project-bugs/project-bugs.component";
 import {MemberTaskDetailsComponent} from "./components/member-task-details/member-task-details.component";
+import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 
 const routes: Routes = [
   {
     path: "auth/login",
     component: UserAuthComponent
+  },
+  {
+    path: "user/profile",
+    component: UserProfileComponent
   },
   {
     path: 'projects',

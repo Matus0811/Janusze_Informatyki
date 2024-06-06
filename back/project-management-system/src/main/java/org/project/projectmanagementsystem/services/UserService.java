@@ -28,8 +28,8 @@ public class UserService {
     private final RoleService roleService;
     private final UserProjectRoleService userProjectRoleService;
 
-    public User getUser(Long id) {
-        return findById(id);
+    public User getUser(String username) {
+        return findByUsername(username);
     }
 
 
