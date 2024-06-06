@@ -53,7 +53,8 @@ public interface TaskJpaRepository extends JpaRepository<TaskEntity,Long> {
         JOIN ute.user u
         WHERE ute.finished = true
         AND u.username = :username
+        AND te.project.projectId = :projectId
     )
     """)
-    Long countFinishedUserTasks(@Param("username")String username);
+    Long countFinishedUserTasks(@Param("username")String username,@Param("projectId") UUID projectId);
 }

@@ -66,7 +66,7 @@ public class ProjectUserService {
         Project projectToCreate = Project.buildProjectFromForm(projectForm);
 
         if (userProjectRoleService.existProjectName(projectForm.getName(), projectForm.getEmail())) {
-            throw new ProjectAlreadyExistsException("Project with name [%s] already exists!".formatted(projectToCreate.getName()), HttpStatus.CONFLICT);
+            throw new ProjectAlreadyExistsException("Projekt o nazwie [%s] już istnieje!".formatted(projectToCreate.getName()), HttpStatus.CONFLICT);
         }
         User owner = userService.findByEmail(projectForm.getEmail());
 

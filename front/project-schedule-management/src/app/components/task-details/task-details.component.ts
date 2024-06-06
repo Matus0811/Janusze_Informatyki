@@ -10,6 +10,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {BugService} from "../../services/bug.service";
 import {Router} from "@angular/router";
 import { Priority } from '../../domain/priority';
+import {UserTask} from "../../domain/user-task";
 
 @Component({
   selector: 'app-task-details',
@@ -19,7 +20,7 @@ import { Priority } from '../../domain/priority';
 export class TaskDetailsComponent implements OnInit{
   currentTask : Task;
   projectId!: string;
-  taskUsers: User[] = [];
+  taskUsers: UserTask[] = [];
   page:number = 0;
   bugsListVisible = true;
 
@@ -53,7 +54,7 @@ export class TaskDetailsComponent implements OnInit{
       this.taskService.addUsersToTask(result,this.currentTask.taskCode)
         .then(response => {
           this.taskUsers = [...this.taskUsers, ...result];
-          this.taskUsers.sort((u1,u2) => u1.username.localeCompare(u2.username));
+          this.taskUsers.sort((u1,u2) => u1.user.username.localeCompare(u2.user.username));
           console.log(this.taskUsers);
         });
     })
@@ -74,4 +75,12 @@ export class TaskDetailsComponent implements OnInit{
   }
 
   protected readonly Priority = Priority;
+
+  getFinishColor(finished: boolean) {
+    if(finished){
+      return this.Priority.LOW;
+    }else {
+      return this.Priority.HIGH;
+    }
+  }
 }

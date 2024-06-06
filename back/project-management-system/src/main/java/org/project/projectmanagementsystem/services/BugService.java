@@ -44,7 +44,7 @@ public class BugService {
 
     public void finishBugForTask(Task task) {
         Bug bugToFinish = findBugForTask(task);
-        bugToFinish = bugToFinish.withFixedDate(OffsetDateTime.now());
+        bugToFinish = bugToFinish.withFixedDate(OffsetDateTime.now()).withBugStatus(Bug.BugStatus.FIXED);
 
         bugRepository.save(bugToFinish);
     }
@@ -80,5 +80,13 @@ public class BugService {
     public void removeBugsAssignedToTask(String taskCode) {
         List<Bug> bugsForTask = bugRepository.findBugsForTask(Task.builder().taskCode(taskCode).build(), Pageable.unpaged());
         bugRepository.removeAll(bugsForTask);
+    }
+
+    public void addBugTaskToBug(String taskCode, String bugSerialNumber) {
+        Task task = taskService.findByTaskCode(taskCode);
+        Bug bug = findBySerialNumber(bugSerialNumber);
+        bug = bug.withBugTask(task);
+
+        bugRepository.save(bug);
     }
 }

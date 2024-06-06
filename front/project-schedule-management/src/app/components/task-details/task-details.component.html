@@ -71,14 +71,15 @@
         </div>
       </div>
       <div class="container-fluid overflow-auto">
-        <div *ngFor="let user of this.taskUsers" class="row p-2">
+        <div *ngFor="let taskUser of this.taskUsers" class="row p-2">
           <div class="row">
             <div class="col-md-1 p-0 text-center">
               <i class="bi-person-fill"></i>
             </div>
             <div class="col-md-3">
-              <p>{{ user.username }}</p>
+              <p>{{ taskUser.user.username }}</p>
             </div>
+            <div class="col-md-3" [style.background-color]="getFinishColor(taskUser.finished)"></div>
           </div>
         </div>
       </div>

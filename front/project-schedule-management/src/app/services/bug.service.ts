@@ -64,4 +64,15 @@ export class BugService {
       }
     })
   }
+
+  assignCreatedBugTaskToBug(createdTaskBug: any, bugToShow: Bug) {
+    return instance.request({
+      method:"PATCH",
+      url: "/bugs/add-bug-task",
+      params: {
+        taskCode: createdTaskBug.taskCode,
+        bugSerialNumber: bugToShow.serialNumber
+      }
+    })
+  }
 }

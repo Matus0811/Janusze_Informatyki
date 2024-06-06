@@ -23,6 +23,7 @@ export class TaskBugsComponent implements OnInit {
   lastLoadedPageSize: number = 0;
 
   constructor(private bugService: BugService, private dialog: MatDialog, private userService: UserService) {
+    console.log(`TaskBugsComponent: ${this.projectId}`);
   }
 
   ngOnInit(): void {
@@ -72,7 +73,8 @@ export class TaskBugsComponent implements OnInit {
   showDetails(bug: Bug) {
     this.dialog.open(BugDetailsComponent, {
       data: {
-        bugToShow: bug
+        bugToShow: bug,
+        projectId: this.projectId
       }
     });
   }

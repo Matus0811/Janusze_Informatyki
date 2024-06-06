@@ -17,16 +17,16 @@ import java.time.OffsetDateTime;
 public class BugEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="bug_id")
+    @Column(name = "bug_id")
     private Long bugId;
 
-    @Column(name="serial_number")
+    @Column(name = "serial_number")
     private String serialNumber;
 
-    @Column(name="title")
+    @Column(name = "title")
     private String title;
 
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -37,15 +37,19 @@ public class BugEntity {
     @JoinColumn(name = "task_id")
     private TaskEntity taskEntity;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bug_task_id")
+    private TaskEntity bugTask;
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @Column(name="type")
+    @Column(name = "type")
     @Enumerated(EnumType.STRING)
     private Bug.BugType bugType;
 
-    @Column(name="bug_status")
+    @Column(name = "bug_status")
     @Enumerated(EnumType.STRING)
     private Bug.BugStatus bugStatus;
 

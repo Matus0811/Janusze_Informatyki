@@ -10,3 +10,13 @@
 .settings-btn{
   color: #222222;
 }
+
+.button-nav-clicked{
+  color:#fff;
+  transition: background-color .2s;
+}
+
+.button-nav-clicked:hover {
+  background-color: #222222;
+  !important color: white;
+}

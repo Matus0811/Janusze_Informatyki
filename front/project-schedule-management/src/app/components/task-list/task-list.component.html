@@ -10,25 +10,25 @@
   </div>
   <ul class="nav nav-pills nav-fill mt-md-5 mb-md-3 border">
     <li class="nav-item border-right">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.ALL)" aria-selected="true">Wszystkie zadania</button>
+      <button class="nav-link text-dark active" (click)="loadTasks(TaskStatus.ALL)" aria-selected="true">Wszystkie zadania</button>
     </li>
     <li class="nav-item border-right">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.CONCEPT)">Koncepcje</button>
+      <button class="nav-link text-dark" (click)="loadTasks(TaskStatus.CONCEPT)">Koncepcje</button>
     </li>
     <li class="nav-item border-right">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.TO_DO)">Do wykonania</button>
+      <button class="nav-link text-dark" (click)="loadTasks(TaskStatus.TO_DO)">Do wykonania</button>
     </li>
     <li class="nav-item border-right">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.IN_PROGRESS)">W trakcie</button>
+      <button class="nav-link text-dark" (click)="loadTasks(TaskStatus.IN_PROGRESS)">W trakcie</button>
     </li>
     <li class="nav-item border-right">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.FINISHED)">Ukończone</button>
+      <button class="nav-link text-dark" (click)="loadTasks(TaskStatus.FINISHED)">Ukończone</button>
     </li>
     <li class="nav-item border-right">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.BUG)">Błędy</button>
+      <button class="nav-link text-dark" (click)="loadTasks(TaskStatus.BUG)">Błędy</button>
     </li>
     <li class="nav-item ">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.REJECTED)">Odrzucone</button>
+      <button class="nav-link text-dark" (click)="loadTasks(TaskStatus.REJECTED)">Odrzucone</button>
     </li>
   </ul>
   <div *ngIf="tasks.length > 0; else emptyArray" class="container-fluid">

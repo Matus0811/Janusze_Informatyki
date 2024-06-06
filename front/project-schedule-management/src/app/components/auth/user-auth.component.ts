@@ -4,7 +4,7 @@ import {User} from "../../domain/user";
 import {Router} from "@angular/router";
 import instance from "../../http-axios";
 import {TokenService} from "../../services/token.service";
-import {ErrorHandlerService} from "../../services/error-handler.service";
+import {MessageHandlerService} from "../../services/message-handler.service";
 
 @Component({
   selector: 'app-user-auth',
@@ -18,7 +18,7 @@ export class UserAuthComponent {
     private userService: UserService,
     private router: Router,
     private tokenService: TokenService,
-    private errorHandlerService: ErrorHandlerService
+    private messageHandlerService: MessageHandlerService,
   ) {
   }
   handleLogin(userCredentials: any) {
@@ -29,14 +29,16 @@ export class UserAuthComponent {
         instance.defaults.headers.common['Authorization'] = `Bearer ${this.tokenService.getAuthToken()}`;
 
         this.router.navigate(["/projects"]);
-      }).catch(e => this.errorHandlerService.handle(e.response));
+      }).catch(e => this.messageHandlerService.handleException(e.response));
   }
 
   handleRegister(userToRegister: any){
-    console.log(userToRegister);
     this.userService.processUserRegister(userToRegister)
+      .then(response => {
+        this.messageHandlerService.handleMessageInfo("Udało się zarejestrować użytkownika");
+      })
       .catch(reason => {
-        this.errorHandlerService.handle(reason.response);
+        this.messageHandlerService.handleException(reason.response);
       })
   }
 

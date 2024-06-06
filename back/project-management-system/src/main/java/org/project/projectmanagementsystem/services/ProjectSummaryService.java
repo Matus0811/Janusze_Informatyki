@@ -25,7 +25,7 @@ public class ProjectSummaryService {
         List<Bug> bugsForProject = bugService.findBugsForProject(projectId, Pageable.unpaged());
         List<User> usersAssignedToProject = userService.findUsersAssignedToProject(projectId);
         List<UserTasks> usersCountFinishedTasks = usersAssignedToProject.stream().map(user -> {
-            Long numberOfUserRealizedTasks = taskService.countFinishedUserTasks(user);
+            Long numberOfUserRealizedTasks = taskService.countFinishedUserTasksForProject(user, projectId);
             return UserTasks.builder().username(user.getUsername()).numberOfRealizedTasks(numberOfUserRealizedTasks).build();
         }).toList();
 

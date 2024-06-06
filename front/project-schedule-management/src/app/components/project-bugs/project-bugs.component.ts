@@ -39,10 +39,11 @@ export class ProjectBugsComponent implements OnInit {
   }
 
   showBugDetails(bug: Bug) {
+    console.log(`project: ${this.project.projectId}`);
     this.dialog.open(BugDetailsComponent,{
       data: {
         bugToShow:bug,
-        project: this.project
+        projectId: this.project.projectId
       }
     })
   }

@@ -11,7 +11,7 @@ import {Router} from "@angular/router";
 import {MatDialog} from "@angular/material/dialog";
 import {DateDetailsComponent} from "../date-details/date-details.component";
 import {GlobalErrorHandlerComponent} from "../global-error-handler/global-error-handler.component";
-import {ErrorHandlerService} from "../../services/error-handler.service";
+import {MessageHandlerService} from "../../services/message-handler.service";
 
 @Component({
   selector: 'app-current-project-view',
@@ -31,7 +31,7 @@ export class CurrentProjectViewComponent implements OnInit {
     private bugService: BugService,
     private router: Router,
     private dialog: MatDialog,
-    private errorHandlerService: ErrorHandlerService
+    private errorHandlerService: MessageHandlerService
   ) {
   }
 
@@ -115,7 +115,7 @@ export class CurrentProjectViewComponent implements OnInit {
       })
     }).catch(reason => {
       console.log(reason);
-      this.errorHandlerService.handle(reason.response);
+      this.errorHandlerService.handleException(reason.response);
     });
 
   }

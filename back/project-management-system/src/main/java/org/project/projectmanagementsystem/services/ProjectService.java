@@ -54,7 +54,7 @@ public class ProjectService {
         Project projectToDelete = findById(projectId);
 
         if (projectToDelete.getProjectStatus() == Project.ProjectStatus.FINISHED) {
-            throw new ProjectDeleteException("Cannot delete project which is finished!", HttpStatus.CONFLICT);
+            throw new ProjectDeleteException("Nie można usunąć projektu, który jest ukończony!", HttpStatus.CONFLICT);
         }
         projectRepository.remove(projectToDelete);
     }

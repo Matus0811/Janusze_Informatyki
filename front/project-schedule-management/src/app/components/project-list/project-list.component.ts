@@ -5,6 +5,7 @@ import {UserService} from "../../services/user.service";
 import {AddProjectFormComponent} from "../add-project-form/add-project-form.component";
 import {MatDialog} from "@angular/material/dialog";
 import {Router} from "@angular/router";
+import {MessageHandlerService} from "../../services/message-handler.service";
 
 @Component({
   selector: 'app-project-list',
@@ -20,6 +21,7 @@ export class ProjectListComponent implements OnInit{
   constructor(private projectService: ProjectService,
               private userService: UserService,
               private dialog: MatDialog,
+              private messageHandler: MessageHandlerService
   ) {
   }
   ngOnInit() {
@@ -30,7 +32,9 @@ export class ProjectListComponent implements OnInit{
     this.projectService.removeProject(projectToRemove)
       .then(response => {
         this.projects = this.projects.filter(p => p.projectId !== projectToRemove.projectId);
-      })
+      }).catch(reason => {
+        this.messageHandler.handleException(reason.response);
+    })
   }
 
 
@@ -54,8 +58,11 @@ export class ProjectListComponent implements OnInit{
           this.projectService.createProject(projectForm).then(res => {
               this.page = 0;
               this.loadProjects();
+              this.messageHandler.handleMessageInfo("Dodano projekt!");
             }
-          );
+          ).catch(reason => {
+            this.messageHandler.handleException(reason.response);
+          });
         }
       }
     );

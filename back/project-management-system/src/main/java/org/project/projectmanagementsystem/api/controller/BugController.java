@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.projectmanagementsystem.api.dto.BugDTO;
 import org.project.projectmanagementsystem.api.dto.BugFormDTO;
+import org.project.projectmanagementsystem.api.dto.TaskDTO;
 import org.project.projectmanagementsystem.domain.Bug;
 import org.project.projectmanagementsystem.domain.mapper.BugMapper;
+import org.project.projectmanagementsystem.domain.mapper.TaskMapper;
 import org.project.projectmanagementsystem.services.BugService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -74,6 +76,13 @@ public class BugController {
     ){
         BugDTO bugDTO = BugMapper.INSTANCE.mapFromDomainToDto(bugService.updateBugStatus(newStatus,bugSerialNumber));
         return new ResponseEntity<>(bugDTO, HttpStatus.OK);
+    }
+
+    @PatchMapping("/add-bug-task")
+    public ResponseEntity<?> addBugTask(@RequestParam("taskCode") String taskCode, @RequestParam("bugSerialNumber")String bugSerialNumber){
+        bugService.addBugTaskToBug(taskCode,bugSerialNumber);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     private BugDTO createBugDto(Bug createdBug) {

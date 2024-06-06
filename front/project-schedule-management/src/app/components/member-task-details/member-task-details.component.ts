@@ -18,7 +18,7 @@ export class MemberTaskDetailsComponent implements OnInit{
   userTask : UserTask;
   task!: Task;
   projectId!: string;
-  taskUsers: User[] = [];
+  taskUsers: UserTask[] = [];
   page:number = 0;
   bugsListVisible = true;
   isFinishedTask!: boolean;
@@ -72,5 +72,13 @@ export class MemberTaskDetailsComponent implements OnInit{
         console.log(response);
         this.isFinishedTask = true;
       })
+  }
+
+  getFinishColor(finished: boolean) {
+    if(finished){
+      return this.Priority.LOW;
+    }else {
+      return this.Priority.HIGH;
+    }
   }
 }

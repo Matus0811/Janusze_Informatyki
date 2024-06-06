@@ -16,6 +16,7 @@ public class Bug {
     String description;
     Project projectWithBug;
     Task taskWithBug;
+    Task bugTask;
     User reportedUser;
     Bug.BugType bugType;
     Bug.BugStatus bugStatus;

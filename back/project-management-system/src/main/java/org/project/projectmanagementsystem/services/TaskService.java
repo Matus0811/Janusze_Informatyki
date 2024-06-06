@@ -67,7 +67,7 @@ public class TaskService {
         return taskRepository.findPagedMemberTasks(projectId,username,pageable);
     }
 
-    public Long countFinishedUserTasks(User user) {
-        return taskRepository.countFinishedUserTasks(user);
+    public Long countFinishedUserTasksForProject(User user, UUID projectId) {
+        return taskRepository.countFinishedUserTasks(user,projectId);
     }
 }

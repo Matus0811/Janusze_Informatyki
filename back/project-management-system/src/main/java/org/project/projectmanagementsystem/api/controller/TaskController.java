@@ -74,9 +74,6 @@ public class TaskController {
         var memberTasks = taskUserService.findPagedMemberTasks(projectId,username,pageable).stream()
                 .map(UserTaskMapper.INSTANCE::mapFromDomainToDto)
                 .toList();
-//        List<TaskDTO> memberTasks = taskService.findPagedMemberTasks(projectId,username,pageable).stream()
-//                .map(TaskMapper.INSTANCE::mapFromDomainToDto)
-//                .toList();
 
         return new ResponseEntity<>(memberTasks,HttpStatus.OK);
     }
@@ -92,16 +89,15 @@ public class TaskController {
     }
 
     @GetMapping("/{taskCode}/users")
-    public ResponseEntity<List<UserDTO>> getPagedUsersAssignedToTask(
+    public ResponseEntity<List<UserTaskDTO>> getPagedUsersAssignedToTask(
             @PathVariable("taskCode") String taskCode,
             @RequestParam("page") Integer page
     ){
         Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("u.username"));
 
-        List<UserDTO> pagedUsersAssignedToTask = taskUserService.findPagedUsersAssignedToTask(taskCode,pageable)
+        List<UserTaskDTO> pagedUsersAssignedToTask = taskUserService.findPagedUsersAssignedToTask(taskCode,pageable)
                 .stream()
-                .map(UserTask::getUser)
-                .map(UserMapper.INSTANCE::mapFromDomainToDto)
+                .map(UserTaskMapper.INSTANCE::mapFromDomainToDto)
                 .toList();
 
         return new ResponseEntity<>(pagedUsersAssignedToTask,HttpStatus.OK);

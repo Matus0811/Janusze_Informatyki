@@ -52,7 +52,7 @@ public class TaskRepository {
                 .toList();
     }
 
-    public Long countFinishedUserTasks(User user) {
-        return taskJpaRepository.countFinishedUserTasks(user.getUsername());
+    public Long countFinishedUserTasks(User user, UUID projectId) {
+        return taskJpaRepository.countFinishedUserTasks(user.getUsername(), projectId);
     }
 }

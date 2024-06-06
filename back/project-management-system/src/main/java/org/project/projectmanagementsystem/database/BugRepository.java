@@ -29,7 +29,7 @@ public class BugRepository {
     }
 
     public Optional<Bug> findBugForTask(Task task) {
-        return bugJpaRepository.findBugWithProjectIdAndTask(task.getProject().getProjectId(),task.getTaskCode())
+        return bugJpaRepository.findBugWithProjectIdAndTask(task.getProject().getProjectId(),task.getTaskId())
                 .map(BugMapper.INSTANCE::mapFromEntityToDomain);
     }
 

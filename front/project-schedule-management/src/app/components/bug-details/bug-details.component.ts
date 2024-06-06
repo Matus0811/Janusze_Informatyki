@@ -20,6 +20,7 @@ export class BugDetailsComponent {
     private bugService: BugService
   ) {
     this.bugToShow = this.data.bugToShow;
+    console.log(`id projektu: ${this.data.projectId}`);
   }
 
   closeDialog() {
@@ -35,12 +36,16 @@ export class BugDetailsComponent {
     matDialogRef.afterClosed().subscribe(value => {
       if(value){
         console.log(value);
-        let taskForm = this.taskService.createTaskForm(value,this.data.project.projectId);
+        let taskForm = this.taskService.createTaskForm(value,this.data.projectId);
         taskForm.status="BUG";
         this.taskService.createTask(taskForm).then(response => {
-          this.bugService.updateBugStatus("IN_REPAIR",this.bugToShow).then(response => {
-            this.bugToShow.bugStatus = response.data.bugStatus;
-          })
+          console.log(response.data);
+          this.bugService.assignCreatedBugTaskToBug(response.data,this.bugToShow).then(response => {
+            console.log(response);
+            this.bugService.updateBugStatus("IN_REPAIR",this.bugToShow).then(response => {
+              this.bugToShow.bugStatus = response.data.bugStatus;
+            });
+          });
         });
       }
     });
