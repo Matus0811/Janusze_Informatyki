@@ -49,24 +49,23 @@ public class ProjectService {
         return projectRepository.findNotFinishedUserProjectsPaged(ownerEmail,pageable);
     }
 
-
-    public boolean projectExists(String projectName) {
-        return projectRepository.findByName(projectName).isPresent();
-    }
-
     @Transactional
     public void removeProject(UUID projectId) {
         Project projectToDelete = findById(projectId);
 
         if (projectToDelete.getProjectStatus() == Project.ProjectStatus.FINISHED) {
-            throw new ProjectDeleteException("Cannot delete project which is finished!", HttpStatus.CONFLICT);
+            throw new ProjectDeleteException("Nie można usunąć projektu, który jest ukończony!", HttpStatus.CONFLICT);
         }
         projectRepository.remove(projectToDelete);
     }
 
     public Project findById(UUID projectId) {
+        log.info("Searching project with id: [{}]",projectId);
         return projectRepository.findById(projectId).orElseThrow(
-                () -> new ProjectNotFoundException("Project with id: [%s] not found".formatted(projectId),HttpStatus.NOT_FOUND)
+                () -> {
+                    log.error("Failed searching project with id: [{}]",projectId);
+                    return new ProjectNotFoundException("Project with id: [%s] not found".formatted(projectId),HttpStatus.NOT_FOUND);
+                }
         );
     }
 
@@ -78,7 +77,7 @@ public class ProjectService {
 
 
     @Transactional
-    public void processProjectFinishing(UUID projectId) {
+    public void processProjectFinishing(UUID projectId, OffsetDateTime finishDate) {
         Project finishedProject = findById(projectId);
 
         int numberOfUnfinishedTasks = taskService.findPagedProjectTasksWithStatus(
@@ -88,13 +87,13 @@ public class ProjectService {
         ).size();
 
         if(numberOfUnfinishedTasks > 0 ){
-            throw new ProjectDeleteException("Cannot finish tasks! There are still [%s] tasks in progress"
-                    .formatted(numberOfUnfinishedTasks),HttpStatus.CONFLICT);
+            throw new ProjectDeleteException("Nie można ukończyć projektu! Wciąż realizowane są [%s] zadania"
+                    .formatted(numberOfUnfinishedTasks),HttpStatus.NOT_FOUND);
         }
 
         finishedProject = finishedProject
                 .withProjectStatus(Project.ProjectStatus.FINISHED)
-                .withFinishDate(OffsetDateTime.now());
+                .withFinishDate(finishDate);
 
         projectRepository.save(finishedProject);
     }

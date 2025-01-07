@@ -1,0 +1,16 @@
+<div class="row justify-content-md-center">
+  <div (click)="goToTask(loadedTask)" class="col-md-10 task-group m-0 p-3 text-dark">
+    <div class="row align-middle">
+      <div class="col-md-4">
+        <p class="m-0">{{ this.task.name }}</p>
+      </div>
+      <div class="col-md-3">
+        <p class="m-0">{{ this.task.status }}</p>
+      </div>
+      <div class="col-md-2" [style.background-color]="getColor(task.priority)"></div>
+      <div class="col-md-3 text-center">
+        <p class="m-0">{{ this.task.startDate | date: "yyyy-MM-dd" }}</p>
+      </div>
+    </div>
+  </div>
+</div>

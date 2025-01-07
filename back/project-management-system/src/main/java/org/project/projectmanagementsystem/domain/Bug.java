@@ -14,25 +14,34 @@ public class Bug {
     String serialNumber;
     String title;
     String description;
-    Project project;
-    User user;
+    Project projectWithBug;
+    Task taskWithBug;
+    Task bugTask;
+    User reportedUser;
     Bug.BugType bugType;
+    Bug.BugStatus bugStatus;
     OffsetDateTime reportDate;
     OffsetDateTime fixedDate;
 
-    public static Bug buildBug(BugForm bugForm,User reporter, Project projectWithBug) {
+    public static Bug buildBug(BugForm bugForm,User reporter, Project projectWithBug, Task taskWithBug) {
         return Bug.builder()
                 .serialNumber(UUID.randomUUID().toString())
                 .title(bugForm.getTitle())
                 .description(bugForm.getDescription())
-                .project(projectWithBug)
-                .user(reporter)
+                .projectWithBug(projectWithBug)
+                .reportedUser(reporter)
+                .taskWithBug(taskWithBug)
+                .bugStatus(BugStatus.REPORTED)
                 .bugType(bugForm.getBugType())
-                .reportDate(OffsetDateTime.now())
+                .reportDate(bugForm.getReportDate())
                 .build();
     }
 
     public enum BugType {
         LOGICAL, SECURITY, SYNTAX, COMMUNICATION, CALCULATION, FUNCTIONAL
+    }
+
+    public enum BugStatus{
+        REPORTED, IN_REPAIR, FIXED
     }
 }

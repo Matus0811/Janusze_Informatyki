@@ -8,8 +8,15 @@
         <p><b>Opis:</b> {{ project.description }}</p>
       </div>
     </div>
+    @if (project.projectStatus != "FINISHED"){
+      <div class="row">
+        <div class="col-md">
+          <button class="btn btn-primary" (click)="generatePdf()">Zakończ projekt</button>
+        </div>
+      </div>
+    }
   </div>
-  <div class="row justify-content-md-between mt-md-5">
+  <div class="row justify-content-md-between mt-md-5 mb-5">
     <div class="col-md-5">
       <div class="row border-bottom">
         <h3>Zadania</h3>
@@ -51,7 +58,7 @@
               <p class="text-dark"><b>Data rozpoczęcia</b></p>
             </div>
           </div>
-          <div class="col-md-6 p-3 finish-date-info cursor-pointer">
+          <div (click)="showDate(project.finishDate)" class="col-md-6 p-3 finish-date-info cursor-pointer">
             <div *ngIf="project.finishDate; else noData" class="row">
               <p class="display-5 mb-0">{{ project.finishDate | date:"yyyy" }}</p>
               <p class="display-5">{{ project.finishDate | date:"MM-dd" }}</p>
@@ -67,12 +74,22 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12 p-3 project-status-info text-center cursor-pointer">
+          <div routerLink="project-status" class="col-md-12 p-3 project-status-info text-center cursor-pointer">
             <div class="row">
               <p class="display-5">{{ project.projectStatus }}</p>
             </div>
             <div class="row text-center">
               <p class="text-dark"><b>Status projektu</b></p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div (click)="showBugs()" class="col-md-12 text-center number-of-bugs-info cursor-pointer">
+            <div class="row">
+              <p class="display-3">{{ numberOfBugsToFix }}</p>
+            </div>
+            <div class="row text-center">
+              <p class="text-dark"><b>Zgłoszonych błędów</b></p>
             </div>
           </div>
         </div>

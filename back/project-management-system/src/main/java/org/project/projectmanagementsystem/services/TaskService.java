@@ -28,7 +28,7 @@ public class TaskService {
             throw new TaskException("Task with HIGH priority should have finish date!", HttpStatus.NOT_FOUND);
         }
 
-        return taskRepository.addTask(task);
+        return taskRepository.create(task);
     }
 
     public Task findByTaskCode(String taskCode) {
@@ -61,5 +61,13 @@ public class TaskService {
 
     public List<ProjectTaskStatusCount> findAllProjectTasksGrouped(UUID projectId) {
         return taskRepository.findAllProjectTasksGrouped(projectId);
+    }
+
+    public List<Task> findPagedMemberTasks(UUID projectId, String username, Pageable pageable) {
+        return taskRepository.findPagedMemberTasks(projectId,username,pageable);
+    }
+
+    public Long countFinishedUserTasksForProject(User user, UUID projectId) {
+        return taskRepository.countFinishedUserTasks(user,projectId);
     }
 }

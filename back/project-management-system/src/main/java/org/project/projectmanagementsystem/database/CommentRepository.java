@@ -45,4 +45,10 @@ public class CommentRepository {
                 .map(CommentMapper.INSTANCE::mapFromEntityToDomain)
                 .toList();
     }
+
+    public List<Comment> findAllUserCommentsInTask(String username, String taskCode) {
+        return commentJpaRepository.findAllUserCommentsInTask(username,taskCode).stream()
+                .map(CommentMapper.INSTANCE::mapFromEntityToDomain)
+                .toList();
+    }
 }

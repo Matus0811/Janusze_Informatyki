@@ -1,0 +1,33 @@
+<app-menu></app-menu>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md">
+          <h6 class="display-6">Twój profil</h6>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md">
+          <p><b>Imię:</b> {{ loggedUser.name }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md">
+          <p><b>Nazwisko:</b> {{ loggedUser.surname }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md">
+          <p><b>Email:</b> {{ loggedUser.email }}</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md">
+          <p><b>Telefon:</b> {{ loggedUser.phone }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

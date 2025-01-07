@@ -1,13 +1,8 @@
 import {Injectable} from '@angular/core';
 import {TokenService} from "./token.service";
-import {environment} from "../../environment/environment";
 import {User} from "../domain/user";
-import {jwtDecode} from "jwt-decode";
-import {response} from "express";
 import {Router} from "@angular/router";
 import instance from "../http-axios";
-import {UUID} from "node:crypto";
-import httpAxios from "../http-axios";
 
 @Injectable({
   providedIn: 'root'
@@ -51,18 +46,12 @@ export class UserService {
     return user;
   }
 
-  public getLoggedUsername(){
+  public getLoggedUsername() {
     return this.getLoggedUserData().username;
   }
 
-  getProjectMembers(projectId: UUID | undefined, page: number) {
-    httpAxios.request({
-      method: 'GET',
-      url: ``
-    })
-  }
 
-  findUsersInProjectNotAssignedToTask(projectId: string, taskCode: string, username: string | null, page: number)  {
+  findUsersInProjectNotAssignedToTask(projectId: string, taskCode: string, username: string | null, page: number) {
     return instance.request({
       method: "GET",
       url: `/projects/${projectId}/task/${taskCode}`,
@@ -71,5 +60,23 @@ export class UserService {
         page: page
       }
     })
+  }
+
+  findAvailableUsers(projectId: string, page: number, username: string | null) {
+    return instance.request({
+      method: "GET",
+      url: `/projects/${projectId}/unassigned-users`,
+      params: {
+        username: username,
+        page: page,
+      }
+    })
+  }
+
+  getUserProfile(username: string) {
+    return instance.request({
+      method: "GET",
+      url: `/users/${username}`
+    });
   }
 }

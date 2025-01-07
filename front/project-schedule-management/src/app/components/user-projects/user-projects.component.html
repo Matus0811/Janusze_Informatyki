@@ -2,20 +2,5 @@
   <div class="text-wrap">
     <h1 class="display-5">Twoje projekty</h1>
   </div>
-  <div class="row justify-content-md-center">
-    <div class="col-md-4 text-center align-middle">
-      <button mat-raised-button (click)="openModal()">
-        <mat-icon>add</mat-icon>
-        Dodaj projekt
-      </button>
-    </div>
-  </div>
-  <app-project-list [projects]="projects"></app-project-list>
-  <div class="row mt-3">
-    <div class="row justify-content-md-center" [hidden]="lastLoadedPageSize < 6">
-      <div class="col-md-4 text-center">
-        <button mat-raised-button (click)="loadProjectPage()" >Pokaż więcej</button>
-      </div>
-    </div>
-  </div>
+  <app-project-list></app-project-list>
 </div>

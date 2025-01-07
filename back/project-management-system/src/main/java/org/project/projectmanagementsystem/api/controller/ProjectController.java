@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.project.projectmanagementsystem.api.dto.ProjectDTO;
 import org.project.projectmanagementsystem.api.dto.ProjectFormDTO;
 import org.project.projectmanagementsystem.api.dto.UserDTO;
-import org.project.projectmanagementsystem.api.dto.UserFormDTO;
 import org.project.projectmanagementsystem.domain.mapper.FormMapper;
 import org.project.projectmanagementsystem.domain.mapper.ProjectMapper;
 import org.project.projectmanagementsystem.domain.mapper.UserMapper;
@@ -19,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -67,7 +67,7 @@ public class ProjectController {
     }
 
     @GetMapping("/member-project-list")
-    public ResponseEntity<List<ProjectDTO>> findPagedMemberUserProjects(
+    public ResponseEntity<List<ProjectDTO>> findPagedMemberProjects(
             @RequestParam(name="page") Integer page,
             @RequestParam(name="email") String email) {
         Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("project.startDate").descending());
@@ -89,18 +89,22 @@ public class ProjectController {
         return new ResponseEntity<>(projectDTO, HttpStatus.OK);
     }
 
-    @PatchMapping("/{projectId}/add-users")
+    @PostMapping("/{projectId}/add-users")
     public ResponseEntity<?> addUsersToProject(
             @PathVariable("projectId") UUID projectId,
-            @RequestBody List<String> usernames
+            @RequestBody List<UserDTO> userDTOS
     ) {
+        List<String> usernames = userDTOS.stream().map(UserDTO::username).toList();
         projectUserService.addUsersToProject(projectId,usernames);
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @PutMapping("/{projectId}/finish")
-    public ResponseEntity<?> finishProject(@PathVariable("projectId") UUID projectId) {
-        projectService.processProjectFinishing(projectId);
+    public ResponseEntity<?> finishProject(
+            @PathVariable("projectId") UUID projectId,
+            @RequestParam OffsetDateTime finishDate
+            ) {
+        projectService.processProjectFinishing(projectId,finishDate);
 
         return ResponseEntity.ok().build();
     }
@@ -119,10 +123,12 @@ public class ProjectController {
     @GetMapping("/{projectId}/unassigned-users")
     public ResponseEntity<List<UserDTO>> getUnassignedUsers(
             @PathVariable(name = "projectId") UUID projectId,
-            @RequestParam(name="username") String username
+            @RequestParam(name="username") String username,
+            @RequestParam(name="page") Integer page
     ) {
         log.info("Searching unassigned users to project: [{}]", projectId);
-        List<UserDTO> users = projectUserService.getUnassignedUsers(projectId,username).stream()
+        Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("u.username"));
+        List<UserDTO> users = projectUserService.getUnassignedUsers(projectId,username,pageable).stream()
                 .map(UserMapper.INSTANCE::mapFromDomainToDto)
                 .toList();
 

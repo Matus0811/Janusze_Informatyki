@@ -7,6 +7,7 @@ import {Priority} from "../../domain/priority";
 import {MatDialog} from "@angular/material/dialog";
 import {AddTaskFormComponent} from "../add-task-form/add-task-form.component";
 import {ProjectService} from "../../services/project.service";
+import {Project} from "../../domain/project";
 
 @Component({
   selector: 'app-task-list',
@@ -19,6 +20,7 @@ export class TaskListComponent implements OnInit {
   lastLoadedTaskSize: number = 0;
   currentTaskStatus: TaskStatus = TaskStatus.ALL;
   projectId: string = this.router.url.split("/")[4];
+  project!: Project;
 
   constructor(
     private taskService: TaskService,
@@ -26,11 +28,18 @@ export class TaskListComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private dialog: MatDialog,
     private projectService: ProjectService
-    ) {
+  ) {
   }
 
   ngOnInit(): void {
     this.loadTasks(this.currentTaskStatus);
+    this.loadProject();
+  }
+
+  private loadProject() {
+    this.projectService.findProjectById(this.projectId).then(response => {
+      this.project = response.data;
+    });
   }
 
   public loadMoreTasks() {
@@ -85,7 +94,8 @@ export class TaskListComponent implements OnInit {
       relativeTo: this.activatedRoute,
       queryParams: {id: task.taskCode},
       state: {
-        task: task
+        task: task,
+        projectId: this.projectId
       }
     })
       .catch(e => console.log(e));
@@ -95,12 +105,14 @@ export class TaskListComponent implements OnInit {
     const dialogRef = this.dialog.open(AddTaskFormComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-        let taskToCreate = this.taskService.createTaskForm(result,this.projectId);
-        this.taskService.createTask(taskToCreate).then(response =>{
-            let createdTask:Task = response.data;
-            this.tasks = [createdTask,...this.tasks];
-          }
-        )
+        if (result) {
+          let taskToCreate = this.taskService.createTaskForm(result, this.projectId);
+          this.taskService.createTask(taskToCreate).then(response => {
+              let createdTask: Task = response.data;
+              this.tasks = [createdTask, ...this.tasks];
+            }
+          );
+        }
       }
     );
   }

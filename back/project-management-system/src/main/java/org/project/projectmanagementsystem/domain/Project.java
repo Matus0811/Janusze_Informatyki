@@ -30,7 +30,7 @@ public class Project {
                 .startDate(OffsetDateTime.now())
                 .build();
 
-        if (Objects.nonNull(project.getFinishDate()) && !projectForm.getFinishDate().toString().isBlank()) {
+        if (Objects.nonNull(projectForm.getFinishDate()) && !projectForm.getFinishDate().toString().isBlank()) {
             project = project.withFinishDate(projectForm.getFinishDate());
         }
 

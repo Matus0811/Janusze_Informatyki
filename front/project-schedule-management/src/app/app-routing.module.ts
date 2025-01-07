@@ -8,11 +8,21 @@ import {CurrentProjectViewComponent} from "./components/current-project-view/cur
 import {TaskListComponent} from "./components/task-list/task-list.component";
 import {TaskDetailsComponent} from "./components/task-details/task-details.component";
 import {ProjectUserListComponent} from "./components/project-user-list/project-user-list.component";
+import {ProjectsMemberComponent} from "./components/projects-member/projects-member.component";
+import {ProjectMemberViewComponent} from "./components/project-member-view/project-member-view.component";
+import {ProjectStatusDetailsComponent} from "./components/project-status-details/project-status-details.component";
+import {ProjectBugsComponent} from "./components/project-bugs/project-bugs.component";
+import {MemberTaskDetailsComponent} from "./components/member-task-details/member-task-details.component";
+import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 
 const routes: Routes = [
   {
     path: "auth/login",
     component: UserAuthComponent
+  },
+  {
+    path: "user/profile",
+    component: UserProfileComponent
   },
   {
     path: 'projects',
@@ -40,15 +50,34 @@ const routes: Routes = [
           {
             path: 'users',
             component: ProjectUserListComponent
+          },
+          {
+            path: 'project-status',
+            component: ProjectStatusDetailsComponent
+          },
+          {
+            path: 'project-bugs',
+            component: ProjectBugsComponent
           }
         ]
       },
       {
-        path: 'my-projects',
-        component: UserProjectsComponent,
-        // children: [
+        path: 'projects-member/project/:id/task/:id',
+        component: MemberTaskDetailsComponent
+      },
+      {
+        path: 'projects-member/project/:id',
+        component: ProjectMemberViewComponent
+      },
 
-        // ]
+      {
+        path: 'projects-member',
+        component: ProjectsMemberComponent,
+        children: []
+      },
+      {
+        path: 'my-projects',
+        component: UserProjectsComponent
       }
     ]
   },

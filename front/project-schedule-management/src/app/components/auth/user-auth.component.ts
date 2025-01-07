@@ -4,6 +4,7 @@ import {User} from "../../domain/user";
 import {Router} from "@angular/router";
 import instance from "../../http-axios";
 import {TokenService} from "../../services/token.service";
+import {MessageHandlerService} from "../../services/message-handler.service";
 
 @Component({
   selector: 'app-user-auth',
@@ -13,7 +14,12 @@ import {TokenService} from "../../services/token.service";
 export class UserAuthComponent {
   loginPage = true;
   isAuthenticated = false;
-  constructor(private userService: UserService, private router: Router,private tokenService: TokenService) {
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private tokenService: TokenService,
+    private messageHandlerService: MessageHandlerService,
+  ) {
   }
   handleLogin(userCredentials: any) {
     this.userService.processUserLogin(userCredentials)
@@ -23,14 +29,16 @@ export class UserAuthComponent {
         instance.defaults.headers.common['Authorization'] = `Bearer ${this.tokenService.getAuthToken()}`;
 
         this.router.navigate(["/projects"]);
-      }).catch(e => console.log(e.response.data));
+      }).catch(e => this.messageHandlerService.handleException(e.response));
   }
 
   handleRegister(userToRegister: any){
-    console.log(userToRegister);
     this.userService.processUserRegister(userToRegister)
+      .then(response => {
+        this.messageHandlerService.handleMessageInfo("Udało się zarejestrować użytkownika");
+      })
       .catch(reason => {
-        this.openErrorModalMessage(reason);
+        this.messageHandlerService.handleException(reason.response);
       })
   }
 
@@ -42,7 +50,4 @@ export class UserAuthComponent {
     this.loginPage=false;
   }
 
-  public openErrorModalMessage(reason: any) {
-
-  }
 }

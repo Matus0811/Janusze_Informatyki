@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Project} from "../../domain/project";
 import {Router} from "@angular/router";
 
@@ -9,6 +9,7 @@ import {Router} from "@angular/router";
 })
 export class ProjectCardComponent {
   @Input() project!: Project;
+  @Output() projectToRemove = new EventEmitter<Project>();
 
   constructor(private router: Router) {
   }
@@ -19,5 +20,9 @@ export class ProjectCardComponent {
         project: this.project
       }
     });
+  }
+
+  removeProject() {
+    this.projectToRemove.emit(this.project);
   }
 }

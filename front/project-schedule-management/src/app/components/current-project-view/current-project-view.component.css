@@ -65,12 +65,12 @@
 }
 
 .finish-date-info{
-  background-color: #ff4a46;
+  background-color: #b446ff;
   transition: background-color .2s;
 }
 
 .finish-date-info:hover{
-  background-color: #ee3935;
+  background-color: #a335ee;
 }
 
 .project-status-info{
@@ -80,4 +80,12 @@
 
 .project-status-info:hover{
   background-color: #eebc21;
+}
+
+.number-of-bugs-info{
+  background-color: #ff4a46;
+}
+
+.number-of-bugs-info:hover{
+  background-color: #ee3935;
 }

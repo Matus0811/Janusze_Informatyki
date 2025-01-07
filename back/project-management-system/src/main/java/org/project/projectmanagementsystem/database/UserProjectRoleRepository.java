@@ -2,7 +2,6 @@ package org.project.projectmanagementsystem.database;
 
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.jpa.UserProjectRoleJpaRepository;
-import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.domain.UserProjectRole;
 import org.project.projectmanagementsystem.domain.mapper.UserProjectRoleMapper;
 import org.springframework.data.domain.Pageable;
@@ -24,13 +23,6 @@ public class UserProjectRoleRepository {
                         UserProjectRoleMapper.INSTANCE.mapFromDomainToEntity(userProjectRoleToSave)
                 )
         );
-    }
-
-    public List<UserProjectRole> findUnassignedUsersToProjectWhereUsernameStartsWith(UUID projectId, String word) {
-        return userProjectRoleJpaRepository.findUsersUnassignedToProject(projectId,word)
-                .stream()
-                .map(UserProjectRoleMapper.INSTANCE::mapFromEntityToDomain)
-                .toList();
     }
 
     public void removeUserProjectRole(UserProjectRole userProjectRole) {
@@ -85,5 +77,9 @@ public class UserProjectRoleRepository {
 
     public Long countProjectMembers(UUID projectId) {
         return userProjectRoleJpaRepository.countProjectMembers(projectId);
+    }
+
+    public Optional<String> findOwnerProjectName(String name, String email) {
+        return userProjectRoleJpaRepository.findOwnerProjectName(name,email);
     }
 }

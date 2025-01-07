@@ -11,57 +11,5 @@ import {Router} from "@angular/router";
   templateUrl: './user-projects.component.html',
   styleUrl: './user-projects.component.css'
 })
-export class UserProjectsComponent implements OnInit{
-  projects: Project[] = [];
-  page = 0;
-  lastLoadedPageSize = 0;
-
-  constructor(private projectService: ProjectService,
-              private userService: UserService,
-              private dialog: MatDialog,
-              private router: Router
-  ) {}
-
-  ngOnInit() {
-    this.loadProjects();
-  }
-
-  private loadProjects() {
-    let currentUser = this.userService.getLoggedUserData();
-    this.projectService.findPagedUserProjects(currentUser.email,this.page).then(
-      value => {
-        this.projects = value.data;
-        this.lastLoadedPageSize = value.data.length;
-      }
-    ).catch(reason => console.log(reason));
-  }
-
-  openModal() {
-    const dialogRef = this.dialog.open(AddProjectFormComponent);
-
-    dialogRef.afterClosed().subscribe(result =>{
-      if(result){
-        let projectForm = this.projectService.createProjectForm(result);
-        this.projectService.createProject(projectForm).then(
-          res => {
-            this.page = 0;
-            this.loadProjects();
-          }
-        );
-      }
-    }
-  );
-  }
-
-  public loadProjectPage() {
-    let currentUser = this.userService.getLoggedUserData();
-    this.page++;
-
-    this.projectService.findPagedUserProjects(currentUser.email,this.page).then(
-      value => {
-        this.lastLoadedPageSize = value.data.length;
-        this.projects = [...this.projects, ...value.data];
-      }
-    ).catch(reason => console.log(reason));
-  }
+export class UserProjectsComponent {
 }

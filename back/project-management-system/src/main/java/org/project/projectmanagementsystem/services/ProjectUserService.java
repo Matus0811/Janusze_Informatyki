@@ -21,6 +21,7 @@ public class ProjectUserService {
     private final UserProjectRoleService userProjectRoleService;
     private final TaskUserService taskUserService;
     private final CommentService commentService;
+
     @Transactional
     public void addUsersToProject(UUID projectId, List<String> usernames) {
         List<User> usersToAssignToProject = userService.findUsersWithGivenUsernames(usernames);
@@ -39,23 +40,22 @@ public class ProjectUserService {
     }
 
     @Transactional
-    public List<User> getUnassignedUsers(UUID projectId, String username) {
+    public List<User> getUnassignedUsers(UUID projectId, String username, Pageable pageable) {
         Project project = projectService.findById(projectId);
-        return userProjectRoleService.findUnassignedUsersToProjectWhereUsernameStartsWith(project,username).stream()
-                .map(UserProjectRole::getUser)
+        return userService.findUnassignedUsersToProject(project, username, pageable).stream()
                 .distinct()
                 .toList();
     }
 
     @Transactional
     public void removeUserFromProject(UUID projectId, String email) {
-        taskUserService.removeUserAssignedToTasks(projectId,email);
+        taskUserService.removeUserAssignedToTasks(projectId, email);
         userProjectRoleService.removeUserProjectRole(projectId, email);
-        commentService.removeUserCommentsInProject(email,projectId);
+        commentService.removeUserCommentsInProject(email, projectId);
     }
 
     public List<Project> findAllUserProjectsAsMember(String userEmail, Pageable pageable) {
-        return userProjectRoleService.findAllUserProjectsAsMember(userEmail,pageable)
+        return userProjectRoleService.findAllUserProjectsAsMember(userEmail, pageable)
                 .stream()
                 .map(UserProjectRole::getProject)
                 .toList();
@@ -65,24 +65,24 @@ public class ProjectUserService {
     public Project processProjectCreation(ProjectForm projectForm) {
         Project projectToCreate = Project.buildProjectFromForm(projectForm);
 
-        if (projectService.projectExists(projectToCreate.getName())) {
-            throw new ProjectAlreadyExistsException("Project with name [%s] already exists!".formatted(projectToCreate.getName()),HttpStatus.CONFLICT);
+        if (userProjectRoleService.existProjectName(projectForm.getName(), projectForm.getEmail())) {
+            throw new ProjectAlreadyExistsException("Projekt o nazwie [%s] już istnieje!".formatted(projectToCreate.getName()), HttpStatus.CONFLICT);
         }
         User owner = userService.findByEmail(projectForm.getEmail());
 
         checkDefaultRole(owner);
 
-        return projectService.createProject(projectToCreate,owner);
+        return projectService.createProject(projectToCreate, owner);
     }
 
     private void checkDefaultRole(User owner) {
-        if(userProjectRoleService.findAllUserProjectsAsOwner(owner.getEmail()).isEmpty()){
+        if (userProjectRoleService.findAllUserProjectsAsOwner(owner.getEmail()).isEmpty()) {
             userProjectRoleService.removeDefaultUserRole(owner.getUserId());
         }
     }
 
-    public List<User> findPagedProjectMembers(UUID projectId,Pageable pageable) {
-        return userProjectRoleService.findPagedProjectMembers(projectId,pageable);
+    public List<User> findPagedProjectMembers(UUID projectId, Pageable pageable) {
+        return userProjectRoleService.findPagedProjectMembers(projectId, pageable);
     }
 
     public Long countProjectMembers(UUID projectId) {

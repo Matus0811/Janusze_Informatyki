@@ -33,7 +33,18 @@ export class ProjectService {
   });
   }
 
-  createProject(projectForm: ProjectForm) {
+  findPagedMemberProjects(memberUsername: string | undefined, page: number){
+    return instance.request({
+      method: "GET",
+      url: "/projects/member-project-list",
+      params: {
+        page: page,
+        email: memberUsername
+      }
+    })
+  }
+
+  createProject(projectForm: any) {
     return instance.request({
       method: "POST",
       url: '/projects/create',
@@ -46,7 +57,7 @@ export class ProjectService {
       email: this.userService.getLoggedUserData().email,
       name: value.name,
       description: value.description,
-      finishDate: new Date(value.finishDate),
+      finishDate: new Date(value.finishDate)
     };
   }
 
@@ -74,6 +85,52 @@ export class ProjectService {
       params: {
         memberEmail: userToRemove.email
       }
+    })
+  }
+
+  addUsersToProject(projectId: string, usersToAdd: any) {
+    return instance.request({
+      method: "POST",
+      url: `/projects/${projectId}/add-users`,
+      data: usersToAdd
+    })
+  }
+
+  removeProject(projectToRemove: Project) {
+    return instance.request({
+      method: "DELETE",
+      url: `/projects/delete/${projectToRemove.projectId}`
+    })
+  }
+
+  generatePdf(project: Project) {
+    return instance.request({
+      method: "GET",
+      responseType: "blob",
+      headers: {
+        'Accept' : 'application/pdf'
+      },
+      url: "/project/pdf-generate",
+      params : {
+        projectId: project.projectId
+      }
+    })
+  }
+
+  finishProject(project: Project,finishDate: Date) {
+    return instance.request({
+      method: "PUT",
+      url: `/projects/${project.projectId}/finish`,
+      params: {
+        finishDate: new Date(finishDate)
+      }
+    })
+  }
+
+  findProjectById(projectId: string) {
+    return instance.request({
+      method: "GET",
+      url: `/projects/${projectId}`
     })
   }
 }

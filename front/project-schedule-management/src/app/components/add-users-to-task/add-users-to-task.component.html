@@ -1,0 +1,46 @@
+<mat-dialog-content [style.width]="'400px'">
+  <div class="container-fluid p-3">
+    <div class="row">
+      <form [formGroup]="formGroup">
+        <h5>Dodaj użytkowników</h5>
+        <input class="form-control" id="username" type="text" formControlName="username"
+               placeholder="Podaj nazwę użytkownika" (keyup)="searchUser()">
+      </form>
+    </div>
+
+    <div class="row mt-3 justify-content-center">
+      <div class="row mb-2" *ngFor="let user of foundUsers">
+        <div class="col-10">
+          {{ user.username }}
+        </div>
+        <div class="col-2 align-self-end">
+          <button class="border-0 rounded-4 add-user-btn" (click)="addUser(user)">
+            <i class="bi-person-add"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="usersToAdd.length > 0" class="row mt-3 justify-content-center">
+      <h5>Użytkownicy do dodania</h5>
+      <div class="row mb-2" *ngFor="let user of usersToAdd">
+        <div class="col-10">
+          {{ user.username }}
+        </div>
+        <div class="col-2 align-self-end">
+          <button class="border-0 rounded-5 remove-user-btn" (click)="removeUser(user)">
+            <i class="bi bi-person-x "></i>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2 justify-content-between">
+      <div class="col-4">
+        <button class="btn btn-dark" (click)="close()">Zamknij</button>
+      </div>
+      <div *ngIf="usersToAdd.length > 0" class="col-4 text-end">
+        <button class="btn btn-primary" (click)="addUsers()">Dodaj</button>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>

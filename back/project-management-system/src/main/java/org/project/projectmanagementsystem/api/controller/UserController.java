@@ -30,11 +30,11 @@ public class UserController {
     private final UserAuthProvider userAuthProvider;
     private final UserProjectRoleService userProjectRoleService;
 
-    @GetMapping("/{id}")
-    public UserFormDTO getUser(@PathVariable("id") Long userId){
-        User user = userService.getUser(userId);
+    @GetMapping("/{username}")
+    public ResponseEntity<UserDTO> getUser(@PathVariable("username") String username){
+        UserDTO user = UserMapper.INSTANCE.mapFromDomainToDto(userService.getUser(username));
 
-        return UserMapper.INSTANCE.mapFromDomainToFormDto(user);
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
     @PostMapping("/register")

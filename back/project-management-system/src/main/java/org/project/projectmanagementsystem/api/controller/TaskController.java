@@ -5,6 +5,8 @@ import org.project.projectmanagementsystem.api.dto.*;
 import org.project.projectmanagementsystem.domain.UserTask;
 import org.project.projectmanagementsystem.domain.mapper.TaskMapper;
 import org.project.projectmanagementsystem.domain.mapper.UserMapper;
+import org.project.projectmanagementsystem.domain.mapper.UserTaskMapper;
+import org.project.projectmanagementsystem.services.BugService;
 import org.project.projectmanagementsystem.services.ProjectTaskService;
 import org.project.projectmanagementsystem.services.TaskService;
 import org.project.projectmanagementsystem.services.TaskUserService;
@@ -26,13 +28,14 @@ public class TaskController {
     private final TaskService taskService;
     private final ProjectTaskService projectTaskService;
     private final TaskUserService taskUserService;
+    private final BugService bugService;
 
 
     @PostMapping("/create")
     public ResponseEntity<TaskDTO> createTask(@RequestBody TaskFormDTO taskFormDTO) {
         TaskDTO taskDTO = TaskMapper.INSTANCE.mapFromDomainToDto(
                 projectTaskService.processProjectTaskCreation(
-                        TaskMapper.INSTANCE.mapFromDtoToDomain(taskFormDTO)
+                        TaskMapper.INSTANCE.mapFromFormDtoToForm(taskFormDTO)
                 )
         );
         return new ResponseEntity<>(taskDTO, HttpStatus.CREATED);
@@ -61,6 +64,20 @@ public class TaskController {
         return new ResponseEntity<>(pagedTasksForProject,HttpStatus.OK);
     }
 
+    @GetMapping("/member-tasks")
+    public ResponseEntity<List<UserTaskDTO>> getPagedMemberTasks(
+            @RequestParam("projectId") UUID projectId,
+            @RequestParam("page") Integer page,
+            @RequestParam("username") String username
+    ){
+        Pageable pageable = PageRequest.of(page,12).withSort(Sort.by("t.startDate").descending());
+        var memberTasks = taskUserService.findPagedMemberTasks(projectId,username,pageable).stream()
+                .map(UserTaskMapper.INSTANCE::mapFromDomainToDto)
+                .toList();
+
+        return new ResponseEntity<>(memberTasks,HttpStatus.OK);
+    }
+
     @PatchMapping("/{taskCode}/add-users")
     public ResponseEntity<?> addUsersToTask(
             @PathVariable("taskCode") String taskCode,
@@ -72,16 +89,15 @@ public class TaskController {
     }
 
     @GetMapping("/{taskCode}/users")
-    public ResponseEntity<List<UserDTO>> getPagedUsersAssignedToTask(
+    public ResponseEntity<List<UserTaskDTO>> getPagedUsersAssignedToTask(
             @PathVariable("taskCode") String taskCode,
             @RequestParam("page") Integer page
     ){
         Pageable pageable = PageRequest.of(page,6).withSort(Sort.by("u.username"));
 
-        List<UserDTO> pagedUsersAssignedToTask = taskUserService.findPagedUsersAssignedToTask(taskCode,pageable)
+        List<UserTaskDTO> pagedUsersAssignedToTask = taskUserService.findPagedUsersAssignedToTask(taskCode,pageable)
                 .stream()
-                .map(UserTask::getUser)
-                .map(UserMapper.INSTANCE::mapFromDomainToDto)
+                .map(UserTaskMapper.INSTANCE::mapFromDomainToDto)
                 .toList();
 
         return new ResponseEntity<>(pagedUsersAssignedToTask,HttpStatus.OK);
@@ -90,15 +106,16 @@ public class TaskController {
     @PutMapping("/{taskCode}/users/finish-task")
     public ResponseEntity<?> finishTaskByMember(
             @PathVariable("taskCode") String taskCode,
-            @RequestParam("email") String email,
+            @RequestParam("username") String username,
             @RequestParam("projectId") UUID projectId
     ) {
-        taskUserService.finishTaskByMember(taskCode, email, projectId);
+        taskUserService.finishTaskByMember(taskCode, username, projectId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{taskCode}/delete")
     public ResponseEntity<?> deleteTask(@PathVariable("taskCode") String taskCode) {
+        bugService.removeBugsAssignedToTask(taskCode);
         taskService.deleteTask(taskCode);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

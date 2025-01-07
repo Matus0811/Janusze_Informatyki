@@ -7,6 +7,8 @@ import instance from "../http-axios";
 import {TaskStatus} from "../domain/task-status";
 import {TaskForm} from "../domain/task-form";
 import {User} from "../domain/user";
+import {Project} from "../domain/project";
+import { Task } from '../domain/task';
 
 @Injectable({
   providedIn: 'root'
@@ -56,7 +58,7 @@ export class TaskService {
     });
   }
 
-  createTaskForm(taskFormData: any, projectId:string): TaskForm {
+  createTaskForm(taskFormData: any, projectId:any): TaskForm {
     return {
       name: taskFormData.name,
       description: taskFormData.description,
@@ -89,6 +91,29 @@ export class TaskService {
     return instance.request({
       method: "DELETE",
       url: `/${taskCode}/remove-user`
+    })
+  }
+
+  getPagedMemberTasks(project: Project, page: number, user: User) {
+    return instance.request({
+      method: "GET",
+      url: `/tasks/member-tasks`,
+      params: {
+        projectId: project.projectId,
+        page: page,
+        username: user.username
+      }
+    });
+  }
+
+  finishTask(currentTask: Task, username: string | undefined, projectId: string) {
+    return instance.request({
+      method: "PUT",
+      url: `/tasks/${currentTask.taskCode}/users/finish-task`,
+      params: {
+        username: username,
+        projectId: projectId
+      }
     })
   }
 }

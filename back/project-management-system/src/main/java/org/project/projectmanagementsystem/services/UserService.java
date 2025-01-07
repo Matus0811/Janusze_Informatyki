@@ -4,17 +4,20 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.project.projectmanagementsystem.database.UserRepository;
 import org.project.projectmanagementsystem.domain.Credentials;
+import org.project.projectmanagementsystem.domain.Project;
 import org.project.projectmanagementsystem.domain.Role;
 import org.project.projectmanagementsystem.domain.User;
 import org.project.projectmanagementsystem.services.exceptions.user.IncorrectPasswordException;
 import org.project.projectmanagementsystem.services.exceptions.user.UserExistsException;
 import org.project.projectmanagementsystem.services.exceptions.user.UserNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -25,20 +28,8 @@ public class UserService {
     private final RoleService roleService;
     private final UserProjectRoleService userProjectRoleService;
 
-    public User getUser(Long id) {
-        return User.builder()
-                .userId(id)
-                .username("user" + id)
-                .password("user" + id)
-                .name("user")
-                .surname("surname")
-                .gender(User.Gender.MALE)
-                .phone("+48 374 173 857")
-                .build();
-
-//        return userDAO.findById(id).orElseThrow(
-//                () -> new UserNotFoundException("User with id [%s] not found".formatted(id))
-//        );
+    public User getUser(String username) {
+        return findByUsername(username);
     }
 
 
@@ -46,13 +37,26 @@ public class UserService {
     public User registerUser(User userToRegister) {
         log.info("Start processing user registration. User email: [{}]", userToRegister.getEmail());
 
-        if (userExists(userToRegister.getEmail())) {
-            log.error("Error during register user. User with email: [{}] exists", userToRegister.getEmail());
+        String userToRegisterUsername = userToRegister.getUsername();
+
+        if(userRepository.findByUsername(userToRegisterUsername).isPresent()){
+            log.error("Error during user registration. User with username: [{}] exists",userToRegister);
             throw new UserExistsException(
-                    "User with given email: [%s] already exists".formatted(userToRegister.getEmail()),
+                    "Podana nazwa użytkownika [%s] jest zajęta".formatted(userToRegisterUsername),
                     HttpStatus.CONFLICT
             );
         }
+
+        String userToRegisterEmail = userToRegister.getEmail();
+
+        if (userRepository.findByEmail(userToRegisterEmail).isPresent()) {
+            log.error("Error during register user. User with email: [{}] exists", userToRegisterEmail);
+            throw new UserExistsException(
+                    "Email %s został już użyty".formatted(userToRegisterEmail),
+                    HttpStatus.CONFLICT
+            );
+        }
+
         String encodedPassword = passwordEncoder.encode(userToRegister.getPassword());
         Role registeredUserRole = roleService.findRoleByName("USER");
 
@@ -64,11 +68,6 @@ public class UserService {
 
         log.info("User [{}] registered successfully", savedUser);
         return savedUser;
-    }
-
-
-    private boolean userExists(String email) {
-        return userRepository.findByEmail(email).isPresent();
     }
 
     @Transactional
@@ -90,7 +89,7 @@ public class UserService {
         if (!passwordEncoder.matches(credentials.getPassword(), loggedUser.getPassword())) {
             log.error("Gave wrong password: given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
             throw new IncorrectPasswordException(
-                    "Wrong password for email: [%s]".formatted(credentials.getLogin()),
+                    "Nieprawidłowe hasło dla użytkownika %s".formatted(credentials.getLogin()),
                     HttpStatus.NOT_FOUND
             );
         }
@@ -105,7 +104,7 @@ public class UserService {
         if (!passwordEncoder.matches(credentials.getPassword(), loggedUser.getPassword())) {
             log.error("Gave wrong password: given: [{}], found: [{}]", credentials.getPassword(), loggedUser.getPassword());
             throw new IncorrectPasswordException(
-                    "Wrong password!",
+                    "Nieprawidłowe hasło!",
                     HttpStatus.NOT_FOUND
             );
         }
@@ -118,18 +117,19 @@ public class UserService {
                 () -> {
                     log.error("Error finding user by email: [{}]", email);
                     return new UserNotFoundException(
-                            "User with given email not found",
+                            "Podany adres email jest nieprawidłowy",
                             HttpStatus.NOT_FOUND
                     );
                 });
     }
 
     public User findByUsername(String username) {
+        log.info("Searching user with username: [{}]",username);
         return userRepository.findByUsername(username).orElseThrow(
                 () -> {
-                    log.error("Error during finding user by username: [{}]", username);
+                    log.error("Failed searching user with username: [{}]", username);
                     return new UserNotFoundException(
-                            "User with given username not found",
+                            "Nieprawidłowa nazwa użytkownika",
                             HttpStatus.NOT_FOUND
                     );
                 });
@@ -142,10 +142,21 @@ public class UserService {
     public User findById(Long userId) {
         return userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException(
-                        "User  not found!",
+                        "Nie znaleziono użytkownika",
                         HttpStatus.NOT_FOUND
                 )
         );
     }
 
+    public List<User> findUnassignedUsersToProject(Project project, String username, Pageable pageable) {
+        return userRepository.findUnassignedUsersToProject(project.getProjectId(),username,pageable);
+    }
+
+    public List<User> findUsersAssignedToProject(UUID projectId) {
+        return userRepository.findUsersAssignedToProject(projectId);
+    }
+
+    public User findProjectOwner(UUID projectId) {
+        return userRepository.findProjectOwner(projectId).orElse(User.builder().build());
+    }
 }

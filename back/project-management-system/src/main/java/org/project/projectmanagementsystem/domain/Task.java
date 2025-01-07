@@ -24,7 +24,7 @@ public class Task {
     Set<Comment> comments;
     Set<UserTask> userTasks;
 
-    public static Task buildTaskFromTaskForm(TaskForm taskForm, Project project){
+    public static Task buildTaskFromTaskForm(TaskForm taskForm, Project project) {
         Task task = Task.builder()
                 .taskCode(UUID.randomUUID().toString())
                 .name(taskForm.getName())
@@ -35,30 +35,39 @@ public class Task {
                 .project(project)
                 .build();
 
-        if(!Objects.isNull(taskForm.getFinishDate()) && !taskForm.getFinishDate().toString().isBlank()){
-            task = task.withFinishDate(taskForm.getFinishDate());
+        if (existsTaskFinishDate(taskForm)) {
+            if (isTaskFinishDateAfterProjectFinishDate(taskForm, project)) {
+                task = task.withFinishDate(project.getFinishDate());
+            } else {
+                task = task.withFinishDate(taskForm.getFinishDate());
+            }
         }
 
         return task;
     }
 
-    public static Task buildBugTask(Bug bug) {
+    private static boolean existsTaskFinishDate(TaskForm taskForm) {
+        return !Objects.isNull(taskForm.getFinishDate()) && !taskForm.getFinishDate().toString().isBlank();
+    }
+
+    private static boolean isTaskFinishDateAfterProjectFinishDate(TaskForm taskForm, Project project) {
+        return !Objects.isNull(project.getFinishDate()) && taskForm.getFinishDate().isAfter(project.getFinishDate());
+    }
+
+    public static Task buildBugTask() {
         return Task.builder()
                 .taskCode(UUID.randomUUID().toString())
-                .name("BUG id: %s".formatted(bug.getSerialNumber()))
-                .description("Błąd do naprawy dla projektu: %s".formatted(bug.getProject().getProjectId()))
                 .status(TaskStatus.BUG)
                 .priority(Priority.MEDIUM)
                 .startDate(OffsetDateTime.now())
-                .project(bug.getProject())
                 .build();
     }
 
-    public enum TaskStatus{
+    public enum TaskStatus {
         CONCEPT, IN_PROGRESS, FINISHED, REJECTED, BUG, TO_DO
     }
 
-    public enum Priority{
-        LOW,MEDIUM,HIGH
+    public enum Priority {
+        LOW, MEDIUM, HIGH
     }
 }

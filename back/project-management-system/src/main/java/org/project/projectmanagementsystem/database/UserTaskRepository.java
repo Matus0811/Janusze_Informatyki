@@ -3,7 +3,9 @@ package org.project.projectmanagementsystem.database;
 import lombok.RequiredArgsConstructor;
 import org.project.projectmanagementsystem.database.entities.UserTaskEntity;
 import org.project.projectmanagementsystem.database.jpa.UserTaskJpaRepository;
+import org.project.projectmanagementsystem.domain.Project;
 import org.project.projectmanagementsystem.domain.UserTask;
+import org.project.projectmanagementsystem.domain.UserTasks;
 import org.project.projectmanagementsystem.domain.mapper.UserTaskMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
@@ -24,7 +26,7 @@ public class UserTaskRepository {
     }
 
     public Optional<UserTask> findUserTask(String taskCode, String userEmail) {
-        return userTaskJpaRepository.findByTaskCodeAndUserEmail(taskCode,userEmail)
+        return userTaskJpaRepository.findByTaskCodeAndUserUsername(taskCode,userEmail)
                 .map(UserTaskMapper.INSTANCE::mapFromEntityToDomain);
     }
 
@@ -63,5 +65,14 @@ public class UserTaskRepository {
         return userTaskJpaRepository.findAllUsersAssignedToTask(taskCode).stream()
                 .map(UserTaskMapper.INSTANCE::mapFromEntityToDomain)
                 .collect(Collectors.toList());
+    }
+
+    public List<UserTasks> findFinishedTasksForUsers(Project project) {
+        return userTaskJpaRepository.findFinishedTasksForUsersInProject(project.getProjectId());
+    }
+
+    public List<UserTask> findPagedMemberTasks(UUID projectId, String username, Pageable pageable) {
+        return userTaskJpaRepository.findPagedMemberTasks(projectId,username,pageable).stream()
+                .map(UserTaskMapper.INSTANCE::mapFromEntityToDomain).toList();
     }
 }

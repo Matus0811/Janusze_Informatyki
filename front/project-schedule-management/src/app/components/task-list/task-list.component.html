@@ -1,5 +1,5 @@
 <div class="container-fluid mt-md-5">
-  <h3>Lista zadan</h3>
+  <h3 class="display-5">Lista zadań</h3>
   <div class="row justify-content-md-center">
     <div class="col-md-4 text-center">
       <button mat-raised-button (click)="openModal()">
@@ -10,25 +10,25 @@
   </div>
   <ul class="nav nav-pills nav-fill mt-md-5 mb-md-3 border">
     <li class="nav-item border-right">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.ALL)" aria-selected="true">Wszystkie zadania</button>
+      <button class="nav-link text-dark active" (click)="loadTasks(TaskStatus.ALL)" aria-selected="true">Wszystkie zadania</button>
     </li>
     <li class="nav-item border-right">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.CONCEPT)">Koncepcje</button>
+      <button class="nav-link text-dark" (click)="loadTasks(TaskStatus.CONCEPT)">Koncepcje</button>
     </li>
     <li class="nav-item border-right">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.TO_DO)">Do wykonania</button>
+      <button class="nav-link text-dark" (click)="loadTasks(TaskStatus.TO_DO)">Do wykonania</button>
     </li>
     <li class="nav-item border-right">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.IN_PROGRESS)">W trakcie</button>
+      <button class="nav-link text-dark" (click)="loadTasks(TaskStatus.IN_PROGRESS)">W trakcie</button>
     </li>
     <li class="nav-item border-right">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.FINISHED)">Ukończone</button>
+      <button class="nav-link text-dark" (click)="loadTasks(TaskStatus.FINISHED)">Ukończone</button>
     </li>
     <li class="nav-item border-right">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.BUG)">Błędy</button>
+      <button class="nav-link text-dark" (click)="loadTasks(TaskStatus.BUG)">Błędy</button>
     </li>
     <li class="nav-item ">
-      <button class="nav-link" (click)="loadTasks(TaskStatus.REJECTED)">Odrzucone</button>
+      <button class="nav-link text-dark" (click)="loadTasks(TaskStatus.REJECTED)">Odrzucone</button>
     </li>
   </ul>
   <div *ngIf="tasks.length > 0; else emptyArray" class="container-fluid">
@@ -41,10 +41,10 @@
     </div>
     <div class="row border-bottom pt-3 text-dark hover-div" *ngFor="let task of tasks">
       <div class="col-md-3">
-        <p>{{task.taskCode}}</p>
+        <p>{{ task.taskCode }}</p>
       </div>
       <div class="col-md-2">
-        <p>{{task.name}}</p>
+        <p>{{ task.name }}</p>
       </div>
       <div class="col-md-2 d-flex justify-content-md-center">
         <div class="align-self-center w-50 p-2 rounded-4" [style.background-color]="getColor(task.priority)">

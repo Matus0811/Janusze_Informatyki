@@ -1,0 +1,23 @@
+<div class="container mt-5">
+  <div class="row mb-2 justify-content-md-center">
+    <div class="col-md-10 border-bottom">
+      <div class="row fw-bold">
+        <div class="col-md-4">
+          <p>Nazwa zadania</p>
+        </div>
+        <div class="col-md-3">
+          <p>Status</p>
+        </div>
+        <div class="col-md-2">
+          <p>Priorytet</p>
+        </div>
+        <div class="col-md-3 text-center">
+          <p>Data rozpoczęcia</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container" *ngFor="let task of userTasks">
+    <app-task-card [loadedTask]="task"></app-task-card>
+  </div>
+</div>

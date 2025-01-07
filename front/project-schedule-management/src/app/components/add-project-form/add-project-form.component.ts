@@ -17,13 +17,12 @@ export class AddProjectFormComponent {
   });
 
 
-  constructor(private dialogRef: MatDialogRef<AddProjectFormComponent>, private projectService: ProjectService) {
+  constructor(private dialogRef: MatDialogRef<AddProjectFormComponent>) {
   }
 
   submitForm(){
     if(this.projectForm.valid){
-      const projectForm: ProjectForm = this.projectService.createProjectForm(this.projectForm.value);
-      this.dialogRef.close(projectForm);
+      this.dialogRef.close(this.projectForm.value);
     }
   }
 

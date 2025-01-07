@@ -13,15 +13,16 @@
         </textarea>
       </div>
 
-      <div class="mb-md-3">
-        <label class="form-label" for="status">Status zadania</label>
-        <select class="form-select" formControlName="status" id="status">
-          <option value="CONCEPT">Koncepcja</option>
-          <option value="TO_DO">Do wykonania</option>
-          <option value="UNDEFINED_STATUS" selected>-</option>
-        </select>
-      </div>
-
+      @if (!createBugTask){
+        <div class="mb-md-3">
+          <label class="form-label" for="status">Status zadania</label>
+          <select class="form-select" formControlName="status" id="status">
+            <option value="CONCEPT">Koncepcja</option>
+            <option value="TO_DO">Do wykonania</option>
+            <option value="UNDEFINED_STATUS" selected>-</option>
+          </select>
+        </div>
+      }
       <div class="mb-md-3">
         <label class="form-label" for="priority">Priorytet</label>
         <select class="form-select" formControlName="priority" id="priority">
@@ -31,7 +32,7 @@
         </select>
       </div>
 
-      <div *ngIf="taskForm.controls.priority.value == 'HIGH'" class="mb-md-3">
+      <div class="mb-md-3">
         <label class="form-label d-block" for="finishDate">Data ukończenia</label>
         <input class="d-block w-100" type="datetime-local" id="finishDate" formControlName="finishDate">
       </div>
@@ -43,7 +44,7 @@
         <button class="btn btn-dark" (click)="close()">Zamknij</button>
       </div>
       <div class="col-md-6 text-center">
-        <button class="btn btn-dark" type="submit" (click)="submitForm()">Dodaj projekt</button>
+        <button class="btn btn-dark" type="submit" (click)="submitForm()">Dodaj zadanie</button>
       </div>
     </div>
   </mat-dialog-content>

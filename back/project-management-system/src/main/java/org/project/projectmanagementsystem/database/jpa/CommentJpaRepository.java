@@ -1,6 +1,7 @@
 package org.project.projectmanagementsystem.database.jpa;
 
 import org.project.projectmanagementsystem.database.entities.CommentEntity;
+import org.project.projectmanagementsystem.domain.Comment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,4 +26,13 @@ public interface CommentJpaRepository extends JpaRepository<CommentEntity,Long> 
     AND ce.task.project.projectId = :projectId
     """)
     List<CommentEntity> findAllUserCommentsInProject(@Param("email") String userEmail, @Param("projectId")UUID projectId);
+
+    @Query("""
+    SELECT ce FROM CommentEntity ce
+    JOIN FETCH ce.user u
+    JOIN FETCH ce.task t
+    WHERE u.username = :username
+    AND t.taskCode = :taskCode
+    """)
+    List<CommentEntity> findAllUserCommentsInTask(@Param("username") String username, @Param("taskCode") String taskCode);
 }
